@@ -193,6 +193,8 @@ const AdminDashboard = ({
   registrations, 
   onUpdateStatus, 
   onDraw,
+  onResetDraw,
+  onUpdateBracket,
   onRefresh,
   tournamentState 
 }: { 
