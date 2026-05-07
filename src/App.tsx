@@ -208,6 +208,7 @@ const AdminDashboard = ({
 }) => {
   const acceptedCount = registrations.filter(r => r.status === 'accepted').length;
   const [editingBracket, setEditingBracket] = useState<any>(null);
+  const [viewMode, setViewMode] = useState<'iscrizioni' | 'tabellone'>('iscrizioni');
 
   useEffect(() => {
     if (tournamentState.is_drawn && tournamentState.bracket) {
@@ -245,38 +246,69 @@ const AdminDashboard = ({
         <div>
           <h2 className="text-4xl font-black italic uppercase tracking-tighter">Area Organizzatori.</h2>
           <div className="flex items-center gap-4 mt-2">
-            <p className="text-white/40 text-xs uppercase tracking-widest">Gestione iscrizioni ({registrations.length})</p>
-            <button onClick={onRefresh} className="text-[#A5D8FF] text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
-              <Loader2 size={10} className={registrations.length === 0 ? "animate-spin" : ""} />
-              Aggiorna Lista
-            </button>
+            <p className="text-white/40 text-xs uppercase tracking-widest">
+              {viewMode === 'iscrizioni' ? `Gestione iscrizioni (${registrations.length})` : 'Gestione Tabellone'}
+            </p>
+            {viewMode === 'iscrizioni' && (
+              <button onClick={onRefresh} className="text-[#A5D8FF] text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
+                <Loader2 size={10} className={registrations.length === 0 ? "animate-spin" : ""} />
+                Aggiorna Lista
+              </button>
+            )}
           </div>
         </div>
-        <div className="flex gap-4 w-full md:w-auto">
-          {tournamentState.is_drawn && (
-            <button 
-              onClick={onResetDraw}
-              className="px-6 py-3 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-2"
-            >
-              <Trash2 size={16} />
-              Reset
-            </button>
+        <div className="flex flex-wrap gap-4 w-full md:w-auto">
+          {viewMode === 'tabellone' ? (
+            <>
+              <button 
+                onClick={() => setViewMode('iscrizioni')}
+                className="px-6 py-3 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white hover:text-black transition-all shadow-2xl flex items-center justify-center gap-2"
+              >
+                ← Indietro
+              </button>
+              {tournamentState.is_drawn && (
+                <button 
+                  onClick={() => {
+                    onResetDraw();
+                    setViewMode('iscrizioni');
+                  }}
+                  className="px-6 py-3 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-2"
+                >
+                  <Trash2 size={16} />
+                  Reset
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              {tournamentState.is_drawn && (
+                <button 
+                  onClick={() => setViewMode('tabellone')}
+                  className="flex-1 md:flex-none px-6 py-3 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#A5D8FF]/10 transition-all shadow-2xl flex items-center justify-center gap-2"
+                >
+                  Gestisci Tabellone
+                </button>
+              )}
+              <button 
+                onClick={() => {
+                  onDraw();
+                  setViewMode('tabellone');
+                }}
+                disabled={tournamentState.is_drawn || acceptedCount < 2}
+                className="flex-1 md:flex-none px-6 py-3 bg-[#A5D8FF] text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-2xl disabled:opacity-30 flex items-center justify-center gap-2"
+              >
+                <Dices size={16} />
+                {tournamentState.is_drawn ? 'Tabellone Generato' : `Sorteggio (${acceptedCount} Squadre)`}
+              </button>
+            </>
           )}
-          <button 
-            onClick={onDraw}
-            disabled={tournamentState.is_drawn || acceptedCount < 2}
-            className="flex-1 md:flex-none px-6 py-3 bg-[#A5D8FF] text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-2xl disabled:opacity-30 flex items-center justify-center gap-2"
-          >
-            <Dices size={16} />
-            {tournamentState.is_drawn ? 'Tabellone Generato' : `Sorteggio (${acceptedCount} Squadre)`}
-          </button>
         </div>
       </div>
 
-      {tournamentState.is_drawn && editingBracket && (
+      {viewMode === 'tabellone' && tournamentState.is_drawn && editingBracket && (
         <div className="bg-white/[0.02] border border-[#A5D8FF]/20 rounded-[32px] p-8 space-y-8">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-black italic uppercase text-[#A5D8FF]">Gestione Tabellone</h3>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h3 className="text-xl font-black italic uppercase text-[#A5D8FF]">Modifica Tabellone</h3>
             <button 
               onClick={() => onUpdateBracket(editingBracket)}
               className="px-6 py-2 bg-[#A5D8FF]/20 text-[#A5D8FF] hover:bg-[#A5D8FF] hover:text-black rounded-lg text-xs font-bold uppercase transition-colors"
@@ -372,60 +404,64 @@ const AdminDashboard = ({
         </div>
       )}
 
-      <div className="grid gap-4">
-        {registrations.length === 0 ? (
-          <div className="py-20 text-center border border-white/5 bg-white/[0.02] rounded-3xl text-white/20 uppercase text-[10px] font-black tracking-widest">
-            Nessuna iscrizione presente
-          </div>
-        ) : (
-          registrations.map(reg => (
-            <div key={reg.id} className="p-6 bg-white/[0.03] border border-white/5 rounded-3xl flex flex-col md:flex-row justify-between gap-6 hover:bg-white/[0.05] transition-colors">
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <span className="font-black text-lg text-[#A5D8FF] italic uppercase">{reg.team_name}</span>
-                  <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest ${
-                    reg.status === 'accepted' ? 'bg-green-500/20 text-green-400' :
-                    reg.status === 'rejected' ? 'bg-red-500/20 text-red-400' :
-                    'bg-yellow-500/20 text-yellow-400'
-                  }`}>
-                    {reg.status}
-                  </span>
-                </div>
-                <div className="text-[10px] text-white/40 uppercase tracking-widest font-bold flex flex-wrap gap-x-4 gap-y-1">
-                  <span>Cap: {reg.p1_name} {reg.p1_surname}</span>
-                  <span>P2: {reg.p2_name} {reg.p2_surname}</span>
-                  <span>Liv: {reg.level}</span>
-                  <span>Pag: {reg.payment}</span>
-                  <span className="flex items-center gap-1">
-                    <span className="text-white/20">Email:</span>
-                    <a href={`mailto:${reg.email}`} className="text-[#A5D8FF] hover:underline normal-case">{reg.email}</a>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="text-white/20">Tel:</span>
-                    <a href={`tel:${reg.phone}`} className="text-[#A5D8FF] hover:underline">{reg.phone}</a>
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => onUpdateStatus(reg.id, 'accepted')}
-                  disabled={reg.status === 'accepted'}
-                  className="p-3 bg-green-500/10 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition-all disabled:opacity-20"
-                >
-                  <ShieldCheck size={18} />
-                </button>
-                <button 
-                  onClick={() => onUpdateStatus(reg.id, 'rejected')}
-                  disabled={reg.status === 'rejected'}
-                  className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all disabled:opacity-20"
-                >
-                  <X size={18} />
-                </button>
-              </div>
+      {viewMode === 'iscrizioni' && (
+        <div className="grid gap-4">
+          {registrations.length === 0 ? (
+            <div className="py-20 text-center border border-white/5 bg-white/[0.02] rounded-3xl text-white/20 uppercase text-[10px] font-black tracking-widest">
+              Nessuna iscrizione presente
             </div>
-          ))
-        )}
-      </div>
+          ) : (
+            registrations.map(reg => (
+              <div key={reg.id} className="p-6 bg-white/[0.03] border border-white/5 rounded-3xl flex flex-col md:flex-row justify-between gap-6 hover:bg-white/[0.05] transition-colors">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <span className="font-black text-lg text-[#A5D8FF] italic uppercase">{reg.team_name}</span>
+                    <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest ${
+                      reg.status === 'accepted' ? 'bg-green-500/20 text-green-400' :
+                      reg.status === 'rejected' ? 'bg-red-500/20 text-red-400' :
+                      'bg-yellow-500/20 text-yellow-400'
+                    }`}>
+                      {reg.status}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-white/40 uppercase tracking-widest font-bold flex flex-wrap gap-x-4 gap-y-1">
+                    <span>Cap: {reg.p1_name} {reg.p1_surname}</span>
+                    <span>P2: {reg.p2_name} {reg.p2_surname}</span>
+                    <span>Liv: {reg.level}</span>
+                    <span>Pag: {reg.payment}</span>
+                    <span className="flex items-center gap-1">
+                      <span className="text-white/20">Email:</span>
+                      <a href={`mailto:${reg.email}`} className="text-[#A5D8FF] hover:underline normal-case">{reg.email}</a>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="text-white/20">Tel:</span>
+                      <a href={`tel:${reg.phone}`} className="text-[#A5D8FF] hover:underline">{reg.phone}</a>
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => onUpdateStatus(reg.id, 'accepted')}
+                    disabled={reg.status === 'accepted'}
+                    className="p-3 bg-green-500/10 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition-all disabled:opacity-20"
+                    title="Accetta Iscrizione"
+                  >
+                    <ShieldCheck size={18} />
+                  </button>
+                  <button 
+                    onClick={() => onUpdateStatus(reg.id, 'rejected')}
+                    disabled={reg.status === 'rejected'}
+                    className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all disabled:opacity-20"
+                    title="Rifiuta Iscrizione"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };
