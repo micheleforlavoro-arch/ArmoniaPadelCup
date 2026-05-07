@@ -755,13 +755,20 @@ export default function App() {
 
                           // Send confirmation email via our proxy
                           try {
-                            await fetch('/api/send-confirmation', {
+                            const res = await fetch('/api/send-confirmation', {
                               method: 'POST',
                               headers: { 'Content-Type': 'application/json' },
                               body: JSON.stringify({
                                 ...data
                               })
                             });
+                            const result = await res.json();
+                            console.log("Risposta API Email:", result);
+                            if (result.status === "skipped") {
+                              alert("ATTENZIONE: L'iscrizione è andata a buon fine nel database, ma l'email NON è partita perché le variabili SMTP mancano o non sono state caricate su Vercel. Fai un REDEPLOY su Vercel!");
+                            } else if (result.status === "error") {
+                              alert("ATTENZIONE: Errore del server SMTP nell'invio della mail. Controlla i log su Vercel.");
+                            }
                           } catch (emailErr) {
                             console.error('Email sending failed (non-blocking):', emailErr);
                           }
