@@ -46,6 +46,7 @@ interface Registration {
   payment: string;
   status: 'pending' | 'accepted' | 'rejected';
   created_at: string;
+  image_url?: string;
 }
 
 interface TournamentState {
@@ -196,7 +197,9 @@ const AdminDashboard = ({
   onResetDraw,
   onUpdateBracket,
   onRefresh,
-  tournamentState
+  tournamentState,
+  onAddRegistration,
+  onUpdateRegistration
 }: {
   registrations: Registration[],
   onUpdateStatus: (id: string, status: 'accepted' | 'rejected') => void,
@@ -204,11 +207,28 @@ const AdminDashboard = ({
   onResetDraw: () => void,
   onUpdateBracket: (newBracket: any) => void,
   onRefresh: () => void,
-  tournamentState: TournamentState
+  tournamentState: TournamentState,
+  onAddRegistration: (newReg: Omit<Registration, 'id' | 'created_at'>) => Promise<boolean>,
+  onUpdateRegistration: (id: string, updatedFields: Partial<Registration>) => Promise<boolean>
 }) => {
   const acceptedCount = registrations.filter(r => r.status === 'accepted').length;
   const [editingBracket, setEditingBracket] = useState<any>(null);
   const [viewMode, setViewMode] = useState<'iscrizioni' | 'tabellone'>('iscrizioni');
+  const [isAdding, setIsAdding] = useState(false);
+  const [editingReg, setEditingReg] = useState<Registration | null>(null);
+
+  // Form states
+  const [teamName, setTeamName] = useState('');
+  const [p1Name, setP1Name] = useState('');
+  const [p1Surname, setP1Surname] = useState('');
+  const [p2Name, setP2Name] = useState('');
+  const [p2Surname, setP2Surname] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [level, setLevel] = useState('principiante');
+  const [payment, setPayment] = useState('contanti');
+  const [status, setStatus] = useState<'pending' | 'accepted' | 'rejected'>('accepted');
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     if (tournamentState.is_drawn && tournamentState.bracket) {
@@ -217,6 +237,79 @@ const AdminDashboard = ({
       setEditingBracket(null);
     }
   }, [tournamentState]);
+
+  useEffect(() => {
+    if (editingReg) {
+      setTeamName(editingReg.team_name || '');
+      setP1Name(editingReg.p1_name || '');
+      setP1Surname(editingReg.p1_surname || '');
+      setP2Name(editingReg.p2_name || '');
+      setP2Surname(editingReg.p2_surname || '');
+      setEmail(editingReg.email || '');
+      setPhone(editingReg.phone || '');
+      setLevel(editingReg.level || 'principiante');
+      setPayment(editingReg.payment || 'contanti');
+      setStatus(editingReg.status || 'accepted');
+      setImageUrl(editingReg.image_url || '');
+    } else {
+      resetForm();
+    }
+  }, [editingReg]);
+
+  const resetForm = () => {
+    setTeamName('');
+    setP1Name('');
+    setP1Surname('');
+    setP2Name('');
+    setP2Surname('');
+    setEmail('');
+    setPhone('');
+    setLevel('principiante');
+    setPayment('contanti');
+    setStatus('accepted');
+    setImageUrl('');
+  };
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const data = {
+      team_name: teamName,
+      p1_name: p1Name,
+      p1_surname: p1Surname,
+      p2_name: p2Name,
+      p2_surname: p2Surname,
+      email,
+      phone,
+      level,
+      payment,
+      status,
+      image_url: imageUrl
+    };
+
+    if (editingReg) {
+      const success = await onUpdateRegistration(editingReg.id, data);
+      if (success) {
+        setEditingReg(null);
+      }
+    } else {
+      const success = await onAddRegistration(data);
+      if (success) {
+        setIsAdding(false);
+        resetForm();
+      }
+    }
+  };
 
   const advanceTeam = (teamName: string, round: 'quarterFinals' | 'semiFinals', index: number) => {
     if (!teamName || !editingBracket) return;
@@ -250,10 +343,15 @@ const AdminDashboard = ({
               {viewMode === 'iscrizioni' ? `Gestione iscrizioni (${registrations.length})` : 'Gestione Tabellone'}
             </p>
             {viewMode === 'iscrizioni' && (
-              <button onClick={onRefresh} className="text-[#A5D8FF] text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
-                <Loader2 size={10} className={registrations.length === 0 ? "animate-spin" : ""} />
-                Aggiorna Lista
-              </button>
+              <div className="flex items-center gap-4">
+                <button onClick={onRefresh} className="text-[#A5D8FF] text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
+                  <Loader2 size={10} className={registrations.length === 0 ? "animate-spin" : ""} />
+                  Aggiorna Lista
+                </button>
+                <button onClick={() => { setIsAdding(!isAdding); setEditingReg(null); }} className="text-green-400 text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
+                  + Aggiungi Coppia
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -304,6 +402,118 @@ const AdminDashboard = ({
           )}
         </div>
       </div>
+
+      {/* Form Aggiungi / Modifica Coppia */}
+      {(isAdding || editingReg) && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/[0.02] border border-[#A5D8FF]/20 rounded-[32px] p-8 space-y-6"
+        >
+          <div className="flex justify-between items-center border-b border-white/5 pb-4">
+            <h3 className="text-xl font-black italic uppercase text-[#A5D8FF]">
+              {editingReg ? 'Modifica Iscrizione' : 'Aggiungi Nuova Coppia'}
+            </h3>
+            <button
+              onClick={() => { setIsAdding(false); setEditingReg(null); }}
+              className="text-white/40 hover:text-white text-xs uppercase font-bold tracking-widest"
+            >
+              Annulla
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Nome Squadra</label>
+              <input
+                value={teamName}
+                onChange={e => setTeamName(e.target.value)}
+                type="text"
+                required
+                placeholder="es. I Gladiatori del Padel"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#A5D8FF] transition-all hover:bg-white/[0.08]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Foto della coppia</label>
+              <div className="flex gap-4 items-center">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  className="block w-full text-xs text-white/40 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20"
+                />
+                {imageUrl && (
+                  <img src={imageUrl} alt="Anteprima" className="w-12 h-12 rounded-xl object-cover border border-white/20" />
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Giocatore 1</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <input value={p1Name} onChange={e => setP1Name(e.target.value)} type="text" required placeholder="Nome" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
+                  <input value={p1Surname} onChange={e => setP1Surname(e.target.value)} type="text" required placeholder="Cognome" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Email</label>
+                <input value={email} onChange={e => setEmail(e.target.value)} type="email" required placeholder="mail@esempio.it" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Giocatore 2</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <input value={p2Name} onChange={e => setP2Name(e.target.value)} type="text" required placeholder="Nome" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
+                  <input value={p2Surname} onChange={e => setP2Surname(e.target.value)} type="text" required placeholder="Cognome" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Telefono</label>
+                <input value={phone} onChange={e => setPhone(e.target.value)} type="tel" required placeholder="+39 ..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 col-span-2">
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Livello</label>
+                <select value={level} onChange={e => setLevel(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
+                  <option value="principiante" className="bg-[#050505]">Principiante</option>
+                  <option value="intermedio" className="bg-[#050505]">Intermedio</option>
+                  <option value="avanzato" className="bg-[#050505]">Avanzato</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Metodo Pagamento</label>
+                <select value={payment} onChange={e => setPayment(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
+                  <option value="paypal-postepay" className="bg-[#050505]">Paypal - Postepay</option>
+                  <option value="contanti" className="bg-[#050505]">Contanti</option>
+                  <option value="bonifico" className="bg-[#050505]">Bonifico Bancario</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Stato</label>
+                <select value={status} onChange={e => setStatus(e.target.value as any)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
+                  <option value="pending" className="bg-[#050505]">Pending</option>
+                  <option value="accepted" className="bg-[#050505]">Accepted</option>
+                  <option value="rejected" className="bg-[#050505]">Rejected</option>
+                </select>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="col-span-2 mt-4 py-4 bg-[#A5D8FF] text-black font-black uppercase tracking-[0.3em] text-xs rounded-xl hover:bg-white transition-all transform active:scale-[0.98] shadow-2xl flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {editingReg ? 'Salva Modifiche' : 'Crea Coppia'}
+            </button>
+          </form>
+        </motion.div>
+      )}
 
       {viewMode === 'tabellone' && tournamentState.is_drawn && editingBracket && (
         <div className="bg-white/[0.02] border border-[#A5D8FF]/20 rounded-[32px] p-8 space-y-8">
@@ -415,6 +625,9 @@ const AdminDashboard = ({
               <div key={reg.id} className="p-6 bg-white/[0.03] border border-white/5 rounded-3xl flex flex-col md:flex-row justify-between gap-6 hover:bg-white/[0.05] transition-colors">
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
+                    {reg.image_url && (
+                      <img src={reg.image_url} alt="Foto Coppia" className="w-12 h-12 rounded-xl object-cover border border-white/10 shadow-lg" />
+                    )}
                     <span className="font-black text-lg text-[#A5D8FF] italic uppercase">{reg.team_name}</span>
                     <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest ${reg.status === 'accepted' ? 'bg-green-500/20 text-green-400' :
                         reg.status === 'rejected' ? 'bg-red-500/20 text-red-400' :
@@ -440,9 +653,16 @@ const AdminDashboard = ({
                 </div>
                 <div className="flex items-center gap-2">
                   <button
+                    onClick={() => setEditingReg(reg)}
+                    className="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all cursor-pointer"
+                    title="Modifica Iscrizione"
+                  >
+                    <Edit3 size={18} />
+                  </button>
+                  <button
                     onClick={() => onUpdateStatus(reg.id, 'accepted')}
                     disabled={reg.status === 'accepted'}
-                    className="p-3 bg-green-500/10 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition-all disabled:opacity-20"
+                    className="p-3 bg-green-500/10 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition-all disabled:opacity-20 cursor-pointer"
                     title="Accetta Iscrizione"
                   >
                     <ShieldCheck size={18} />
@@ -450,7 +670,7 @@ const AdminDashboard = ({
                   <button
                     onClick={() => onUpdateStatus(reg.id, 'rejected')}
                     disabled={reg.status === 'rejected'}
-                    className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all disabled:opacity-20"
+                    className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all disabled:opacity-20 cursor-pointer"
                     title="Rifiuta Iscrizione"
                   >
                     <X size={18} />
@@ -586,6 +806,45 @@ export default function App() {
       fetchTournamentState();
     } else {
       alert("Errore durante il salvataggio.");
+    }
+  }
+
+  async function handleAddRegistration(newReg: Omit<Registration, 'id' | 'created_at'>) {
+    try {
+      const { error } = await supabase
+        .from('registrations')
+        .insert([newReg]);
+      if (error) {
+        console.error('Errore inserimento:', error);
+        alert('Errore durante il salvataggio nel database: ' + error.message);
+        return false;
+      }
+      fetchRegistrations();
+      return true;
+    } catch (err: any) {
+      console.error(err);
+      alert('Errore imprevisto: ' + err.message);
+      return false;
+    }
+  }
+
+  async function handleUpdateRegistration(id: string, updatedFields: Partial<Registration>) {
+    try {
+      const { error } = await supabase
+        .from('registrations')
+        .update(updatedFields)
+        .eq('id', id);
+      if (error) {
+        console.error('Errore aggiornamento:', error);
+        alert('Errore durante il salvataggio nel database: ' + error.message);
+        return false;
+      }
+      fetchRegistrations();
+      return true;
+    } catch (err: any) {
+      console.error(err);
+      alert('Errore imprevisto: ' + err.message);
+      return false;
     }
   }
 
@@ -826,6 +1085,16 @@ export default function App() {
                       className="p-8 rounded-[32px] border border-white/5 bg-white/[0.03] backdrop-blur-xl hover:bg-white/[0.05] hover:border-white/10 transition-all flex flex-col justify-between h-full"
                     >
                       <div>
+                        {reg.image_url ? (
+                          <div className="w-full h-48 rounded-2xl overflow-hidden mb-6 border border-white/10 shadow-lg">
+                            <img src={reg.image_url} alt={reg.team_name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-full h-48 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col items-center justify-center mb-6 text-white/20">
+                            <Users size={32} className="mb-2 opacity-50" />
+                            <span className="text-[9px] uppercase tracking-widest font-black">Nessuna Foto</span>
+                          </div>
+                        )}
                         <div className="flex justify-between items-start mb-6">
                           <span className="text-[10px] uppercase tracking-widest text-[#A5D8FF] font-black bg-[#A5D8FF]/10 px-3 py-1 rounded-full">
                             Livello {reg.level}
@@ -1057,10 +1326,10 @@ export default function App() {
                       }}
                       className="grid md:grid-cols-2 gap-x-12 gap-y-8"
                     >
-                      <div className="col-span-2">
+                      {/* <div className="col-span-2">
                         <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Nome Squadra</label>
                         <input name="teamName" type="text" required placeholder="es. I Gladiatori del Padel" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#A5D8FF] transition-all hover:bg-white/[0.08]" />
-                      </div>
+                      </div> */}
                       <div className="space-y-4">
                         <div>
                           <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Giocatore 1 (Capitano)</label>
@@ -1160,7 +1429,7 @@ export default function App() {
               <div className="space-y-8 text-white/50 text-xs leading-loose uppercase tracking-widest font-medium">
                 <section>
                   <h3 className="text-white text-sm mb-4 font-black">1. Titolare del Trattamento</h3>
-                  <p>Il titolare del trattamento dei dati è Armonia Padel Cup, con sede in Cosenza, Rende. Email di riferimento: armoniacup8@gmail.com.</p>
+                  <p>Il titolare del trattamento dei dati è Armonia Padel Cup, con sede in Cosenza, Rende. Email di riferimento: armoniacup@gmail.com.</p>
                 </section>
                 <section>
                   <h3 className="text-white text-sm mb-4 font-black">2. Dati Raccolti</h3>
@@ -1176,7 +1445,7 @@ export default function App() {
                 </section>
                 <section>
                   <h3 className="text-white text-sm mb-4 font-black">5. Diritti dell'Interessato</h3>
-                  <p>In ogni momento è possibile richiedere l'accesso, la rettifica o la cancellazione dei propri dati inviando una comunicazione a armoniacup8@gmail.com.</p>
+                  <p>In ogni momento è possibile richiedere l'accesso, la rettifica o la cancellazione dei propri dati inviando una comunicazione a armoniacup@gmail.com.</p>
                 </section>
               </div>
             </div>
@@ -1232,6 +1501,8 @@ export default function App() {
                 onUpdateBracket={handleUpdateBracket}
                 onRefresh={fetchRegistrations}
                 tournamentState={tournamentState}
+                onAddRegistration={handleAddRegistration}
+                onUpdateRegistration={handleUpdateRegistration}
               />
             ) : (
               <div className="max-w-md mx-auto bg-zinc-900 border border-white/10 p-12 rounded-[40px] text-center">
@@ -1307,7 +1578,7 @@ export default function App() {
               <h4 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20 mb-8">Informazioni</h4>
               <ul className="space-y-4 text-white/40 text-[10px] uppercase font-bold tracking-[0.2em]">
                 <li className="flex items-center gap-3"><MapPin size={12} className="text-[#A5D8FF]" /> Cosenza, Rende</li>
-                <li className="flex items-center gap-3 lowercase tracking-normal font-medium">armoniacup8@gmail.com</li>
+                <li className="flex items-center gap-3 lowercase tracking-normal font-medium">armoniacup@gmail.com</li>
                 <li className="flex items-center gap-3">3477187888</li>
               </ul>
             </div>

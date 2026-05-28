@@ -71,7 +71,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Send notification email to organizers
     await transporter.sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      to: "armoniacup8@gmail.com",
+      to: "armoniacup@gmail.com",
       subject: `Nuova Iscrizione: ${teamName} - Armonia Padel Cup`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; border: 1px solid #1a1a1a; border-radius: 16px; background-color: #f9f9f9; color: #1a1a1a;">
