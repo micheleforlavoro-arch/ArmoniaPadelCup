@@ -50,10 +50,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               <tr><td style="padding: 8px 0; color: #666;">Squadra:</td><td style="padding: 8px 0; font-weight: bold;">${teamName}</td></tr>
               <tr><td style="padding: 8px 0; color: #666;">Capitano:</td><td style="padding: 8px 0; font-weight: bold;">${p1_name} ${p1_surname}</td></tr>
               <tr><td style="padding: 8px 0; color: #666;">Giocatore 2:</td><td style="padding: 8px 0; font-weight: bold;">${p2_name} ${p2_surname}</td></tr>
-              <tr><td style="padding: 8px 0; color: #666;">Livello:</td><td style="padding: 8px 0; font-weight: bold;">${level}</td></tr>
+
               <tr><td style="padding: 8px 0; color: #666;">Email:</td><td style="padding: 8px 0; font-weight: bold;">${email}</td></tr>
               <tr><td style="padding: 8px 0; color: #666;">Telefono:</td><td style="padding: 8px 0; font-weight: bold;">${phone}</td></tr>
-              <tr><td style="padding: 8px 0; color: #666;">Metodo Pagamento:</td><td style="padding: 8px 0; font-weight: bold; text-transform: capitalize;">${payment}</td></tr>
             </table>
           </div>
 

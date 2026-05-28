@@ -1029,6 +1029,42 @@ export default function App() {
                     </motion.div>
                   ))}
                 </div>
+
+                {/* --- PREMI DI GIORNATA SUBSECTION --- */}
+                <div className="mt-24 pt-20 border-t border-white/5">
+                  <div className="text-center mb-12">
+                    <span className="px-4 py-1.5 border border-yellow-500/30 text-yellow-500 text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-yellow-500/5 mb-4 inline-block">Competizione Giornaliera</span>
+                    <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-none">
+                      Premi di Giornata.
+                    </h3>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {[
+                      { day: "1° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
+                      { day: "2° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
+                      { day: "3° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
+                      { day: "4° Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
+                      { day: "5° Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
+                      { day: "6° Giornata", prize: "Borsone Head", desc: "Borsone tecnico ufficiale Head Padel." },
+                      { day: "7° Giornata", prize: "SPA x2 presso \"Masagiù\" + Taglio \"Retròscena\"", desc: "Percorso benessere e trattamento barber shop." }
+                    ].map((item, i) => (
+                      <motion.div
+                        key={i}
+                        whileHover={{ y: -3 }}
+                        className="p-6 rounded-[24px] border border-white/5 bg-white/[0.01] backdrop-blur-md flex flex-col justify-between hover:bg-white/[0.03] hover:border-white/10 transition-all duration-300"
+                      >
+                        <div>
+                          <span className="text-[9px] font-bold text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-2.5 py-1 rounded-full mb-4 inline-block">
+                            {item.day}
+                          </span>
+                          <h4 className="text-sm font-bold text-white tracking-tight uppercase mb-2 leading-snug">{item.prize}</h4>
+                        </div>
+                        <p className="text-white/30 text-[10px] leading-relaxed mt-2">{item.desc}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </section>
 
