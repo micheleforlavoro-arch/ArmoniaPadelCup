@@ -1616,7 +1616,7 @@ export default function App() {
                     }
                   }}
                 />
-                <p className="text-white/20 text-[8px] uppercase tracking-widest leading-loose">Riservato esclusivamente ai membri del comitato organizzativo Armonia Padel Cup. (Psw: armonia2026)</p>
+                <p className="text-white/20 text-[8px] uppercase tracking-widest leading-loose">Riservato esclusivamente ai membri del comitato organizzativo Armonia Padel Cup. </p>
               </div>
             )}
           </motion.section>
