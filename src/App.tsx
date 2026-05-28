@@ -1180,7 +1180,7 @@ export default function App() {
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-16">
                 <span className="text-[10px] uppercase font-bold text-[#A5D8FF] tracking-[0.3em] mb-4 block">Team Ufficiali</span>
-                <h2 className="text-5xl font-black tracking-tighter italic uppercase">PARTECIPANTI.</h2>
+                <h2 className="text-5xl font-black tracking-tighter italic uppercase">PARTECIPANTI</h2>
               </div>
 
               {registrations.filter(r => r.status === 'accepted').length === 0 ? (
@@ -1208,11 +1208,7 @@ export default function App() {
                             <span className="text-[9px] uppercase tracking-widest font-black">Nessuna Foto</span>
                           </div>
                         )}
-                        <div className="flex justify-end mb-6">
-                          <span className="text-white/20 text-[10px] font-bold tracking-widest">
-                            #{idx + 1}
-                          </span>
-                        </div>
+
                         <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mb-6">
                           {reg.team_name}
                         </h3>
@@ -1525,7 +1521,7 @@ export default function App() {
               <div className="space-y-8 text-white/50 text-xs leading-loose uppercase tracking-widest font-medium">
                 <section>
                   <h3 className="text-white text-sm mb-4 font-black">1. Titolare del Trattamento</h3>
-                  <p>Il titolare del trattamento dei dati è Armonia Padel Cup, con sede in Cosenza, Rende. Email di riferimento: armoniacup@gmail.com.</p>
+                  <p>Il titolare del trattamento dei dati è Armonia Padel Cup, con sede in Cosenza, Rende. Email di riferimento: armoniacupp@gmail.com.</p>
                 </section>
                 <section>
                   <h3 className="text-white text-sm mb-4 font-black">2. Dati Raccolti</h3>
@@ -1541,7 +1537,7 @@ export default function App() {
                 </section>
                 <section>
                   <h3 className="text-white text-sm mb-4 font-black">5. Diritti dell'Interessato</h3>
-                  <p>In ogni momento è possibile richiedere l'accesso, la rettifica o la cancellazione dei propri dati inviando una comunicazione a armoniacup@gmail.com.</p>
+                  <p>In ogni momento è possibile richiedere l'accesso, la rettifica o la cancellazione dei propri dati inviando una comunicazione a armoniacupp@gmail.com.</p>
                 </section>
               </div>
             </div>
@@ -1674,7 +1670,7 @@ export default function App() {
               <h4 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20 mb-8">Informazioni</h4>
               <ul className="space-y-4 text-white/40 text-[10px] uppercase font-bold tracking-[0.2em]">
                 <li className="flex items-center gap-3"><MapPin size={12} className="text-[#A5D8FF]" /> Cosenza, Rende</li>
-                <li className="flex items-center gap-3 lowercase tracking-normal font-medium">armoniacup@gmail.com</li>
+                <li className="flex items-center gap-3 lowercase tracking-normal font-medium">armoniacupp@gmail.com</li>
                 <li className="flex items-center gap-3">3477187888</li>
               </ul>
             </div>

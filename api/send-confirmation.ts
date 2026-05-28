@@ -57,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           </div>
 
           <p style="font-size: 14px; color: #ef4444; font-weight: 500; background-color: #fef2f2; padding: 12px; border-radius: 8px;">
-            <strong>Nota:</strong> Se hai sbagliato a inserire qualche dato, ti preghiamo di contattarci il prima possibile al numero <strong>3477187888</strong> o via email a <strong>armoniacup@gmail.com</strong>.
+            <strong>Nota:</strong> Se hai sbagliato a inserire qualche dato, ti preghiamo di contattarci il prima possibile al numero <strong>3477187888</strong> o via email a <strong>armoniacupp@gmail.com</strong>.
           </p>
 
           <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
@@ -70,7 +70,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Send notification email to organizers
     await transporter.sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      to: "armoniacup@gmail.com",
+      to: "armoniacupp@gmail.com",
       subject: `Nuova Iscrizione: ${teamName} - Armonia Padel Cup`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; border: 1px solid #1a1a1a; border-radius: 16px; background-color: #f9f9f9; color: #1a1a1a;">
