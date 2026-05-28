@@ -954,7 +954,7 @@ export default function App() {
                     <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Montepremi</span>
                   </div>
                   <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none">
-                    Più di <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#fcc419] to-[#fab005] drop-shadow-[0_0_20px_rgba(250,176,5,0.4)]">2000€</span> <br className="sm:hidden" />di Montepremi
+                    Più di <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#fcc419] to-[#fab005] drop-shadow-[0_0_20px_rgba(250,176,5,0.4)]">3000€</span> <br className="sm:hidden" />di Montepremi
                   </h2>
                   <p className="text-white/40 italic font-light tracking-widest text-xs mt-4 uppercase">Riconoscimento al talento puro.</p>
                 </div>
@@ -1360,6 +1360,7 @@ export default function App() {
 
                         if (!isSupabaseConfigured) {
                           console.error('Supabase non configurato nelle environment variables.');
+                          alert('Errore di configurazione: le credenziali Supabase (VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY) non sono impostate o sono mancanti nel file .env!');
                           setFormStatus('error');
                           return;
                         }
@@ -1371,15 +1372,15 @@ export default function App() {
                           const { error } = await supabase
                             .from('registrations')
                             .insert([{
-                              team_name: data.teamName,
+                              team_name: (data.teamName as string) || `${data.p1_surname || ''} - ${data.p2_surname || ''}`,
                               p1_name: data.p1_name,
                               p1_surname: data.p1_surname,
                               p2_name: data.p2_name,
                               p2_surname: data.p2_surname,
                               email: data.email,
-                              level: data.level,
+                              level: (data.level as string) || 'principiante',
                               phone: data.phone,
-                              payment: data.payment,
+                              payment: (data.payment as string) || 'contanti',
                               status: 'pending'
                             }]);
 
@@ -1389,6 +1390,7 @@ export default function App() {
                               message: error.message,
                               hint: error.hint
                             });
+                            alert('Errore database: ' + error.message + '\n\nSuggerimento: ' + (error.hint || 'Verifica la struttura delle tabelle.'));
                             setFormStatus('error');
                             return;
                           }
@@ -1399,7 +1401,10 @@ export default function App() {
                               method: 'POST',
                               headers: { 'Content-Type': 'application/json' },
                               body: JSON.stringify({
-                                ...data
+                                ...data,
+                                teamName: data.teamName || `${data.p1_surname || ''} - ${data.p2_surname || ''}`,
+                                level: data.level || 'principiante',
+                                payment: data.payment || 'contanti'
                               })
                             });
                             const result = await res.json();
@@ -1416,6 +1421,7 @@ export default function App() {
                           setFormStatus('success');
                         } catch (err: any) {
                           console.error('Registration failed:', err);
+                          alert('Errore imprevisto di sistema: ' + err.message);
                           setFormStatus('error');
                         }
                       }}
