@@ -423,7 +423,7 @@ const AdminDashboard = ({
           </div>
 
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
-            <div>
+            {/* <div>
               <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Nome Squadra</label>
               <input
                 value={teamName}
@@ -433,7 +433,7 @@ const AdminDashboard = ({
                 placeholder="es. I Gladiatori del Padel"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#A5D8FF] transition-all hover:bg-white/[0.08]"
               />
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Foto della coppia</label>
@@ -479,22 +479,22 @@ const AdminDashboard = ({
             </div>
 
             <div className="grid grid-cols-3 gap-4 col-span-2">
-              <div>
+              {/* <div>
                 <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Livello</label>
                 <select value={level} onChange={e => setLevel(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
                   <option value="principiante" className="bg-[#050505]">Principiante</option>
                   <option value="intermedio" className="bg-[#050505]">Intermedio</option>
                   <option value="avanzato" className="bg-[#050505]">Avanzato</option>
                 </select>
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Metodo Pagamento</label>
                 <select value={payment} onChange={e => setPayment(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
                   <option value="paypal-postepay" className="bg-[#050505]">Paypal - Postepay</option>
                   <option value="contanti" className="bg-[#050505]">Contanti</option>
                   <option value="bonifico" className="bg-[#050505]">Bonifico Bancario</option>
                 </select>
-              </div>
+              </div> */}
               <div>
                 <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Stato</label>
                 <select value={status} onChange={e => setStatus(e.target.value as any)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
@@ -1433,7 +1433,7 @@ export default function App() {
                 </section>
                 <section>
                   <h3 className="text-white text-sm mb-4 font-black">2. Dati Raccolti</h3>
-                  <p>Raccogliamo i seguenti dati personali forniti volontariamente in fase di iscrizione: Nome, Cognome, Indirizzo Email, Numero di Telefono, Nome della Squadra e Livello di Gioco.</p>
+                  <p>Raccogliamo i seguenti dati personali forniti volontariamente in fase di iscrizione: Nome, Cognome, Indirizzo Email, Numero di Telefono.</p>
                 </section>
                 <section>
                   <h3 className="text-white text-sm mb-4 font-black">3. Finalità del Trattamento</h3>
