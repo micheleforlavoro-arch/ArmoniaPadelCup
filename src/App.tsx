@@ -1351,7 +1351,7 @@ export default function App() {
                             <input name="p2_surname" type="text" required placeholder="Cognome" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
                           </div>
                         </div>
-                        <div>
+                        {/* <div>
                           <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Livello Gioco</label>
                           <select name="level" required className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
                             <option value="" className="bg-[#050505]">Seleziona</option>
@@ -1359,14 +1359,14 @@ export default function App() {
                             <option value="intermedio" className="bg-[#050505]">Intermedio</option>
                             <option value="avanzato" className="bg-[#050505]">Avanzato</option>
                           </select>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="col-span-2 grid md:grid-cols-2 gap-8">
                         <div>
                           <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Telefono</label>
                           <input name="phone" type="tel" required placeholder="+39 ..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
                         </div>
-                        <div>
+                        {/* <div>
                           <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Metodo di Pagamento</label>
                           <select name="payment" required className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
                             <option value="" className="bg-[#050505]">Seleziona</option>
@@ -1374,7 +1374,7 @@ export default function App() {
                             <option value="contanti" className="bg-[#050505]">Contanti</option>
                             <option value="bonifico" className="bg-[#050505]">Bonifico Bancario</option>
                           </select>
-                        </div>
+                        </div> */}
                       </div>
                       <button
                         type="submit"
