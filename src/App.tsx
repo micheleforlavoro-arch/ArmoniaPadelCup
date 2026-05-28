@@ -70,7 +70,7 @@ const Navbar = () => {
     { name: 'Regolamento', id: 'regolamento' },
     { name: 'Partecipanti', id: 'partecipanti' },
     { name: 'Tabellone', id: 'tabellone' },
-    { name: 'FAQ', id: 'faq' },
+    // { name: 'FAQ', id: 'faq' },
   ];
 
   return (
@@ -1129,7 +1129,7 @@ export default function App() {
           </motion.section>
         )}
 
-        {view === 'faq' && (
+        {/* {view === 'faq' && (
           <motion.section
             key="faq"
             initial={{ opacity: 0, scale: 1.02 }}
@@ -1145,7 +1145,7 @@ export default function App() {
               <Accordion title="Qual è il premio per la miglior coppia 'Under 21'?" content="Abbiamo un premio speciale dedicato ai giovani talenti: un voucher formativo per una Masterclass con un coach professionista." />
             </div>
           </motion.section>
-        )}
+        )} */}
 
         {view === 'privacy' && (
           <motion.section
