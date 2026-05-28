@@ -478,23 +478,7 @@ const AdminDashboard = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 col-span-2">
-              {/* <div>
-                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Livello</label>
-                <select value={level} onChange={e => setLevel(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
-                  <option value="principiante" className="bg-[#050505]">Principiante</option>
-                  <option value="intermedio" className="bg-[#050505]">Intermedio</option>
-                  <option value="avanzato" className="bg-[#050505]">Avanzato</option>
-                </select>
-              </div> */}
-              {/* <div>
-                <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Metodo Pagamento</label>
-                <select value={payment} onChange={e => setPayment(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
-                  <option value="paypal-postepay" className="bg-[#050505]">Paypal - Postepay</option>
-                  <option value="contanti" className="bg-[#050505]">Contanti</option>
-                  <option value="bonifico" className="bg-[#050505]">Bonifico Bancario</option>
-                </select>
-              </div> */}
+            <div className="grid grid-cols-1 gap-4 col-span-2">
               <div>
                 <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Stato</label>
                 <select value={status} onChange={e => setStatus(e.target.value as any)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
@@ -639,8 +623,6 @@ const AdminDashboard = ({
                   <div className="text-[10px] text-white/40 uppercase tracking-widest font-bold flex flex-wrap gap-x-4 gap-y-1">
                     <span>Cap: {reg.p1_name} {reg.p1_surname}</span>
                     <span>P2: {reg.p2_name} {reg.p2_surname}</span>
-                    <span>Liv: {reg.level}</span>
-                    <span>Pag: {reg.payment}</span>
                     <span className="flex items-center gap-1">
                       <span className="text-white/20">Email:</span>
                       <a href={`mailto:${reg.email}`} className="text-[#A5D8FF] hover:underline normal-case">{reg.email}</a>
@@ -1226,10 +1208,7 @@ export default function App() {
                             <span className="text-[9px] uppercase tracking-widest font-black">Nessuna Foto</span>
                           </div>
                         )}
-                        <div className="flex justify-between items-start mb-6">
-                          <span className="text-[10px] uppercase tracking-widest text-[#A5D8FF] font-black bg-[#A5D8FF]/10 px-3 py-1 rounded-full">
-                            Livello {reg.level}
-                          </span>
+                        <div className="flex justify-end mb-6">
                           <span className="text-white/20 text-[10px] font-bold tracking-widest">
                             #{idx + 1}
                           </span>
@@ -1414,9 +1393,9 @@ export default function App() {
                               p2_name: data.p2_name,
                               p2_surname: data.p2_surname,
                               email: data.email,
-                              // level: (data.level as string) || 'principiante',
+                              level: 'default',
                               phone: data.phone,
-                              // payment: (data.payment as string) || 'contanti',
+                              payment: 'default',
                               status: 'pending'
                             }]);
 
