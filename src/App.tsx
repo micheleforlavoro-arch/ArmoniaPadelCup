@@ -1414,9 +1414,9 @@ export default function App() {
                               p2_name: data.p2_name,
                               p2_surname: data.p2_surname,
                               email: data.email,
-                              level: (data.level as string) || 'principiante',
+                              // level: (data.level as string) || 'principiante',
                               phone: data.phone,
-                              payment: (data.payment as string) || 'contanti',
+                              // payment: (data.payment as string) || 'contanti',
                               status: 'pending'
                             }]);
 
