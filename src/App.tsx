@@ -949,20 +949,66 @@ export default function App() {
             <section id="prizes" className="py-24 px-6 bg-[#0a0a0a] border-y border-white/5">
               <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
-                  <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">Premi Premium</h2>
+                  <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">Più di 2000€ di Montepremi</h2>
                   <p className="text-white/40 italic font-light tracking-widest text-sm">Riconoscimento al talento puro.</p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-6 gap-8">
                   {[
-                    { title: "1° Posto", desc: "Trofeo Armonia Gold + Weekend Spa Luxury + Kit Tecnico Limited", icon: Trophy, accent: true },
-                    { title: "2° Posto", desc: "Kit Tecnico Pro Babolat + €200 Voucher Sponsor", icon: Medal, accent: false },
-                    { title: "MVP", desc: "Targa Speciale + Annual Supply Gelateria Armonia", icon: Star, accent: false }
+                    { 
+                      title: "1° Posto", 
+                      desc: (
+                        <span>
+                          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#fcc419] to-[#fab005] animate-pulse drop-shadow-[0_0_12px_rgba(250,176,5,0.7)] mr-1">
+                            1000€
+                          </span>
+                          + Tavolo al "Molto" 3 Kit + Cena x2 presso "Wine Art"
+                        </span>
+                      ), 
+                      icon: Trophy, 
+                      accent: true,
+                      colSpan: "md:col-span-3"
+                    },
+                    { 
+                      title: "2° Posto", 
+                      desc: (
+                        <span>
+                          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#fcc419] to-[#fab005] animate-pulse drop-shadow-[0_0_8px_rgba(250,176,5,0.5)] mr-1">
+                            500€
+                          </span>
+                          + Tavolo al "Molto" 2 Kit + Pranzo x2 presso "Boa Sorte"
+                        </span>
+                      ), 
+                      icon: Medal, 
+                      accent: false,
+                      colSpan: "md:col-span-3"
+                    },
+                    { 
+                      title: "3° Posto", 
+                      desc: "100€ buono sconto presso \"Armonia dei Gusti\" + Tavolo al \"Molendini\" 2 Kit", 
+                      icon: Medal, 
+                      accent: false,
+                      colSpan: "md:col-span-2"
+                    },
+                    { 
+                      title: "4° Posto", 
+                      desc: "Tavolo al \"Molendini\" 2 Kit", 
+                      icon: Medal, 
+                      accent: false,
+                      colSpan: "md:col-span-2"
+                    },
+                    { 
+                      title: "MVP", 
+                      desc: "Racchetta Head Coello 2026", 
+                      icon: Star, 
+                      accent: false,
+                      colSpan: "md:col-span-2"
+                    }
                   ].map((prize, i) => (
                     <motion.div
                       key={i}
                       whileHover={{ y: -5 }}
-                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.03] backdrop-blur-xl flex items-center gap-6"
+                      className={`p-8 rounded-[32px] border border-white/5 bg-white/[0.03] backdrop-blur-xl flex items-center gap-6 ${prize.colSpan}`}
                     >
                       <div
                         className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
@@ -972,7 +1018,7 @@ export default function App() {
                       </div>
                       <div>
                         <h3 className="text-lg font-bold mb-1" style={{ color: prize.accent ? ACCENT_COLOR : '#FFF' }}>{prize.title}</h3>
-                        <p className="text-white/40 text-xs leading-relaxed">{prize.desc}</p>
+                        <div className="text-white/40 text-xs leading-relaxed">{prize.desc}</div>
                       </div>
                     </motion.div>
                   ))}
@@ -1351,30 +1397,10 @@ export default function App() {
                             <input name="p2_surname" type="text" required placeholder="Cognome" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
                           </div>
                         </div>
-                        {/* <div>
-                          <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Livello Gioco</label>
-                          <select name="level" required className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
-                            <option value="" className="bg-[#050505]">Seleziona</option>
-                            <option value="principiante" className="bg-[#050505]">Principiante</option>
-                            <option value="intermedio" className="bg-[#050505]">Intermedio</option>
-                            <option value="avanzato" className="bg-[#050505]">Avanzato</option>
-                          </select>
-                        </div> */}
-                      </div>
-                      <div className="col-span-2 grid md:grid-cols-2 gap-8">
                         <div>
                           <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Telefono</label>
                           <input name="phone" type="tel" required placeholder="+39 ..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF]" />
                         </div>
-                        {/* <div>
-                          <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Metodo di Pagamento</label>
-                          <select name="payment" required className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#A5D8FF] appearance-none cursor-pointer">
-                            <option value="" className="bg-[#050505]">Seleziona</option>
-                            <option value="paypal-postepay" className="bg-[#050505]">Paypal - Postepay</option>
-                            <option value="contanti" className="bg-[#050505]">Contanti</option>
-                            <option value="bonifico" className="bg-[#050505]">Bonifico Bancario</option>
-                          </select>
-                        </div> */}
                       </div>
                       <button
                         type="submit"
