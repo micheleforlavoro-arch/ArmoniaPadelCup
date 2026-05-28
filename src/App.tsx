@@ -5,16 +5,16 @@
 
 import { useState, useEffect, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Trophy, 
-  Calendar, 
-  MapPin, 
-  Users, 
-  ChevronDown, 
-  Menu, 
-  X, 
-  CheckCircle2, 
-  ArrowRight, 
+import {
+  Trophy,
+  Calendar,
+  MapPin,
+  Users,
+  ChevronDown,
+  Menu,
+  X,
+  CheckCircle2,
+  ArrowRight,
   Star,
   Medal,
   HelpCircle,
@@ -73,17 +73,16 @@ const Navbar = () => {
   ];
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'h-20 bg-black/90 backdrop-blur-2xl border-b border-white/5 shadow-2xl' : 'h-28 bg-transparent'
-      }`}
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'h-20 bg-black/90 backdrop-blur-2xl border-b border-white/5 shadow-2xl' : 'h-28 bg-transparent'
+        }`}
     >
       <div className="max-w-7xl mx-auto h-full px-8 flex justify-between items-center">
-        <button onClick={() => { window.scrollTo(0,0); (window as any).setView('home'); }} className="flex items-center gap-4 group">
-          <img 
-            src="/logo.png" 
-            alt="Logo" 
-            className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110 drop-shadow-[0_0_20px_rgba(165,216,255,0.3)]" 
+        <button onClick={() => { window.scrollTo(0, 0); (window as any).setView('home'); }} className="flex items-center gap-4 group">
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110 drop-shadow-[0_0_20px_rgba(165,216,255,0.3)]"
             onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
           />
           <div className="flex flex-col items-start translate-y-1">
@@ -96,8 +95,8 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <div className="flex gap-6 text-[10px] uppercase tracking-[0.2em] font-bold text-white/60">
             {navLinks.map((link) => (
-              <button 
-                key={link.id} 
+              <button
+                key={link.id}
                 onClick={() => (window as any).setView(link.id)}
                 className="hover:text-[#A5D8FF] transition-colors cursor-pointer"
               >
@@ -105,7 +104,7 @@ const Navbar = () => {
               </button>
             ))}
           </div>
-          <button 
+          <button
             onClick={() => (window as any).setView('iscriviti')}
             className="px-6 py-2.5 bg-[#A5D8FF] text-black text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white transition-all shadow-[0_0_15px_rgba(165,216,255,0.3)] active:scale-95"
           >
@@ -114,8 +113,8 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button 
-          className="md:hidden text-white" 
+        <button
+          className="md:hidden text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -125,7 +124,7 @@ const Navbar = () => {
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -133,15 +132,15 @@ const Navbar = () => {
           >
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
-                <button 
-                  key={link.id} 
+                <button
+                  key={link.id}
                   onClick={() => { (window as any).setView(link.id); setIsMobileMenuOpen(false); }}
                   className="text-white/70 text-lg py-2 text-left"
                 >
                   {link.name}
                 </button>
               ))}
-              <button 
+              <button
                 onClick={() => { (window as any).setView('iscriviti'); setIsMobileMenuOpen(false); }}
                 className="mt-4 px-6 py-3 rounded-full text-center text-black font-bold"
                 style={{ backgroundColor: ACCENT_COLOR }}
@@ -160,20 +159,20 @@ const Accordion = ({ title, content }: { title: string, content: ReactNode }) =>
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="border-b border-white/10 last:border-0">
-      <button 
+      <button
         className="w-full py-6 flex justify-between items-center text-left hover:text-accent transition-colors group"
         onClick={() => setIsOpen(!isOpen)}
         style={{ '--accent': ACCENT_COLOR } as any}
       >
         <span className={`text-lg font-medium ${isOpen ? 'text-[#A5D8FF]' : 'text-white'}`}>{title}</span>
-        <ChevronDown 
-          className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#A5D8FF]' : 'text-white/40'}`} 
-          size={20} 
+        <ChevronDown
+          className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#A5D8FF]' : 'text-white/40'}`}
+          size={20}
         />
       </button>
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -189,16 +188,16 @@ const Accordion = ({ title, content }: { title: string, content: ReactNode }) =>
   );
 };
 
-const AdminDashboard = ({ 
-  registrations, 
-  onUpdateStatus, 
+const AdminDashboard = ({
+  registrations,
+  onUpdateStatus,
   onDraw,
   onResetDraw,
   onUpdateBracket,
   onRefresh,
-  tournamentState 
-}: { 
-  registrations: Registration[], 
+  tournamentState
+}: {
+  registrations: Registration[],
   onUpdateStatus: (id: string, status: 'accepted' | 'rejected') => void,
   onDraw: () => void,
   onResetDraw: () => void,
@@ -221,7 +220,7 @@ const AdminDashboard = ({
   const advanceTeam = (teamName: string, round: 'quarterFinals' | 'semiFinals', index: number) => {
     if (!teamName || !editingBracket) return;
     const newBracket = { ...editingBracket };
-    
+
     if (round === 'quarterFinals') {
       if (!newBracket.semiFinals) newBracket.semiFinals = ["", "", "", ""];
       newBracket.semiFinals[index] = teamName;
@@ -260,14 +259,14 @@ const AdminDashboard = ({
         <div className="flex flex-wrap gap-4 w-full md:w-auto">
           {viewMode === 'tabellone' ? (
             <>
-              <button 
+              <button
                 onClick={() => setViewMode('iscrizioni')}
                 className="px-6 py-3 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white hover:text-black transition-all shadow-2xl flex items-center justify-center gap-2"
               >
                 ← Indietro
               </button>
               {tournamentState.is_drawn && (
-                <button 
+                <button
                   onClick={() => {
                     onResetDraw();
                     setViewMode('iscrizioni');
@@ -282,14 +281,14 @@ const AdminDashboard = ({
           ) : (
             <>
               {tournamentState.is_drawn && (
-                <button 
+                <button
                   onClick={() => setViewMode('tabellone')}
                   className="flex-1 md:flex-none px-6 py-3 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#A5D8FF]/10 transition-all shadow-2xl flex items-center justify-center gap-2"
                 >
                   Gestisci Tabellone
                 </button>
               )}
-              <button 
+              <button
                 onClick={() => {
                   onDraw();
                   setViewMode('tabellone');
@@ -309,14 +308,14 @@ const AdminDashboard = ({
         <div className="bg-white/[0.02] border border-[#A5D8FF]/20 rounded-[32px] p-8 space-y-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h3 className="text-xl font-black italic uppercase text-[#A5D8FF]">Modifica Tabellone</h3>
-            <button 
+            <button
               onClick={() => onUpdateBracket(editingBracket)}
               className="px-6 py-2 bg-[#A5D8FF]/20 text-[#A5D8FF] hover:bg-[#A5D8FF] hover:text-black rounded-lg text-xs font-bold uppercase transition-colors"
             >
               Salva Modifiche
             </button>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {/* Quarti */}
             <div className="space-y-4">
@@ -327,14 +326,14 @@ const AdminDashboard = ({
                     const team = editingBracket.quarterFinals?.[i * 2 + j] || '';
                     return (
                       <div key={j} className="flex gap-2">
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={team}
                           onChange={(e) => updateTeamName('quarterFinals', i * 2 + j, e.target.value)}
                           className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent"
                           placeholder="TBD"
                         />
-                        <button 
+                        <button
                           onClick={() => advanceTeam(team, 'quarterFinals', i)}
                           disabled={!team}
                           className="px-2 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
@@ -358,14 +357,14 @@ const AdminDashboard = ({
                     const team = editingBracket.semiFinals?.[i * 2 + j] || '';
                     return (
                       <div key={j} className="flex gap-2">
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={team}
                           onChange={(e) => updateTeamName('semiFinals', i * 2 + j, e.target.value)}
                           className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent"
                           placeholder="TBD"
                         />
-                        <button 
+                        <button
                           onClick={() => advanceTeam(team, 'semiFinals', i)}
                           disabled={!team}
                           className="px-2 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
@@ -388,8 +387,8 @@ const AdminDashboard = ({
                   const team = editingBracket.final?.[j] || '';
                   return (
                     <div key={j} className="flex gap-2">
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={team}
                         onChange={(e) => updateTeamName('final', j, e.target.value)}
                         className="w-full bg-white/5 px-3 py-2 rounded text-sm font-bold focus:outline-none focus:border-yellow-500 border border-transparent text-yellow-500/80"
@@ -416,11 +415,10 @@ const AdminDashboard = ({
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
                     <span className="font-black text-lg text-[#A5D8FF] italic uppercase">{reg.team_name}</span>
-                    <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest ${
-                      reg.status === 'accepted' ? 'bg-green-500/20 text-green-400' :
-                      reg.status === 'rejected' ? 'bg-red-500/20 text-red-400' :
-                      'bg-yellow-500/20 text-yellow-400'
-                    }`}>
+                    <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest ${reg.status === 'accepted' ? 'bg-green-500/20 text-green-400' :
+                        reg.status === 'rejected' ? 'bg-red-500/20 text-red-400' :
+                          'bg-yellow-500/20 text-yellow-400'
+                      }`}>
                       {reg.status}
                     </span>
                   </div>
@@ -440,7 +438,7 @@ const AdminDashboard = ({
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button 
+                  <button
                     onClick={() => onUpdateStatus(reg.id, 'accepted')}
                     disabled={reg.status === 'accepted'}
                     className="p-3 bg-green-500/10 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition-all disabled:opacity-20"
@@ -448,7 +446,7 @@ const AdminDashboard = ({
                   >
                     <ShieldCheck size={18} />
                   </button>
-                  <button 
+                  <button
                     onClick={() => onUpdateStatus(reg.id, 'rejected')}
                     disabled={reg.status === 'rejected'}
                     className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all disabled:opacity-20"
@@ -484,12 +482,12 @@ export default function App() {
         .from('registrations')
         .select('*')
         .order('created_at', { ascending: false });
-      
+
       if (error) {
         console.error('Errore Supabase nel recupero iscrizioni:', error);
         return;
       }
-      
+
       if (data) {
         setRegistrations(data);
       }
@@ -504,12 +502,12 @@ export default function App() {
         .from('tournament_state')
         .select('*')
         .maybeSingle(); // Use maybeSingle to avoid errors if empty
-      
+
       if (error) {
         console.error('Errore caricamento stato torneo:', error.message);
         return;
       }
-      
+
       if (data) {
         setTournamentState(data);
       } else {
@@ -526,7 +524,7 @@ export default function App() {
       .from('registrations')
       .update({ status })
       .eq('id', id);
-    
+
     if (!error) {
       fetchRegistrations();
     }
@@ -538,7 +536,7 @@ export default function App() {
 
     // Shuffle
     const shuffled = [...acceptedTeams].sort(() => Math.random() - 0.5);
-    
+
     // Simple bracket for 8 teams max (prototype logic)
     const bracket = {
       quarterFinals: shuffled.slice(0, 8).map(t => t.team_name),
@@ -548,12 +546,12 @@ export default function App() {
 
     const { error } = await supabase
       .from('tournament_state')
-      .upsert({ 
-        id: 1, 
-        is_drawn: true, 
-        bracket 
+      .upsert({
+        id: 1,
+        is_drawn: true,
+        bracket
       });
-    
+
     if (!error) {
       fetchTournamentState();
     }
@@ -562,12 +560,12 @@ export default function App() {
   async function handleResetDraw() {
     const { error } = await supabase
       .from('tournament_state')
-      .upsert({ 
-        id: 1, 
-        is_drawn: false, 
-        bracket: null 
+      .upsert({
+        id: 1,
+        is_drawn: false,
+        bracket: null
       });
-    
+
     if (!error) {
       fetchTournamentState();
     }
@@ -576,12 +574,12 @@ export default function App() {
   async function handleUpdateBracket(newBracket: any) {
     const { error } = await supabase
       .from('tournament_state')
-      .upsert({ 
-        id: 1, 
-        is_drawn: true, 
-        bracket: newBracket 
+      .upsert({
+        id: 1,
+        is_drawn: true,
+        bracket: newBracket
       });
-    
+
     if (!error) {
       alert("Tabellone salvato con successo!");
       fetchTournamentState();
@@ -605,7 +603,7 @@ export default function App() {
 
       <AnimatePresence mode="wait">
         {view === 'home' && (
-          <motion.div 
+          <motion.div
             key="home"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -614,15 +612,15 @@ export default function App() {
             {/* --- HERO SECTION --- */}
             <section id="home" className="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6 overflow-hidden">
               {/* Accent Glow */}
-              <div 
+              <div
                 className="absolute -top-24 -left-24 w-96 h-96 bg-[#A5D8FF]/10 blur-[120px] rounded-full pointer-events-none"
               />
-              <div 
+              <div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[150px] opacity-20 pointer-events-none"
                 style={{ backgroundColor: ACCENT_COLOR }}
               />
 
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
@@ -631,10 +629,10 @@ export default function App() {
                 <div className="mb-8">
                   <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[10px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Edizione 2026</span>
                 </div>
-                
-                <img 
-                  src="/logo.png" 
-                  alt="Armonia Logo" 
+
+                <img
+                  src="/logo.png"
+                  alt="Armonia Logo"
                   className="w-64 md:w-80 h-auto mb-10 drop-shadow-[0_0_30px_rgba(165,216,255,0.15)]"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
@@ -643,11 +641,11 @@ export default function App() {
                 />
 
                 <h1 className="text-6xl md:text-9xl font-black tracking-tighter leading-none mb-6">
-                  ARMONIA <br/><span className="text-[#A5D8FF]">PADEL CUP</span>
+                  ARMONIA <br /><span className="text-[#A5D8FF]">PADEL CUP</span>
                 </h1>
-                
+
                 <p className="text-white/50 text-sm md:text-base max-w-sm mb-12 leading-relaxed uppercase tracking-widest font-light">
-                  Precisione in campo. <br/>Gusto esclusivo.
+                  Precisione in campo. <br />Gusto esclusivo.
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-4 mb-16">
@@ -656,8 +654,8 @@ export default function App() {
                     { label: "Luogo", value: "???????" },
                     { label: "Quota", value: "Da inserire" }
                   ].map((item, i) => (
-                    <div 
-                      key={i} 
+                    <div
+                      key={i}
                       className="flex flex-col items-start p-4 bg-white/5 border border-white/10 rounded-2xl min-w-[140px] text-left"
                     >
                       <span className="text-[10px] uppercase text-[#A5D8FF] font-bold opacity-70 mb-1">{item.label}</span>
@@ -666,7 +664,7 @@ export default function App() {
                   ))}
                 </div>
 
-                <motion.button 
+                <motion.button
                   onClick={() => setView('iscriviti')}
                   whileHover={{ scale: 1.05, backgroundColor: '#FFF' }}
                   whileTap={{ scale: 0.95 }}
@@ -678,7 +676,7 @@ export default function App() {
               </motion.div>
 
               {/* Scroll Indicator */}
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2 }}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20"
@@ -694,19 +692,19 @@ export default function App() {
                   <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">Premi Premium</h2>
                   <p className="text-white/40 italic font-light tracking-widest text-sm">Riconoscimento al talento puro.</p>
                 </div>
-                
+
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {[
                     { title: "1° Posto", desc: "Trofeo Armonia Gold + Weekend Spa Luxury + Kit Tecnico Limited", icon: Trophy, accent: true },
                     { title: "2° Posto", desc: "Kit Tecnico Pro Babolat + €200 Voucher Sponsor", icon: Medal, accent: false },
                     { title: "MVP", desc: "Targa Speciale + Annual Supply Gelateria Armonia", icon: Star, accent: false }
                   ].map((prize, i) => (
-                    <motion.div 
+                    <motion.div
                       key={i}
                       whileHover={{ y: -5 }}
                       className="p-8 rounded-[32px] border border-white/5 bg-white/[0.03] backdrop-blur-xl flex items-center gap-6"
                     >
-                      <div 
+                      <div
                         className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
                         style={{ backgroundColor: prize.accent ? `${ACCENT_COLOR}15` : 'rgba(255,255,255,0.03)' }}
                       >
@@ -725,7 +723,7 @@ export default function App() {
         )}
 
         {view === 'chi-siamo' && (
-          <motion.section 
+          <motion.section
             key="chi-siamo"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -733,8 +731,8 @@ export default function App() {
             className="pt-40 pb-24 px-6 max-w-7xl mx-auto min-h-screen"
           >
             <div className="grid md:grid-cols-2 gap-20 items-center">
-              <motion.div 
-                initial={{ opacity: 0, x: -30 }} 
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
               >
                 <h2 className="text-5xl md:text-7xl font-black leading-none tracking-tighter mb-8 italic uppercase">
@@ -752,15 +750,15 @@ export default function App() {
                   </p>
                 </div>
               </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }} 
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="group relative aspect-square bg-white/[0.03] rounded-[48px] overflow-hidden border border-white/5 shadow-2xl flex items-center justify-center p-12"
               >
-                <img 
-                  src="/logo.png" 
-                  alt="Armonia Logo" 
-                  className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(165,216,255,0.2)]" 
+                <img
+                  src="/logo.png"
+                  alt="Armonia Logo"
+                  className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(165,216,255,0.2)]"
                   onError={(e) => (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
                 />
               </motion.div>
@@ -769,7 +767,7 @@ export default function App() {
         )}
 
         {view === 'regolamento' && (
-          <motion.section 
+          <motion.section
             key="regolamento"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -778,28 +776,28 @@ export default function App() {
           >
             <h2 className="text-5xl font-black mb-12 text-center tracking-tighter">REGOLAMENTO.</h2>
             <div className="space-y-4">
-              <Accordion 
-                title="Formato del Torneo" 
-                content="Gironi all'italiana con fase finale a eliminazione diretta. Partite a set unico ai 9 game con killer point sul 40-40." 
+              <Accordion
+                title="Formato del Torneo"
+                content="Gironi all'italiana con fase finale a eliminazione diretta. Partite a set unico ai 9 game con killer point sul 40-40."
               />
-              <Accordion 
-                title="Validità Iscrizione" 
-                content="L'iscrizione è considerata valida solo al ricevimento del pagamento della quota. È richiesto il certificato medico sportivo non agonistico in corso di validità." 
+              <Accordion
+                title="Validità Iscrizione"
+                content="L'iscrizione è considerata valida solo al ricevimento del pagamento della quota. È richiesto il certificato medico sportivo non agonistico in corso di validità."
               />
-              <Accordion 
-                title="Svolgimento Match" 
-                content="Tutte le coppie devono presentarsi 15 minuti prima dell'inizio programmato. Un ritardo superiore ai 10 minuti comporta la perdita a tavolino." 
+              <Accordion
+                title="Svolgimento Match"
+                content="Tutte le coppie devono presentarsi 15 minuti prima dell'inizio programmato. Un ritardo superiore ai 10 minuti comporta la perdita a tavolino."
               />
-              <Accordion 
-                title="Equipaggiamento" 
-                content="Il torneo fornisce le palle ufficiali per ogni match. È obbligatorio l'uso di abbigliamento consono e scarpe da padel." 
+              <Accordion
+                title="Equipaggiamento"
+                content="Il torneo fornisce le palle ufficiali per ogni match. È obbligatorio l'uso di abbigliamento consono e scarpe da padel."
               />
             </div>
           </motion.section>
         )}
 
         {view === 'tabellone' && (
-          <motion.section 
+          <motion.section
             key="tabellone"
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -823,12 +821,12 @@ export default function App() {
                   <div className="flex flex-col justify-around gap-12">
                     {[0, 1, 2, 3].map(i => (
                       <div key={i} className="w-64 p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-3 group hover:opacity-100 transition-opacity">
-                        <div className="flex justify-between items-center text-[10px] font-bold text-white/20 uppercase tracking-widest group-hover:text-[#A5D8FF]/40"><span>Match #{i+1}</span></div>
+                        <div className="flex justify-between items-center text-[10px] font-bold text-white/20 uppercase tracking-widest group-hover:text-[#A5D8FF]/40"><span>Match #{i + 1}</span></div>
                         <div className="h-10 border-b border-white/5 flex items-center px-1 text-xs font-medium uppercase italic">
-                          {tournamentState.is_drawn ? tournamentState.bracket.quarterFinals[i*2] || 'TBD' : 'TBD'}
+                          {tournamentState.is_drawn ? tournamentState.bracket.quarterFinals[i * 2] || 'TBD' : 'TBD'}
                         </div>
                         <div className="h-10 flex items-center px-1 text-xs font-medium uppercase italic">
-                          {tournamentState.is_drawn ? tournamentState.bracket.quarterFinals[i*2+1] || 'TBD' : 'TBD'}
+                          {tournamentState.is_drawn ? tournamentState.bracket.quarterFinals[i * 2 + 1] || 'TBD' : 'TBD'}
                         </div>
                       </div>
                     ))}
@@ -836,12 +834,12 @@ export default function App() {
                   <div className="flex flex-col justify-around gap-24 relative py-12">
                     {[0, 1].map(i => (
                       <div key={i} className="w-64 p-5 rounded-2xl border border-white/10 bg-white/[0.04] border-l-2 space-y-3" style={{ borderLeftColor: ACCENT_COLOR }}>
-                        <div className="flex justify-between items-center text-[10px] font-bold text-[#A5D8FF] uppercase tracking-widest"><span>Semi-Finale {i+1}</span></div>
-                        <div className={`h-10 border-b border-white/5 flex items-center px-1 text-xs uppercase italic ${tournamentState.is_drawn && tournamentState.bracket?.semiFinals?.[i*2] ? 'font-bold' : 'opacity-40'}`}>
-                          {tournamentState.is_drawn ? (tournamentState.bracket?.semiFinals?.[i*2] || 'TBD') : 'TBD'}
+                        <div className="flex justify-between items-center text-[10px] font-bold text-[#A5D8FF] uppercase tracking-widest"><span>Semi-Finale {i + 1}</span></div>
+                        <div className={`h-10 border-b border-white/5 flex items-center px-1 text-xs uppercase italic ${tournamentState.is_drawn && tournamentState.bracket?.semiFinals?.[i * 2] ? 'font-bold' : 'opacity-40'}`}>
+                          {tournamentState.is_drawn ? (tournamentState.bracket?.semiFinals?.[i * 2] || 'TBD') : 'TBD'}
                         </div>
-                        <div className={`h-10 flex items-center px-1 text-xs uppercase italic ${tournamentState.is_drawn && tournamentState.bracket?.semiFinals?.[i*2+1] ? 'font-bold' : 'opacity-40'}`}>
-                          {tournamentState.is_drawn ? (tournamentState.bracket?.semiFinals?.[i*2+1] || 'TBD') : 'TBD'}
+                        <div className={`h-10 flex items-center px-1 text-xs uppercase italic ${tournamentState.is_drawn && tournamentState.bracket?.semiFinals?.[i * 2 + 1] ? 'font-bold' : 'opacity-40'}`}>
+                          {tournamentState.is_drawn ? (tournamentState.bracket?.semiFinals?.[i * 2 + 1] || 'TBD') : 'TBD'}
                         </div>
                       </div>
                     ))}
@@ -876,7 +874,7 @@ export default function App() {
         )}
 
         {view === 'iscriviti' && (
-          <motion.section 
+          <motion.section
             key="iscriviti"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -885,10 +883,10 @@ export default function App() {
           >
             <div className="bg-zinc-900/50 p-8 md:p-16 rounded-[40px] border border-white/10 relative overflow-hidden">
               <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#A5D8FF]/10 blur-[80px] rounded-full pointer-events-none" />
-              
+
               <AnimatePresence mode="wait">
                 {formStatus === 'success' ? (
-                  <motion.div 
+                  <motion.div
                     key="success"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -899,7 +897,7 @@ export default function App() {
                     </div>
                     <h2 className="text-4xl font-black mb-4 uppercase tracking-[0.1em]">Iscrizione Effettuata!</h2>
                     <p className="text-white/50 mb-12 max-w-sm mx-auto">La tua richiesta è stata inviata con successo. Gli organizzatori valuteranno la tua iscrizione e riceverai una conferma via email.</p>
-                    <button 
+                    <button
                       onClick={() => { setFormStatus('idle'); setView('home'); }}
                       className="px-8 py-3 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all"
                     >
@@ -907,7 +905,7 @@ export default function App() {
                     </button>
                   </motion.div>
                 ) : formStatus === 'error' ? (
-                  <motion.div 
+                  <motion.div
                     key="error"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -918,7 +916,7 @@ export default function App() {
                     </div>
                     <h2 className="text-4xl font-black mb-4 uppercase tracking-[0.1em]">C'è stato un problema</h2>
                     <p className="text-white/50 mb-12 max-w-sm mx-auto">Non siamo riusciti a inviare la tua iscrizione. Riprova tra qualche minuto o contattaci direttamente.</p>
-                    <button 
+                    <button
                       onClick={() => setFormStatus('idle')}
                       className="px-8 py-3 bg-white text-black rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#A5D8FF] transition-all"
                     >
@@ -931,7 +929,7 @@ export default function App() {
                       <h2 className="text-5xl font-black tracking-tighter mb-4 italic uppercase">ISCRIZIONE.</h2>
                       <p className="text-white/40 italic uppercase text-[10px] tracking-[0.2em]">Assicura il tuo posto nell'elite del Padel.</p>
                     </div>
-                    <form 
+                    <form
                       onSubmit={async (e) => {
                         e.preventDefault();
                         setFormStatus('submitting');
@@ -944,7 +942,7 @@ export default function App() {
 
                         const formData = new FormData(e.currentTarget);
                         const data = Object.fromEntries(formData);
-                        
+
                         try {
                           const { error } = await supabase
                             .from('registrations')
@@ -996,7 +994,7 @@ export default function App() {
                           console.error('Registration failed:', err);
                           setFormStatus('error');
                         }
-                      }} 
+                      }}
                       className="grid md:grid-cols-2 gap-x-12 gap-y-8"
                     >
                       <div className="col-span-2">
@@ -1049,8 +1047,8 @@ export default function App() {
                           </select>
                         </div>
                       </div>
-                      <button 
-                        type="submit" 
+                      <button
+                        type="submit"
                         disabled={formStatus === 'submitting'}
                         className="col-span-2 mt-4 w-full py-5 bg-white text-black font-black uppercase tracking-[0.3em] text-xs rounded-xl hover:bg-[#A5D8FF] transition-all transform active:scale-[0.98] shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                       >
@@ -1072,7 +1070,7 @@ export default function App() {
         )}
 
         {view === 'faq' && (
-          <motion.section 
+          <motion.section
             key="faq"
             initial={{ opacity: 0, scale: 1.02 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -1090,7 +1088,7 @@ export default function App() {
         )}
 
         {view === 'privacy' && (
-          <motion.section 
+          <motion.section
             key="privacy"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1126,7 +1124,7 @@ export default function App() {
         )}
 
         {view === 'cookies' && (
-          <motion.section 
+          <motion.section
             key="cookies"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1158,7 +1156,7 @@ export default function App() {
         )}
 
         {view === 'admin' && (
-          <motion.section 
+          <motion.section
             key="admin"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -1166,7 +1164,7 @@ export default function App() {
             className="pt-40 pb-24 px-6 max-w-5xl mx-auto min-h-screen"
           >
             {isAdminLoggedIn ? (
-              <AdminDashboard 
+              <AdminDashboard
                 registrations={registrations}
                 onUpdateStatus={updateRegistrationStatus}
                 onDraw={handleDraw}
@@ -1180,10 +1178,10 @@ export default function App() {
                 <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-8">
                   <ShieldCheck size={32} className="text-[#A5D8FF]" />
                 </div>
-                <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 italic">Accesso Area<br/>Organizzatori.</h2>
-                <input 
-                  type="password" 
-                  placeholder="Inserisci Password" 
+                <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 italic">Accesso Area<br />Organizzatori.</h2>
+                <input
+                  type="password"
+                  placeholder="Inserisci Password"
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-center mb-6 focus:outline-none focus:border-[#A5D8FF]"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
@@ -1207,11 +1205,11 @@ export default function App() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-16 mb-20">
             <div className="col-span-2">
-              <button onClick={() => { window.scrollTo(0,0); (window as any).setView('home'); }} className="flex items-center gap-4 group mb-8">
-                <img 
-                  src="/logo.png" 
-                  alt="Logo" 
-                  className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110 drop-shadow-[0_0_20px_rgba(165,216,255,0.3)]" 
+              <button onClick={() => { window.scrollTo(0, 0); (window as any).setView('home'); }} className="flex items-center gap-4 group mb-8">
+                <img
+                  src="/logo.png"
+                  alt="Logo"
+                  className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110 drop-shadow-[0_0_20px_rgba(165,216,255,0.3)]"
                   onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                 />
                 <div className="flex flex-col items-start translate-y-1">
@@ -1220,12 +1218,12 @@ export default function App() {
                 </div>
               </button>
               <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] font-medium max-w-xs mb-8 leading-loose">
-                Eccellenza sportiva. <br/>Precisione assoluta. <br/>Gusto ricercato.
+                Eccellenza sportiva. <br />Precisione assoluta. <br />Gusto ricercato.
               </p>
               <div className="flex gap-4">
-                <a 
-                  href="https://www.instagram.com/rende_padel_cup?igsh=MXJndzBiYXprbTd6dA==" 
-                  target="_blank" 
+                <a
+                  href="https://www.instagram.com/armoniacup_?igsh=M2Nud3Y2dXB3bWcx"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors group"
                 >
@@ -1233,7 +1231,7 @@ export default function App() {
                 </a>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20 mb-8">Navigazione</h4>
               <ul className="space-y-4 text-white/40 text-[10px] uppercase font-bold tracking-[0.2em]">
@@ -1253,7 +1251,7 @@ export default function App() {
               </ul>
             </div>
           </div>
-          
+
           <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-[0.2em] font-bold text-white/20">
             <p>&copy; 2024-2026 Armonia Padel Cup. Smart Agency.</p>
             <div className="flex gap-8">
