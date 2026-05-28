@@ -911,8 +911,8 @@ export default function App() {
                 <div className="flex flex-wrap justify-center gap-4 mb-16">
                   {[
                     { label: "Data", value: "??/??/????" },
-                    { label: "Luogo", value: "???????" },
-                    { label: "Quota", value: "Da inserire" }
+                    { label: "Luogo", value: "Chiappetta Sport Village" },
+                    { label: "Quota", value: "100€ a Coppia" }
                   ].map((item, i) => (
                     <div
                       key={i}
@@ -948,9 +948,15 @@ export default function App() {
             {/* --- PREMI SECTION --- */}
             <section id="prizes" className="py-24 px-6 bg-[#0a0a0a] border-y border-white/5">
               <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16">
-                  <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">Più di 2000€ di Montepremi</h2>
-                  <p className="text-white/40 italic font-light tracking-widest text-sm">Riconoscimento al talento puro.</p>
+                <div className="text-center mb-16 relative">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-24 bg-[#A5D8FF]/5 blur-[60px] rounded-full pointer-events-none" />
+                  <div className="mb-4">
+                    <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Montepremi</span>
+                  </div>
+                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none">
+                    Più di <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#fcc419] to-[#fab005] drop-shadow-[0_0_20px_rgba(250,176,5,0.4)]">2000€</span> <br className="sm:hidden" />di Montepremi
+                  </h2>
+                  <p className="text-white/40 italic font-light tracking-widest text-xs mt-4 uppercase">Riconoscimento al talento puro.</p>
                 </div>
 
                 <div className="grid md:grid-cols-6 gap-8">
