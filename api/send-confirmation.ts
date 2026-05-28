@@ -57,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           </div>
 
           <p style="font-size: 14px; color: #ef4444; font-weight: 500; background-color: #fef2f2; padding: 12px; border-radius: 8px;">
-            <strong>Nota:</strong> Se hai sbagliato a inserire qualche dato, ti preghiamo di contattarci il prima possibile al numero <strong>3477187888</strong> o via email a <strong>armoniapadelcup@gmail.com</strong>.
+            <strong>Nota:</strong> Se hai sbagliato a inserire qualche dato, ti preghiamo di contattarci il prima possibile al numero <strong>3477187888</strong> o via email a <strong>armoniacup@gmail.com</strong>.
           </p>
 
           <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
