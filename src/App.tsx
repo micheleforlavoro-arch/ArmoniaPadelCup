@@ -1031,6 +1031,49 @@ export default function App() {
                 </div>
               </div>
             </section>
+
+            {/* --- INCLUSO NELLA QUOTA SECTION --- */}
+            <section id="included" className="py-24 px-6 bg-[#070707] border-b border-white/5">
+              <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16 relative">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-24 bg-[#A5D8FF]/5 blur-[60px] rounded-full pointer-events-none" />
+                  <div className="mb-4">
+                    <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Player Pack</span>
+                  </div>
+                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none">
+                    Incluso nella quota.
+                  </h2>
+                  <p className="text-white/40 italic font-light tracking-widest text-xs mt-4 uppercase">Tutto il valore della tua partecipazione.</p>
+                </div>
+
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {[
+                    { text: "3 Partite Garantite", desc: "Fase a gironi assicurata con un minimo di tre partite giocate.", icon: Calendar },
+                    { text: "25% di Sconto presso \"Armonia dei Gusti\"", desc: "Per assaporare il meglio della nostra produzione artigianale.", icon: Star },
+                    { text: "Maglia personalizzata", desc: "T-shirt tecnica ufficiale Armonia Cup con personalizzazione.", icon: Trophy },
+                    { text: "Sacca del Torneo", desc: "Sacca sportiva portaoggetti in edizione speciale.", icon: Medal },
+                    { text: "10% di Sconto presso \"Novum Store\"", desc: "Sconto riservato su abbigliamento e attrezzature tecniche.", icon: Star },
+                    { text: "25% di Sconto presso \"Doppio Malto\"", desc: "Per concludere i match in un clima di festa e condivisione.", icon: Star }
+                  ].map((item, i) => (
+                    <motion.div
+                      key={i}
+                      whileHover={{ y: -5 }}
+                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] backdrop-blur-xl flex flex-col justify-between h-full group hover:border-[#A5D8FF]/20 transition-all duration-300"
+                    >
+                      <div>
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-[#A5D8FF] group-hover:bg-[#A5D8FF]/10 group-hover:scale-110 transition-all duration-300">
+                            <item.icon size={22} />
+                          </div>
+                          <h3 className="text-lg font-black italic uppercase tracking-tight text-white group-hover:text-[#A5D8FF] transition-colors">{item.text}</h3>
+                        </div>
+                        <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </section>
           </motion.div>
         )}
 
