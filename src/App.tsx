@@ -1317,119 +1317,38 @@ export default function App() {
             exit={{ opacity: 0, y: -20, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }}
             className="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center overflow-hidden"
           >
-            {/* Subtle background glow */}
-            <div
-              className="absolute w-[400px] h-[400px] rounded-full blur-[120px] opacity-10 pointer-events-none"
-              style={{ backgroundColor: ACCENT_COLOR }}
-            />
-            
             <div className="relative flex flex-col items-center z-10">
-              {/* Premium Padel Animation Container */}
-              <div className="relative w-48 h-48 flex items-center justify-center mb-6">
-                {/* Court Outline / Pulse Ring */}
+              {/* Vertical Bouncing Padel Ball Container */}
+              <div className="relative w-24 h-24 flex items-center justify-center mb-6">
+                {/* Court surface representational line */}
+                <div className="absolute bottom-4 w-12 h-1 bg-white/10 rounded-full" />
+                
+                {/* Bouncing glowing Padel Ball */}
                 <motion.div 
-                  className="absolute w-32 h-32 rounded-full border border-[#A5D8FF]/10 bg-gradient-to-b from-[#A5D8FF]/5 to-transparent"
-                  animate={{ scale: [0.95, 1.05, 0.95], opacity: [0.3, 0.6, 0.3] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                />
-
-                {/* Left Side Racket */}
-                <motion.div
-                  className="absolute left-4 w-14 h-24 flex flex-col items-center"
+                  className="absolute w-5 h-5 rounded-full shadow-[0_0_15px_#A5D8FF] bg-[#A5D8FF]"
                   animate={{ 
-                    rotate: [-15, 5, -15],
-                    x: [0, 5, 0]
+                    y: [-30, 10, -30],
+                    scaleY: [1.1, 0.8, 1.1],
+                    scaleX: [0.9, 1.2, 0.9]
                   }}
                   transition={{ 
-                    duration: 1.2, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
-                  }}
-                >
-                  {/* Racket Head */}
-                  <div className="w-12 h-14 rounded-full border-2 border-[#A5D8FF]/50 bg-zinc-950 flex flex-wrap p-1.5 justify-center items-center gap-0.5 relative shadow-[0_0_15px_rgba(165,216,255,0.1)]">
-                    {/* Stylized Padel Holes */}
-                    <div className="w-1 h-1 rounded-full bg-[#A5D8FF]/40"></div>
-                    <div className="w-1 h-1 rounded-full bg-[#A5D8FF]/40"></div>
-                    <div className="w-1 h-1 rounded-full bg-[#A5D8FF]/40"></div>
-                    <div className="w-1 h-1 rounded-full bg-[#A5D8FF]/40"></div>
-                    <div className="w-1 h-1 rounded-full bg-[#A5D8FF]/40"></div>
-                    <div className="w-1 h-1 rounded-full bg-[#A5D8FF]/40"></div>
-                    <div className="w-1 h-1 rounded-full bg-[#A5D8FF]/40"></div>
-                    <div className="w-1 h-1 rounded-full bg-[#A5D8FF]/40"></div>
-                  </div>
-                  {/* Handle */}
-                  <div className="w-2.5 h-10 bg-zinc-800 border-x border-[#A5D8FF]/20 rounded-b-sm" />
-                </motion.div>
-
-                {/* Right Side Racket */}
-                <motion.div
-                  className="absolute right-4 w-14 h-24 flex flex-col items-center"
-                  animate={{ 
-                    rotate: [15, -5, 15],
-                    x: [0, -5, 0]
-                  }}
-                  transition={{ 
-                    duration: 1.2, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
-                  }}
-                >
-                  {/* Racket Head */}
-                  <div className="w-12 h-14 rounded-full border-2 border-white/30 bg-zinc-950 flex flex-wrap p-1.5 justify-center items-center gap-0.5 relative shadow-lg">
-                    {/* Stylized Padel Holes */}
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                  </div>
-                  {/* Handle */}
-                  <div className="w-2.5 h-10 bg-zinc-800 border-x border-white/10 rounded-b-sm" />
-                </motion.div>
-
-                {/* Ball Palleggiando da un lato all'altro */}
-                <motion.div 
-                  className="absolute w-4.5 h-4.5 rounded-full shadow-[0_0_15px_#A5D8FF] bg-[#A5D8FF]"
-                  animate={{ 
-                    x: [-50, 50, -50],
-                    y: [-15, -45, -15],
-                    scaleX: [1.2, 0.9, 1.2],
-                    scaleY: [0.8, 1.1, 0.8]
-                  }}
-                  transition={{ 
-                    duration: 1.2, 
+                    duration: 0.8, 
                     repeat: Infinity, 
                     ease: "easeInOut"
                   }}
                 />
 
-                {/* Impact Wave Rings on bounce */}
+                {/* Ring pulse effect on ground hit */}
                 <motion.div 
-                  className="absolute left-8 w-6 h-6 rounded-full border border-[#A5D8FF]/40 pointer-events-none"
+                  className="absolute bottom-3 w-8 h-2 rounded-full border border-[#A5D8FF]/30 pointer-events-none"
                   animate={{ 
-                    scale: [0.5, 2.5, 0.5],
-                    opacity: [0, 0.8, 0]
-                  }}
-                  transition={{ 
-                    duration: 1.2, 
-                    repeat: Infinity,
-                    ease: "easeOut"
-                  }}
-                />
-                <motion.div 
-                  className="absolute right-8 w-6 h-6 rounded-full border border-white/20 pointer-events-none"
-                  animate={{ 
-                    scale: [2.5, 0.5, 2.5],
+                    scale: [0.2, 1.5, 0.2],
                     opacity: [0.8, 0, 0.8]
                   }}
                   transition={{ 
-                    duration: 1.2, 
+                    duration: 0.8, 
                     repeat: Infinity,
-                    ease: "easeOut"
+                    ease: "easeInOut"
                   }}
                 />
               </div>
@@ -1441,8 +1360,9 @@ export default function App() {
                 transition={{ delay: 0.2 }}
                 className="flex flex-col items-center"
               >
-                <span className="font-black tracking-[0.4em] text-sm uppercase italic mb-2">ARMONIA</span>
-                <span className="text-[#A5D8FF] font-black text-[9px] tracking-[0.6em] uppercase opacity-80 animate-pulse">PADEL CUP</span>
+                <span className="text-white font-black text-[10px] tracking-[0.4em] uppercase opacity-80 animate-pulse">
+                  Caricamento in corso<span className="text-[#A5D8FF]">...</span>
+                </span>
               </motion.div>
             </div>
           </motion.div>
