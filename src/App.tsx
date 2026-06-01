@@ -1120,9 +1120,6 @@ export default function App() {
             <section id="home" className="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6 overflow-hidden">
               {/* Accent Glow */}
               <div
-                className="absolute -top-24 -left-24 w-96 h-96 bg-[#A5D8FF]/10 blur-[120px] rounded-full pointer-events-none"
-              />
-              <div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[150px] opacity-20 pointer-events-none"
                 style={{ backgroundColor: ACCENT_COLOR }}
               />
@@ -1131,7 +1128,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="flex flex-col items-center text-center z-10"
+                className="flex flex-col items-center text-center z-10 pb-20"
               >
                 <div className="mb-8">
                   <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[10px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Edizione 2026</span>
@@ -1186,7 +1183,7 @@ export default function App() {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2 }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20 z-20"
+                className="absolute bottom-20 left-1/2 -translate-x-1/2 text-white/20 z-20"
               >
                 <ChevronDown size={32} />
               </motion.div>
@@ -1584,7 +1581,7 @@ export default function App() {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
                 <span className="text-[10px] uppercase font-bold text-[#A5D8FF] tracking-[0.3em] mb-4 block">Giornale del Torneo</span>
-                <h2 className="text-5xl font-black tracking-tighter italic uppercase">ARTICOLI.</h2>
+                <h2 className="text-5xl font-black tracking-tighter italic uppercase">ARTICOLI</h2>
               </div>
 
               {articles.length === 0 ? (
