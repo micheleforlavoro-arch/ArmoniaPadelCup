@@ -32,6 +32,48 @@ import { supabase, isSupabaseConfigured } from './lib/supabase';
 // --- Constants ---
 const ACCENT_COLOR = "#A5D8FF"; // Ice Blue
 
+const SPONSORS = [
+  { name: "Retròscena Barber Shop", type: "Barber Shop", desc: "Taglio capelli e cura barba professionale.", img: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=400&q=80" },
+  { name: "Wine Art", type: "Ristorazione", desc: "Cantina vinicola e piatti ricercati.", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=400&q=80" },
+  { name: "Boa Sorte", type: "Ristorazione", desc: "Sapori esotici e cucina fusion di alta classe.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" },
+  { name: "Gelateria Armonia", type: "Main Sponsor", desc: "Gelato artigianale d'eccellenza e gusti esclusivi.", img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=400&q=80" },
+  { name: "Molendini", type: "Ristorazione", desc: "Lounge bar e kit premium per serate indimenticabili.", img: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=400&q=80" },
+  { name: "Dehor", type: "Lounge & Aperitif", desc: "Aperitivi e cocktail d'autore in un'atmosfera unica.", img: "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=400&q=80" },
+  { name: "Novum Store", type: "Abbigliamento", desc: "Abbigliamento tecnico sportivo e accessori.", img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=400&q=80" },
+  { name: "Doppio Malto", type: "Birreria & Grill", desc: "Birra artigianale e griglia per concludere i match in festa.", img: "https://images.unsplash.com/photo-1532634922-8fe0b757b1ee?auto=format&fit=crop&w=400&q=80" },
+  { name: "Head Padel", type: "Technical Partner", desc: "Attrezzatura tecnica ufficiale per il torneo.", img: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=400&q=80" },
+  { name: "Masagiù SPA", type: "Wellness", desc: "Centro benessere e percorsi relax per atleti.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80" }
+];
+
+const compressImage = (base64Str: string, maxWidth = 600, quality = 0.7): Promise<string> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = base64Str;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+
+      if (width > maxWidth) {
+        height = Math.round((height * maxWidth) / width);
+        width = maxWidth;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      } else {
+        resolve(base64Str);
+      }
+    };
+    img.onerror = () => resolve(base64Str);
+  });
+};
+
 // --- Types ---
 interface Registration {
   id: string;
@@ -76,9 +118,9 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Chi Siamo', id: 'chi-siamo' },
-    { name: 'Regolamento', id: 'regolamento' },
     { name: 'Partecipanti', id: 'partecipanti' },
     { name: 'Tabellone', id: 'tabellone' },
+    { name: 'Sponsor', id: 'sponsor' },
     { name: 'Articoli', id: 'articoli' },
   ];
 
@@ -303,8 +345,9 @@ const AdminDashboard = ({
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageUrl(reader.result as string);
+      reader.onloadend = async () => {
+        const compressed = await compressImage(reader.result as string);
+        setImageUrl(compressed);
       };
       reader.readAsDataURL(file);
     }
@@ -363,16 +406,21 @@ const AdminDashboard = ({
     }
   };
 
-  const advanceTeam = (teamName: string, round: 'quarterFinals' | 'semiFinals', index: number) => {
+  const advanceTeam = (teamName: string, round: 'ottavi' | 'quarterFinals' | 'semiFinals' | 'final', index: number) => {
     if (!teamName || !editingBracket) return;
     const newBracket = { ...editingBracket };
 
-    if (round === 'quarterFinals') {
-      if (!newBracket.semiFinals) newBracket.semiFinals = ["", "", "", ""];
+    if (round === 'ottavi') {
+      if (!newBracket.quarterFinals) newBracket.quarterFinals = Array(8).fill("");
+      newBracket.quarterFinals[index] = teamName;
+    } else if (round === 'quarterFinals') {
+      if (!newBracket.semiFinals) newBracket.semiFinals = Array(4).fill("");
       newBracket.semiFinals[index] = teamName;
     } else if (round === 'semiFinals') {
-      if (!newBracket.final) newBracket.final = ["", ""];
+      if (!newBracket.final) newBracket.final = Array(2).fill("");
       newBracket.final[index] = teamName;
+    } else if (round === 'final') {
+      newBracket.winner = teamName;
     }
     setEditingBracket(newBracket);
   };
@@ -556,22 +604,96 @@ const AdminDashboard = ({
 
       {viewMode === 'tabellone' && tournamentState.is_drawn && editingBracket && (
         <div className="bg-white/[0.02] border border-[#A5D8FF]/20 rounded-[32px] p-8 space-y-8">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-4">
             <h3 className="text-xl font-black italic uppercase text-[#A5D8FF]">Modifica Tabellone</h3>
             <button
+              type="button"
               onClick={() => onUpdateBracket(editingBracket)}
-              className="px-6 py-2 bg-[#A5D8FF]/20 text-[#A5D8FF] hover:bg-[#A5D8FF] hover:text-black rounded-lg text-xs font-bold uppercase transition-colors"
+              className="px-6 py-2 bg-[#A5D8FF] text-black rounded-lg text-xs font-black uppercase tracking-widest transition-colors hover:bg-white"
             >
               Salva Modifiche
             </button>
           </div>
 
+          {/* Gironi Edit */}
+          <div className="space-y-4 border-b border-white/5 pb-8">
+            <h4 className="text-sm font-bold uppercase tracking-widest text-[#A5D8FF]">Modifica Gironi (24 Squadre)</h4>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {['A', 'B', 'C', 'D', 'E', 'F'].map(gName => (
+                <div key={gName} className="p-4 bg-black/40 rounded-xl border border-white/5 space-y-3">
+                  <div className="font-bold text-xs uppercase text-[#A5D8FF]">Girone {gName}</div>
+                  {[0, 1, 2, 3].map(idx => (
+                    <input
+                      key={idx}
+                      type="text"
+                      value={editingBracket.gironi?.[gName]?.[idx] || ''}
+                      onChange={(e) => {
+                        const newBracket = { ...editingBracket };
+                        if (!newBracket.gironi) newBracket.gironi = {};
+                        if (!newBracket.gironi[gName]) newBracket.gironi[gName] = ["", "", "", ""];
+                        newBracket.gironi[gName][idx] = e.target.value;
+                        setEditingBracket(newBracket);
+                      }}
+                      placeholder={`Squadra ${idx + 1}`}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-[#A5D8FF]"
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Ottavi Edit */}
+          <div className="space-y-4 border-b border-white/5 pb-8">
+            <h4 className="text-sm font-bold uppercase tracking-widest text-[#A5D8FF]">Ottavi di Finale (16 Squadre)</h4>
+            <div className="grid md:grid-cols-2 gap-4">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+                <div key={i} className="p-4 bg-black/40 rounded-xl border border-white/5 space-y-3">
+                  <div className="text-xs font-bold text-white/30 uppercase">Match #{i + 1}</div>
+                  {[0, 1].map(j => {
+                    const team = editingBracket.ottavi?.[i * 2 + j] || '';
+                    return (
+                      <div key={j} className="flex gap-2 items-center">
+                        <select
+                          value={team}
+                          onChange={(e) => {
+                            const newBracket = { ...editingBracket };
+                            if (!newBracket.ottavi) newBracket.ottavi = Array(16).fill("");
+                            newBracket.ottavi[i * 2 + j] = e.target.value;
+                            setEditingBracket(newBracket);
+                          }}
+                          className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#A5D8FF] appearance-none"
+                        >
+                          <option value="">Seleziona Squadra (TBD)</option>
+                          {registrations.filter(r => r.status === 'accepted').map(t => (
+                            <option key={t.id} value={t.team_name}>{t.team_name}</option>
+                          ))}
+                        </select>
+                        <button
+                          type="button"
+                          onClick={() => advanceTeam(team, 'ottavi', i)}
+                          disabled={!team}
+                          className="px-3 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
+                          title="Avanza ai Quarti"
+                        >
+                          <ArrowRight size={14} />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Quarti, Semifinali, Finale Edit */}
           <div className="grid md:grid-cols-3 gap-8">
             {/* Quarti */}
             <div className="space-y-4">
-              <h4 className="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-4">Quarti di Finale</h4>
+              <div className="text-xs font-bold uppercase text-[#A5D8FF]">Quarti di Finale</div>
               {[0, 1, 2, 3].map(i => (
                 <div key={i} className="p-3 bg-black/40 rounded-xl border border-white/5 space-y-2">
+                  <div className="text-[8px] font-bold text-white/20 uppercase">Match #{i + 1}</div>
                   {[0, 1].map(j => {
                     const team = editingBracket.quarterFinals?.[i * 2 + j] || '';
                     return (
@@ -579,15 +701,21 @@ const AdminDashboard = ({
                         <input
                           type="text"
                           value={team}
-                          onChange={(e) => updateTeamName('quarterFinals', i * 2 + j, e.target.value)}
+                          onChange={(e) => {
+                            const newBracket = { ...editingBracket };
+                            if (!newBracket.quarterFinals) newBracket.quarterFinals = Array(8).fill("");
+                            newBracket.quarterFinals[i * 2 + j] = e.target.value;
+                            setEditingBracket(newBracket);
+                          }}
                           className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent"
                           placeholder="TBD"
                         />
                         <button
+                          type="button"
                           onClick={() => advanceTeam(team, 'quarterFinals', i)}
                           disabled={!team}
                           className="px-2 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
-                          title="Fai passare il turno"
+                          title="Avanza alle Semifinali"
                         >
                           <ArrowRight size={14} />
                         </button>
@@ -600,9 +728,10 @@ const AdminDashboard = ({
 
             {/* Semifinali */}
             <div className="space-y-4">
-              <h4 className="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-4">Semifinali</h4>
+              <div className="text-xs font-bold uppercase text-[#A5D8FF]">Semifinali</div>
               {[0, 1].map(i => (
-                <div key={i} className="p-3 bg-black/40 rounded-xl border border-[#A5D8FF]/20 space-y-2 mt-12">
+                <div key={i} className="p-3 bg-black/40 rounded-xl border border-white/5 space-y-2">
+                  <div className="text-[8px] font-bold text-white/20 uppercase">Match #{i + 1}</div>
                   {[0, 1].map(j => {
                     const team = editingBracket.semiFinals?.[i * 2 + j] || '';
                     return (
@@ -610,15 +739,21 @@ const AdminDashboard = ({
                         <input
                           type="text"
                           value={team}
-                          onChange={(e) => updateTeamName('semiFinals', i * 2 + j, e.target.value)}
+                          onChange={(e) => {
+                            const newBracket = { ...editingBracket };
+                            if (!newBracket.semiFinals) newBracket.semiFinals = Array(4).fill("");
+                            newBracket.semiFinals[i * 2 + j] = e.target.value;
+                            setEditingBracket(newBracket);
+                          }}
                           className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent"
                           placeholder="TBD"
                         />
                         <button
+                          type="button"
                           onClick={() => advanceTeam(team, 'semiFinals', i)}
                           disabled={!team}
                           className="px-2 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
-                          title="Fai passare in finale"
+                          title="Avanza alla Finale"
                         >
                           <ArrowRight size={14} />
                         </button>
@@ -629,10 +764,11 @@ const AdminDashboard = ({
               ))}
             </div>
 
-            {/* Finale */}
+            {/* Finale & Vincitore */}
             <div className="space-y-4">
-              <h4 className="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-4">Finale</h4>
-              <div className="p-4 bg-black/40 rounded-xl border border-yellow-500/30 space-y-4 mt-32">
+              <div className="text-xs font-bold uppercase text-[#A5D8FF]">Finale</div>
+              <div className="p-3 bg-black/40 rounded-xl border border-white/5 space-y-2">
+                <div className="text-[8px] font-bold text-white/20 uppercase">Match Finale</div>
                 {[0, 1].map(j => {
                   const team = editingBracket.final?.[j] || '';
                   return (
@@ -640,13 +776,45 @@ const AdminDashboard = ({
                       <input
                         type="text"
                         value={team}
-                        onChange={(e) => updateTeamName('final', j, e.target.value)}
-                        className="w-full bg-white/5 px-3 py-2 rounded text-sm font-bold focus:outline-none focus:border-yellow-500 border border-transparent text-yellow-500/80"
+                        onChange={(e) => {
+                          const newBracket = { ...editingBracket };
+                          if (!newBracket.final) newBracket.final = Array(2).fill("");
+                          newBracket.final[j] = e.target.value;
+                          setEditingBracket(newBracket);
+                        }}
+                        className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
                         placeholder="TBD"
                       />
+                      <button
+                        type="button"
+                        onClick={() => advanceTeam(team, 'final', 0)}
+                        disabled={!team}
+                        className="px-2 bg-yellow-500/20 text-yellow-500 rounded hover:bg-yellow-500 hover:text-black disabled:opacity-30 transition-colors"
+                        title="Campione!"
+                      >
+                        <Trophy size={14} />
+                      </button>
                     </div>
                   );
                 })}
+              </div>
+
+              {/* Campione Box */}
+              <div className="p-4 bg-yellow-500/5 rounded-xl border border-yellow-500/20 space-y-2">
+                <div className="text-xs font-bold uppercase text-yellow-500 flex items-center gap-1">
+                  <Trophy size={12} /> Vincitore (Campione)
+                </div>
+                <input
+                  type="text"
+                  value={editingBracket.winner || ''}
+                  onChange={(e) => {
+                    const newBracket = { ...editingBracket };
+                    newBracket.winner = e.target.value;
+                    setEditingBracket(newBracket);
+                  }}
+                  placeholder="TBD"
+                  className="w-full bg-white/5 border border-yellow-500/20 rounded-lg px-3 py-2 text-sm text-yellow-400 font-bold focus:outline-none focus:border-yellow-500"
+                />
               </div>
             </div>
           </div>
@@ -858,6 +1026,7 @@ export default function App() {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [tournamentState, setTournamentState] = useState<TournamentState>({ is_drawn: false, bracket: null });
   const [articles, setArticles] = useState<Article[]>([]);
+  const [isBracketUnlocked, setIsBracketUnlocked] = useState(false);
 
   useEffect(() => {
     fetchRegistrations();
@@ -926,11 +1095,29 @@ export default function App() {
     // Shuffle
     const shuffled = [...acceptedTeams].sort(() => Math.random() - 0.5);
 
-    // Simple bracket for 8 teams max (prototype logic)
+    const sanitizeGroup = (arr: any[]) => {
+      const result = [];
+      for (let i = 0; i < 4; i++) {
+        result.push(arr[i] || "");
+      }
+      return result;
+    };
+
+    // 6 groups of 4 (A-F)
     const bracket = {
-      quarterFinals: shuffled.slice(0, 8).map(t => t.team_name),
-      semiFinals: [],
-      final: []
+      gironi: {
+        A: sanitizeGroup(shuffled.slice(0, 4).map(t => t.team_name)),
+        B: sanitizeGroup(shuffled.slice(4, 8).map(t => t.team_name)),
+        C: sanitizeGroup(shuffled.slice(8, 12).map(t => t.team_name)),
+        D: sanitizeGroup(shuffled.slice(12, 16).map(t => t.team_name)),
+        E: sanitizeGroup(shuffled.slice(16, 20).map(t => t.team_name)),
+        F: sanitizeGroup(shuffled.slice(20, 24).map(t => t.team_name))
+      },
+      ottavi: Array(16).fill(""),
+      quarterFinals: Array(8).fill(""),
+      semiFinals: Array(4).fill(""),
+      final: Array(2).fill(""),
+      winner: ""
     };
 
     const { error } = await supabase
@@ -1154,7 +1341,7 @@ export default function App() {
 
                 <div className="flex flex-wrap justify-center gap-4 mb-16">
                   {[
-                    { label: "Data", value: "??/??/????" },
+                    { label: "Data", value: "22/06 - 28/06" },
                     { label: "Luogo", value: "Chiappetta Sport Village" },
                     { label: "Quota", value: "100€ a Coppia" }
                   ].map((item, i) => (
@@ -1401,32 +1588,46 @@ export default function App() {
           </motion.section>
         )}
 
-        {view === 'regolamento' && (
+        {view === 'sponsor' && (
           <motion.section
-            key="regolamento"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="pt-40 pb-24 px-6 max-w-3xl mx-auto min-h-screen"
+            key="sponsor"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            className="pt-40 pb-24 px-6 bg-white/[0.01] min-h-screen"
           >
-            <h2 className="text-5xl font-black mb-12 text-center tracking-tighter">REGOLAMENTO.</h2>
-            <div className="space-y-4">
-              <Accordion
-                title="Formato del Torneo"
-                content="Gironi all'italiana con fase finale a eliminazione diretta. Partite a set unico ai 9 game con killer point sul 40-40."
-              />
-              <Accordion
-                title="Validità Iscrizione"
-                content="L'iscrizione è considerata valida solo al ricevimento del pagamento della quota. È richiesto il certificato medico sportivo non agonistico in corso di validità."
-              />
-              <Accordion
-                title="Svolgimento Match"
-                content="Tutte le coppie devono presentarsi 15 minuti prima dell'inizio programmato. Un ritardo superiore ai 10 minuti comporta la perdita a tavolino."
-              />
-              <Accordion
-                title="Equipaggiamento"
-                content="Il torneo fornisce le palle ufficiali per ogni match. È obbligatorio l'uso di abbigliamento consono e scarpe da padel."
-              />
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-16">
+                <span className="text-[10px] uppercase font-bold text-[#A5D8FF] tracking-[0.3em] mb-4 block">Official Partners</span>
+                <h2 className="text-5xl font-black tracking-tighter italic uppercase">SPONSOR UFFICIALI</h2>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {SPONSORS.map((sponsor, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all flex flex-col justify-between h-full"
+                  >
+                    <div>
+                      <div className="w-full h-48 rounded-2xl overflow-hidden mb-6 border border-white/10 shadow-lg">
+                        <img src={sponsor.img} alt={sponsor.name} className="w-full h-full object-cover" />
+                      </div>
+                      <span className="text-[9px] font-bold text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-2.5 py-1 rounded-full mb-4 inline-block">
+                        {sponsor.type}
+                      </span>
+                      <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mb-4">
+                        {sponsor.name}
+                      </h3>
+                      <p className="text-white/50 text-xs leading-relaxed uppercase tracking-wider mb-6">
+                        {sponsor.desc}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </motion.section>
         )}
@@ -1505,66 +1706,154 @@ export default function App() {
               <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 text-center md:text-left">
                 <div>
                   <span className="text-[10px] uppercase font-bold text-[#A5D8FF] tracking-[0.3em] mb-4 block">Live Status</span>
-                  <h2 className="text-5xl font-black tracking-tighter italic uppercase">TABELLONE.</h2>
+                  <h2 className="text-5xl font-black tracking-tighter italic uppercase">TABELLONE</h2>
                 </div>
                 <div className="flex gap-3 mx-auto md:mx-0">
-                  <span className={`px-5 py-1.5 rounded-full border border-white/10 text-[10px] font-bold tracking-widest uppercase transition-all ${!tournamentState.is_drawn ? 'bg-[#A5D8FF] text-black shadow-[0_0_15px_rgba(165,216,255,0.2)]' : 'text-white/40'}`}>Qualificazioni</span>
+                  <span className={`px-5 py-1.5 rounded-full border border-white/10 text-[10px] font-bold tracking-widest uppercase transition-all ${!tournamentState.is_drawn ? 'bg-[#A5D8FF] text-black shadow-[0_0_15px_rgba(165,216,255,0.2)]' : 'text-white/40'}`}>Gironi</span>
                   <span className={`px-5 py-1.5 rounded-full border border-white/10 text-[10px] font-bold tracking-widest uppercase transition-all ${tournamentState.is_drawn ? 'bg-[#A5D8FF] text-black shadow-[0_0_15px_rgba(165,216,255,0.2)]' : 'text-white/40'}`}>Finali</span>
                 </div>
               </div>
 
-              <div className="relative p-12 border border-white/5 rounded-[48px] bg-black/40 overflow-x-auto touch-pan-x shadow-inner">
-                <div className="min-w-[900px] flex gap-12 justify-between items-center">
-                  <div className="flex flex-col justify-around gap-12">
-                    {[0, 1, 2, 3].map(i => (
-                      <div key={i} className="w-64 p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-3 group hover:opacity-100 transition-opacity">
-                        <div className="flex justify-between items-center text-[10px] font-bold text-white/20 uppercase tracking-widest group-hover:text-[#A5D8FF]/40"><span>Match #{i + 1}</span></div>
-                        <div className="h-10 border-b border-white/5 flex items-center px-1 text-xs font-medium uppercase italic">
-                          {tournamentState.is_drawn ? tournamentState.bracket.quarterFinals[i * 2] || 'TBD' : 'TBD'}
+              {/* --- GIRONI (FASE A GRUPPI) --- */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-black italic uppercase text-[#A5D8FF] mb-8 text-center md:text-left">FASE A GIRONI</h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {['A', 'B', 'C', 'D', 'E', 'F'].map(gName => {
+                    const groupTeams = tournamentState.is_drawn && tournamentState.bracket?.gironi?.[gName]
+                      ? tournamentState.bracket.gironi[gName]
+                      : ['TBD', 'TBD', 'TBD', 'TBD'];
+                    return (
+                      <div key={gName} className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl text-left">
+                        <div className="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
+                          <span className="font-black text-[#A5D8FF] italic">GIRONE {gName}</span>
+                          <span className="text-[8px] font-bold text-white/40 uppercase tracking-widest">4 Squadre</span>
                         </div>
-                        <div className="h-10 flex items-center px-1 text-xs font-medium uppercase italic">
-                          {tournamentState.is_drawn ? tournamentState.bracket.quarterFinals[i * 2 + 1] || 'TBD' : 'TBD'}
+                        <div className="space-y-2">
+                          {groupTeams.map((team: string, idx: number) => (
+                            <div key={idx} className="flex items-center gap-3 text-xs">
+                              <span className="text-white/20 font-bold">{idx + 1}.</span>
+                              <span className={`font-semibold uppercase tracking-wide truncate ${team ? 'text-white/80' : 'text-white/20 italic'}`}>
+                                {team || 'Da Sorteggiare'}
+                              </span>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* --- KO STAGE --- */}
+              <h3 className="text-2xl font-black italic uppercase text-[#A5D8FF] mb-8 text-center md:text-left">FASE FINALE</h3>
+              
+              <div className="relative">
+                {/* Mobile scroll unlock overlay */}
+                {!isBracketUnlocked && (
+                  <div 
+                    onClick={() => setIsBracketUnlocked(true)}
+                    className="absolute inset-0 z-30 bg-black/85 backdrop-blur-md rounded-[48px] flex flex-col items-center justify-center cursor-pointer p-6 md:hidden text-center border border-white/10"
+                  >
+                    <Trophy size={48} className="text-[#A5D8FF] mb-4 animate-bounce" />
+                    <span className="font-black text-xs uppercase tracking-[0.2em] text-[#A5D8FF] mb-2">Tocca per Sbloccare il Tabellone</span>
+                    <p className="text-white/40 text-[9px] uppercase tracking-widest max-w-[240px] leading-relaxed">
+                      Sblocca per esplorare la fase finale. Tocca in qualsiasi altro punto dello schermo per scorrere normalmente.
+                    </p>
                   </div>
-                  <div className="flex flex-col justify-around gap-24 relative py-12">
-                    {[0, 1].map(i => (
-                      <div key={i} className="w-64 p-5 rounded-2xl border border-white/10 bg-white/[0.04] border-l-2 space-y-3" style={{ borderLeftColor: ACCENT_COLOR }}>
-                        <div className="flex justify-between items-center text-[10px] font-bold text-[#A5D8FF] uppercase tracking-widest"><span>Semi-Finale {i + 1}</span></div>
-                        <div className={`h-10 border-b border-white/5 flex items-center px-1 text-xs uppercase italic ${tournamentState.is_drawn && tournamentState.bracket?.semiFinals?.[i * 2] ? 'font-bold' : 'opacity-40'}`}>
-                          {tournamentState.is_drawn ? (tournamentState.bracket?.semiFinals?.[i * 2] || 'TBD') : 'TBD'}
+                )}
+                
+                {isBracketUnlocked && (
+                  <button 
+                    onClick={() => setIsBracketUnlocked(false)}
+                    className="md:hidden absolute top-4 right-4 z-40 px-4 py-2 bg-black/80 border border-white/10 rounded-full text-[8px] font-black uppercase tracking-widest text-[#A5D8FF] hover:bg-white hover:text-black transition-all active:scale-95"
+                  >
+                    Blocca Scorrimento
+                  </button>
+                )}
+
+                <div className={`relative p-12 border border-white/5 rounded-[48px] bg-black/40 shadow-inner ${isBracketUnlocked ? 'overflow-x-auto touch-pan-x' : 'overflow-hidden pointer-events-none md:pointer-events-auto md:overflow-x-auto'}`}>
+                  <div className="min-w-[1250px] flex gap-8 justify-between items-center">
+                    {/* Ottavi */}
+                    <div className="flex flex-col justify-around gap-6">
+                      {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+                        <div key={i} className="w-56 p-4 rounded-xl border border-white/5 bg-white/[0.01] space-y-2 group hover:border-[#A5D8FF]/20 transition-all text-left">
+                          <div className="text-[8px] font-bold text-white/20 uppercase tracking-widest"><span>Match #{i + 1}</span></div>
+                          <div className="h-8 border-b border-white/5 flex items-center px-1 text-xs font-semibold uppercase italic truncate">
+                            {tournamentState.is_drawn && tournamentState.bracket?.ottavi ? tournamentState.bracket.ottavi[i * 2] || 'TBD' : 'TBD'}
+                          </div>
+                          <div className="h-8 flex items-center px-1 text-xs font-semibold uppercase italic truncate">
+                            {tournamentState.is_drawn && tournamentState.bracket?.ottavi ? tournamentState.bracket.ottavi[i * 2 + 1] || 'TBD' : 'TBD'}
+                          </div>
                         </div>
-                        <div className={`h-10 flex items-center px-1 text-xs uppercase italic ${tournamentState.is_drawn && tournamentState.bracket?.semiFinals?.[i * 2 + 1] ? 'font-bold' : 'opacity-40'}`}>
-                          {tournamentState.is_drawn ? (tournamentState.bracket?.semiFinals?.[i * 2 + 1] || 'TBD') : 'TBD'}
+                      ))}
+                    </div>
+
+                    {/* Quarti */}
+                    <div className="flex flex-col justify-around gap-12 py-6">
+                      {[0, 1, 2, 3].map(i => (
+                        <div key={i} className="w-56 p-4 rounded-xl border border-white/5 bg-white/[0.02] border-l-2 space-y-2 text-left" style={{ borderLeftColor: `${ACCENT_COLOR}60` }}>
+                          <div className="text-[8px] font-bold text-[#A5D8FF]/60 uppercase tracking-widest"><span>Quarto {i + 1}</span></div>
+                          <div className="h-8 border-b border-white/5 flex items-center px-1 text-xs font-semibold uppercase italic truncate">
+                            {tournamentState.is_drawn && tournamentState.bracket?.quarterFinals ? tournamentState.bracket.quarterFinals[i * 2] || 'TBD' : 'TBD'}
+                          </div>
+                          <div className="h-8 flex items-center px-1 text-xs font-semibold uppercase italic truncate">
+                            {tournamentState.is_drawn && tournamentState.bracket?.quarterFinals ? tournamentState.bracket.quarterFinals[i * 2 + 1] || 'TBD' : 'TBD'}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex flex-col justify-center relative">
-                    <div className="w-80 p-8 rounded-[32px] border-2 bg-[#A5D8FF]/5 space-y-6 shadow-[0_0_50px_rgba(165,216,255,0.05)]" style={{ borderColor: ACCENT_COLOR }}>
-                      <div className="flex justify-center mb-4">
-                        <div className="w-16 h-16 rounded-2xl bg-[#A5D8FF]/20 flex items-center justify-center text-[#A5D8FF]">
-                          <Trophy size={32} />
+                      ))}
+                    </div>
+
+                    {/* Semifinali */}
+                    <div className="flex flex-col justify-around gap-24 py-12">
+                      {[0, 1].map(i => (
+                        <div key={i} className="w-56 p-4 rounded-xl border border-white/10 bg-white/[0.04] border-l-2 space-y-2 text-left" style={{ borderLeftColor: ACCENT_COLOR }}>
+                          <div className="text-[8px] font-bold text-[#A5D8FF] uppercase tracking-widest"><span>Semi-Finale {i + 1}</span></div>
+                          <div className="h-8 border-b border-white/5 flex items-center px-1 text-xs font-semibold uppercase italic truncate">
+                            {tournamentState.is_drawn && tournamentState.bracket?.semiFinals ? tournamentState.bracket.semiFinals[i * 2] || 'TBD' : 'TBD'}
+                          </div>
+                          <div className="h-8 flex items-center px-1 text-xs font-semibold uppercase italic truncate">
+                            {tournamentState.is_drawn && tournamentState.bracket?.semiFinals ? tournamentState.bracket.semiFinals[i * 2 + 1] || 'TBD' : 'TBD'}
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-center font-black text-xs uppercase tracking-[0.4em] text-[#A5D8FF] mb-4">Finalissima</div>
-                      <div className={`h-14 border-b border-white/10 flex items-center px-2 text-xl font-black tracking-tight uppercase italic ${tournamentState.is_drawn && tournamentState.bracket?.final?.[0] ? 'text-yellow-500/90' : 'opacity-20'}`}>
-                        {tournamentState.is_drawn ? (tournamentState.bracket?.final?.[0] || 'TBD') : 'TBD'}
-                      </div>
-                      <div className={`h-14 flex items-center px-2 text-xl font-black tracking-tight uppercase italic ${tournamentState.is_drawn && tournamentState.bracket?.final?.[1] ? 'text-yellow-500/90' : 'opacity-20'}`}>
-                        {tournamentState.is_drawn ? (tournamentState.bracket?.final?.[1] || 'TBD') : 'TBD'}
+                      ))}
+                    </div>
+
+                    {/* Finale e Finalissima in evidenza */}
+                    <div className="flex flex-col justify-center">
+                      <div className="w-72 p-6 rounded-[32px] border-2 bg-gradient-to-b from-yellow-500/10 to-yellow-500/0 border-yellow-500/30 space-y-4 shadow-[0_0_50px_rgba(250,176,5,0.05)] text-center relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-500/5 blur-2xl rounded-full" />
+                        <div className="flex justify-center mb-2">
+                          <div className="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center text-yellow-500">
+                            <Trophy size={24} />
+                          </div>
+                        </div>
+                        <div className="font-black text-[10px] uppercase tracking-[0.3em] text-yellow-500">Finalissima</div>
+                        <div className="space-y-3">
+                          <div className={`h-12 border-b border-white/10 flex items-center justify-center px-2 text-lg font-black tracking-tight uppercase italic truncate ${tournamentState.is_drawn && tournamentState.bracket?.final?.[0] ? 'text-yellow-500/90' : 'opacity-20'}`}>
+                            {tournamentState.is_drawn && tournamentState.bracket?.final ? (tournamentState.bracket.final[0] || 'TBD') : 'TBD'}
+                          </div>
+                          <div className={`h-12 flex items-center justify-center px-2 text-lg font-black tracking-tight uppercase italic truncate ${tournamentState.is_drawn && tournamentState.bracket?.final?.[1] ? 'text-yellow-500/90' : 'opacity-20'}`}>
+                            {tournamentState.is_drawn && tournamentState.bracket?.final ? (tournamentState.bracket.final[1] || 'TBD') : 'TBD'}
+                          </div>
+                        </div>
+                        
+                        {/* Vincitore (Campione) */}
+                        {tournamentState.is_drawn && tournamentState.bracket?.winner && (
+                          <motion.div 
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="mt-6 pt-4 border-t border-yellow-500/20 text-center"
+                          >
+                            <span className="text-[8px] font-black uppercase tracking-widest text-yellow-500 block mb-1">Campione Armonia Padel Cup</span>
+                            <span className="font-black text-xl text-yellow-400 italic uppercase drop-shadow-[0_0_8px_rgba(250,176,5,0.5)]">
+                              🏆 {tournamentState.bracket.winner} 🏆
+                            </span>
+                          </motion.div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-                {!tournamentState.is_drawn && (
-                  <div className="absolute inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-10 pointer-events-none">
-                    <div className="px-10 py-5 bg-black border border-white/10 rounded-full font-bold text-[10px] tracking-[0.3em] uppercase text-white/40">
-                      Sorteggio in corso...
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </motion.section>
@@ -1917,7 +2206,7 @@ export default function App() {
                 <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-8">
                   <ShieldCheck size={32} className="text-[#A5D8FF]" />
                 </div>
-                <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 italic">Accesso Area<br />Organizzatori.</h2>
+                <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 italic">Accesso Area<br />Organizzatori</h2>
                 <input
                   type="password"
                   placeholder="Inserisci Password"
@@ -1989,9 +2278,9 @@ export default function App() {
               <h4 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20 mb-8">Navigazione</h4>
               <ul className="space-y-4 text-white/40 text-[10px] uppercase font-bold tracking-[0.2em]">
                 <li><button onClick={() => setView('home')} className="hover:text-white transition-colors">Home</button></li>
-                <li><button onClick={() => setView('regolamento')} className="hover:text-white transition-colors">Regolamento</button></li>
                 <li><button onClick={() => setView('partecipanti')} className="hover:text-white transition-colors">Partecipanti</button></li>
                 <li><button onClick={() => setView('tabellone')} className="hover:text-white transition-colors">Tabellone</button></li>
+                <li><button onClick={() => setView('sponsor')} className="hover:text-white transition-colors">Sponsor</button></li>
                 <li><button onClick={() => setView('articoli')} className="hover:text-white transition-colors">Articoli</button></li>
                 <li><button onClick={() => setView('iscriviti')} className="hover:text-[#A5D8FF] transition-colors">Iscriviti</button></li>
               </ul>
