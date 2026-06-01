@@ -1027,11 +1027,27 @@ export default function App() {
   const [tournamentState, setTournamentState] = useState<TournamentState>({ is_drawn: false, bracket: null });
   const [articles, setArticles] = useState<Article[]>([]);
   const [isBracketUnlocked, setIsBracketUnlocked] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchRegistrations();
-    fetchTournamentState();
-    fetchArticles();
+    // Caricamento dei dati
+    Promise.all([
+      fetchRegistrations(),
+      fetchTournamentState(),
+      fetchArticles()
+    ]).finally(() => {
+      // Garantisce massimo 1.5s di attesa, ma finisce prima se i dati arrivano all'istante
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 800);
+    });
+
+    // Timeout di backup di 1.5s
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   async function fetchRegistrations() {
@@ -1293,6 +1309,80 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-accent selection:text-black" style={{ '--accent': ACCENT_COLOR } as any}>
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="page-loader"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, y: -20, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }}
+            className="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center overflow-hidden"
+          >
+            {/* Subtle background glow */}
+            <div
+              className="absolute w-[400px] h-[400px] rounded-full blur-[120px] opacity-10 pointer-events-none"
+              style={{ backgroundColor: ACCENT_COLOR }}
+            />
+            
+            <div className="relative flex flex-col items-center z-10">
+              {/* Racket + Ball Animation container */}
+              <div className="relative w-32 h-32 flex items-center justify-center mb-8">
+                {/* Glowing ring/court effect */}
+                <motion.div 
+                  className="absolute inset-0 rounded-full border border-white/5"
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.25, 0.1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+                {/* Interactive Racket representation */}
+                <motion.div
+                  className="w-16 h-16 rounded-full border-4 border-white/10 flex items-center justify-center relative bg-white/[0.02]"
+                  animate={{ rotate: [-10, 10, -10] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  {/* Grid layout representational padel holes */}
+                  <div className="grid grid-cols-3 gap-1 opacity-20">
+                    <div className="w-1 h-1 bg-white rounded-full"></div>
+                    <div className="w-1 h-1 bg-white rounded-full"></div>
+                    <div className="w-1 h-1 bg-white rounded-full"></div>
+                    <div className="w-1 h-1 bg-white rounded-full"></div>
+                    <div className="w-1 h-1 bg-white rounded-full"></div>
+                    <div className="w-1 h-1 bg-white rounded-full"></div>
+                  </div>
+                  {/* Racket handle */}
+                  <div className="absolute top-[58px] left-[26px] w-2.5 h-10 bg-white/25 rounded-b-md transform origin-top rotate-45" />
+                </motion.div>
+
+                {/* Bouncing glowing Padel Ball */}
+                <motion.div 
+                  className="absolute w-4 h-4 rounded-full shadow-[0_0_12px_#A5D8FF]"
+                  style={{ backgroundColor: ACCENT_COLOR }}
+                  animate={{ 
+                    y: [-45, 15, -45],
+                    scaleY: [1, 0.8, 1, 1],
+                    scaleX: [1, 1.2, 1, 1]
+                  }}
+                  transition={{ 
+                    duration: 0.75, 
+                    repeat: Infinity, 
+                    ease: "easeIn" 
+                  }}
+                />
+              </div>
+
+              {/* Loader Text */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="flex flex-col items-center"
+              >
+                <span className="font-black tracking-[0.4em] text-sm uppercase italic mb-2">ARMONIA</span>
+                <span className="text-[#A5D8FF] font-black text-[9px] tracking-[0.6em] uppercase opacity-80 animate-pulse">PADEL CUP</span>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Navbar />
 
       <AnimatePresence mode="wait">
@@ -1436,7 +1526,7 @@ export default function App() {
                     },
                     { 
                       title: "MVP", 
-                      desc: "Racchetta e Borsone Head", 
+                      desc: "Racchetta Head Coello 2026 e Borsone Head", 
                       icon: Star, 
                       accent: false,
                       colSpan: "md:col-span-2"
