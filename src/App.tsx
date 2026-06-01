@@ -1922,12 +1922,26 @@ export default function App() {
                   type="password"
                   placeholder="Inserisci Password"
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-center mb-6 focus:outline-none focus:border-[#A5D8FF]"
-                  onKeyDown={(e) => {
+                  onKeyDown={async (e) => {
                     if (e.key === 'Enter') {
-                      if (e.currentTarget.value === 'armonia2026') {
-                        setIsAdminLoggedIn(true);
-                        fetchRegistrations(); // Forza il refresh al login
-                        fetchTournamentState();
+                      const passwordVal = e.currentTarget.value;
+                      try {
+                        const response = await fetch('/api/verify-admin', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ password: passwordVal })
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                          setIsAdminLoggedIn(true);
+                          fetchRegistrations(); // Forza il refresh al login
+                          fetchTournamentState();
+                        } else {
+                          alert('Password errata!');
+                        }
+                      } catch (err) {
+                        console.error('Login error:', err);
+                        alert('Errore durante la verifica della password.');
                       }
                     }
                   }}
