@@ -33,16 +33,16 @@ import { supabase, isSupabaseConfigured } from './lib/supabase';
 const ACCENT_COLOR = "#A5D8FF"; // Ice Blue
 
 const SPONSORS = [
-  { name: "Retròscena Barber Shop", type: "Barber Shop", desc: "Taglio capelli e cura barba professionale.", img: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=400&q=80" },
-  { name: "Wine Art", type: "Ristorazione", desc: "Cantina vinicola e piatti ricercati.", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=400&q=80" },
-  { name: "Boa Sorte", type: "Ristorazione", desc: "Sapori esotici e cucina fusion di alta classe.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" },
-  { name: "Gelateria Armonia", type: "Main Sponsor", desc: "Gelato artigianale d'eccellenza e gusti esclusivi.", img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=400&q=80" },
-  { name: "Molendini", type: "Ristorazione", desc: "Lounge bar e kit premium per serate indimenticabili.", img: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=400&q=80" },
-  { name: "Dehor", type: "Lounge & Aperitif", desc: "Aperitivi e cocktail d'autore in un'atmosfera unica.", img: "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=400&q=80" },
-  { name: "Novum Store", type: "Abbigliamento", desc: "Abbigliamento tecnico sportivo e accessori.", img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=400&q=80" },
-  { name: "Doppio Malto", type: "Birreria & Grill", desc: "Birra artigianale e griglia per concludere i match in festa.", img: "https://images.unsplash.com/photo-1532634922-8fe0b757b1ee?auto=format&fit=crop&w=400&q=80" },
-  { name: "Head Padel", type: "Technical Partner", desc: "Attrezzatura tecnica ufficiale per il torneo.", img: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=400&q=80" },
-  { name: "Masagiù SPA", type: "Wellness", desc: "Centro benessere e percorsi relax per atleti.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80" }
+  { name: "Retròscena Barber Shop", type: "Barber Shop", desc: "Taglio capelli e cura barba professionale.", img: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=300&q=50" },
+  { name: "Wine Art", type: "Ristorazione", desc: "Cantina vinicola e piatti ricercati.", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=300&q=50" },
+  { name: "Boa Sorte", type: "Ristorazione", desc: "Sapori esotici e cucina fusion di alta classe.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=50" },
+  { name: "Gelateria Armonia", type: "Main Sponsor", desc: "Gelato artigianale d'eccellenza e gusti esclusivi.", img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=300&q=50" },
+  { name: "Molendini", type: "Ristorazione", desc: "Lounge bar e kit premium per serate indimenticabili.", img: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=300&q=50" },
+  { name: "Dehor", type: "Lounge & Aperitif", desc: "Aperitivi e cocktail d'autore in un'atmosfera unica.", img: "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=300&q=50" },
+  { name: "Novum Store", type: "Abbigliamento", desc: "Abbigliamento tecnico sportivo e accessori.", img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=300&q=50" },
+  { name: "Doppio Malto", type: "Birreria & Grill", desc: "Birra artigianale e griglia per concludere i match in festa.", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=300&q=50" },
+  { name: "Head Padel", type: "Technical Partner", desc: "Attrezzatura tecnica ufficiale per il torneo.", img: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=300&q=50" },
+  { name: "Masagiù SPA", type: "Wellness", desc: "Centro benessere e percorsi relax per atleti.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=300&q=50" }
 ];
 
 const compressImage = (base64Str: string, maxWidth = 600, quality = 0.7): Promise<string> => {
@@ -126,7 +126,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'h-20 bg-black/90 backdrop-blur-2xl border-b border-white/5 shadow-2xl' : 'h-28 bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'h-20 bg-black border-b border-white/5 shadow-2xl' : 'h-28 bg-transparent'
         }`}
     >
       <div className="max-w-7xl mx-auto h-full px-8 flex justify-between items-center">
@@ -180,7 +180,7 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-black border-b border-white/10 p-6 md:hidden"
+            className="absolute top-full left-0 right-0 bg-black/95 border-b border-white/10 p-6 md:hidden"
           >
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
@@ -1385,7 +1385,7 @@ export default function App() {
                     <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Montepremi</span>
                   </div>
                   <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none">
-                    Più di <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#fcc419] to-[#fab005] drop-shadow-[0_0_20px_rgba(250,176,5,0.4)]">3000€</span> <br className="sm:hidden" />di Montepremi
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] via-[#a5d8ff] to-[#38bdf8] drop-shadow-[0_0_25px_rgba(165,216,255,0.7)]">3000€</span> <br className="sm:hidden" />di Montepremi
                   </h2>
                   <p className="text-white/40 italic font-light tracking-widest text-xs mt-4 uppercase">Riconoscimento al talento puro.</p>
                 </div>
@@ -1396,7 +1396,7 @@ export default function App() {
                       title: "1° Posto", 
                       desc: (
                         <span>
-                          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#fcc419] to-[#fab005] animate-pulse drop-shadow-[0_0_12px_rgba(250,176,5,0.7)] mr-1">
+                          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] via-[#a5d8ff] to-[#38bdf8] animate-pulse drop-shadow-[0_0_12px_rgba(165,216,255,0.8)] mr-1">
                             1000€
                           </span>
                           + Tavolo al "Molto" 3 Kit + Cena x2 presso "Wine Art"
@@ -1410,7 +1410,7 @@ export default function App() {
                       title: "2° Posto", 
                       desc: (
                         <span>
-                          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#ffe066] via-[#fcc419] to-[#fab005] animate-pulse drop-shadow-[0_0_8px_rgba(250,176,5,0.5)] mr-1">
+                          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] via-[#a5d8ff] to-[#38bdf8] animate-pulse drop-shadow-[0_0_8px_rgba(165,216,255,0.6)] mr-1">
                             500€
                           </span>
                           + Tavolo al "Molto" 2 Kit + Pranzo x2 presso "Boa Sorte"
@@ -1436,7 +1436,7 @@ export default function App() {
                     },
                     { 
                       title: "MVP", 
-                      desc: "Racchetta Head Coello 2026", 
+                      desc: "Racchetta e Borsone Head", 
                       icon: Star, 
                       accent: false,
                       colSpan: "md:col-span-2"
@@ -2291,7 +2291,7 @@ export default function App() {
               <ul className="space-y-4 text-white/40 text-[10px] uppercase font-bold tracking-[0.2em]">
                 <li className="flex items-center gap-3"><MapPin size={12} className="text-[#A5D8FF]" /> Cosenza, Rende</li>
                 <li className="flex items-center gap-3 lowercase tracking-normal font-medium">armoniacupp@gmail.com</li>
-                <li className="flex items-center gap-3">3477187888</li>
+                <li className="flex items-center gap-3">3477187888 / 3395029226 / 3802079586</li>
               </ul>
             </div>
           </div>
@@ -2312,3 +2312,4 @@ export default function App() {
     </div>
   );
 }
+
