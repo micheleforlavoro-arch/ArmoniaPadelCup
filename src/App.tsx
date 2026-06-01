@@ -54,6 +54,14 @@ interface TournamentState {
   bracket: any;
 }
 
+interface Article {
+  id: string;
+  title: string;
+  content: string;
+  giornata: string;
+  created_at: string;
+}
+
 // --- Components ---
 
 const Navbar = () => {
@@ -71,7 +79,7 @@ const Navbar = () => {
     { name: 'Regolamento', id: 'regolamento' },
     { name: 'Partecipanti', id: 'partecipanti' },
     { name: 'Tabellone', id: 'tabellone' },
-    // { name: 'FAQ', id: 'faq' },
+    { name: 'Articoli', id: 'articoli' },
   ];
 
   return (
@@ -84,7 +92,7 @@ const Navbar = () => {
           <img
             src="/logo.png"
             alt="Logo"
-            className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110 drop-shadow-[0_0_20px_rgba(165,216,255,0.3)]"
+            className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110"
             onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
           />
           <div className="flex flex-col items-start translate-y-1">
@@ -199,7 +207,11 @@ const AdminDashboard = ({
   onRefresh,
   tournamentState,
   onAddRegistration,
-  onUpdateRegistration
+  onUpdateRegistration,
+  articles,
+  onAddArticle,
+  onUpdateArticle,
+  onDeleteArticle
 }: {
   registrations: Registration[],
   onUpdateStatus: (id: string, status: 'accepted' | 'rejected') => void,
@@ -209,13 +221,24 @@ const AdminDashboard = ({
   onRefresh: () => void,
   tournamentState: TournamentState,
   onAddRegistration: (newReg: Omit<Registration, 'id' | 'created_at'>) => Promise<boolean>,
-  onUpdateRegistration: (id: string, updatedFields: Partial<Registration>) => Promise<boolean>
+  onUpdateRegistration: (id: string, updatedFields: Partial<Registration>) => Promise<boolean>,
+  articles: Article[],
+  onAddArticle: (newArt: Omit<Article, 'id' | 'created_at'>) => Promise<boolean>,
+  onUpdateArticle: (id: string, updatedFields: Partial<Article>) => Promise<boolean>,
+  onDeleteArticle: (id: string) => Promise<boolean>
 }) => {
   const acceptedCount = registrations.filter(r => r.status === 'accepted').length;
   const [editingBracket, setEditingBracket] = useState<any>(null);
-  const [viewMode, setViewMode] = useState<'iscrizioni' | 'tabellone'>('iscrizioni');
+  const [viewMode, setViewMode] = useState<'iscrizioni' | 'tabellone' | 'articoli'>('iscrizioni');
   const [isAdding, setIsAdding] = useState(false);
   const [editingReg, setEditingReg] = useState<Registration | null>(null);
+
+  // Article management states
+  const [isWritingArticle, setIsWritingArticle] = useState(false);
+  const [editingArticle, setEditingArticle] = useState<Article | null>(null);
+  const [articleTitle, setArticleTitle] = useState('');
+  const [articleGiornata, setArticleGiornata] = useState('');
+  const [articleContent, setArticleContent] = useState('');
 
   // Form states
   const [teamName, setTeamName] = useState('');
@@ -270,6 +293,12 @@ const AdminDashboard = ({
     setImageUrl('');
   };
 
+  const resetArticleForm = () => {
+    setArticleTitle('');
+    setArticleGiornata('');
+    setArticleContent('');
+  };
+
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -311,6 +340,29 @@ const AdminDashboard = ({
     }
   };
 
+  const handleArticleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const data = {
+      title: articleTitle,
+      giornata: articleGiornata,
+      content: articleContent
+    };
+
+    if (editingArticle) {
+      const success = await onUpdateArticle(editingArticle.id, data);
+      if (success) {
+        setEditingArticle(null);
+        resetArticleForm();
+      }
+    } else {
+      const success = await onAddArticle(data);
+      if (success) {
+        setIsWritingArticle(false);
+        resetArticleForm();
+      }
+    }
+  };
+
   const advanceTeam = (teamName: string, round: 'quarterFinals' | 'semiFinals', index: number) => {
     if (!teamName || !editingBracket) return;
     const newBracket = { ...editingBracket };
@@ -335,13 +387,40 @@ const AdminDashboard = ({
 
   return (
     <div className="space-y-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+      {/* Tabs and Header */}
+      <div className="flex flex-col gap-6">
         <div>
           <h2 className="text-4xl font-black italic uppercase tracking-tighter">Area Organizzatori.</h2>
-          <div className="flex items-center gap-4 mt-2">
-            <p className="text-white/40 text-xs uppercase tracking-widest">
-              {viewMode === 'iscrizioni' ? `Gestione iscrizioni (${registrations.length})` : 'Gestione Tabellone'}
-            </p>
+          <p className="text-white/40 text-xs uppercase tracking-widest mt-2">
+            Pannello di controllo per la gestione del torneo
+          </p>
+        </div>
+        
+        {/* Navigation Tabs */}
+        <div className="flex border-b border-white/10 gap-8 overflow-x-auto pb-1">
+          <button
+            onClick={() => { setViewMode('iscrizioni'); setIsAdding(false); setEditingReg(null); setIsWritingArticle(false); setEditingArticle(null); }}
+            className={`pb-4 text-xs font-black uppercase tracking-widest border-b-2 transition-all cursor-pointer ${viewMode === 'iscrizioni' ? 'text-[#A5D8FF] border-[#A5D8FF]' : 'text-white/40 border-transparent hover:text-white'}`}
+          >
+            Iscrizioni ({registrations.length})
+          </button>
+          <button
+            onClick={() => { setViewMode('tabellone'); setIsAdding(false); setEditingReg(null); setIsWritingArticle(false); setEditingArticle(null); }}
+            className={`pb-4 text-xs font-black uppercase tracking-widest border-b-2 transition-all cursor-pointer ${viewMode === 'tabellone' ? 'text-[#A5D8FF] border-[#A5D8FF]' : 'text-white/40 border-transparent hover:text-white'}`}
+          >
+            Tabellone
+          </button>
+          <button
+            onClick={() => { setViewMode('articoli'); setIsAdding(false); setEditingReg(null); setIsWritingArticle(false); setEditingArticle(null); }}
+            className={`pb-4 text-xs font-black uppercase tracking-widest border-b-2 transition-all cursor-pointer ${viewMode === 'articoli' ? 'text-[#A5D8FF] border-[#A5D8FF]' : 'text-white/40 border-transparent hover:text-white'}`}
+          >
+            Gestione Articoli ({articles.length})
+          </button>
+        </div>
+
+        {/* View Action Buttons */}
+        <div className="flex flex-wrap gap-4 items-center justify-between">
+          <div>
             {viewMode === 'iscrizioni' && (
               <div className="flex items-center gap-4">
                 <button onClick={onRefresh} className="text-[#A5D8FF] text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
@@ -353,53 +432,41 @@ const AdminDashboard = ({
                 </button>
               </div>
             )}
+            {viewMode === 'tabellone' && (
+              <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold">
+                Gestione accoppiamenti e turni delle finali
+              </p>
+            )}
+            {viewMode === 'articoli' && (
+              <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold">
+                Pubblica e modifica le news del torneo
+              </p>
+            )}
           </div>
-        </div>
-        <div className="flex flex-wrap gap-4 w-full md:w-auto">
-          {viewMode === 'tabellone' ? (
-            <>
-              <button
-                onClick={() => setViewMode('iscrizioni')}
-                className="px-6 py-3 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white hover:text-black transition-all shadow-2xl flex items-center justify-center gap-2"
-              >
-                ← Indietro
-              </button>
-              {tournamentState.is_drawn && (
+
+          <div className="flex gap-4">
+            {viewMode === 'tabellone' && (
+              <>
+                {tournamentState.is_drawn && (
+                  <button
+                    onClick={onResetDraw}
+                    className="px-6 py-3 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-2"
+                  >
+                    <Trash2 size={16} />
+                    Reset Tabellone
+                  </button>
+                )}
                 <button
-                  onClick={() => {
-                    onResetDraw();
-                    setViewMode('iscrizioni');
-                  }}
-                  className="px-6 py-3 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-2"
+                  onClick={onDraw}
+                  disabled={tournamentState.is_drawn || acceptedCount < 2}
+                  className="px-6 py-3 bg-[#A5D8FF] text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-2xl disabled:opacity-30 flex items-center justify-center gap-2"
                 >
-                  <Trash2 size={16} />
-                  Reset
+                  <Dices size={16} />
+                  {tournamentState.is_drawn ? 'Tabellone Generato' : `Sorteggio (${acceptedCount} Squadre)`}
                 </button>
-              )}
-            </>
-          ) : (
-            <>
-              {tournamentState.is_drawn && (
-                <button
-                  onClick={() => setViewMode('tabellone')}
-                  className="flex-1 md:flex-none px-6 py-3 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#A5D8FF]/10 transition-all shadow-2xl flex items-center justify-center gap-2"
-                >
-                  Gestisci Tabellone
-                </button>
-              )}
-              <button
-                onClick={() => {
-                  onDraw();
-                  setViewMode('tabellone');
-                }}
-                disabled={tournamentState.is_drawn || acceptedCount < 2}
-                className="flex-1 md:flex-none px-6 py-3 bg-[#A5D8FF] text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-2xl disabled:opacity-30 flex items-center justify-center gap-2"
-              >
-                <Dices size={16} />
-                {tournamentState.is_drawn ? 'Tabellone Generato' : `Sorteggio (${acceptedCount} Squadre)`}
-              </button>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -423,18 +490,6 @@ const AdminDashboard = ({
           </div>
 
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
-            {/* <div>
-              <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Nome Squadra</label>
-              <input
-                value={teamName}
-                onChange={e => setTeamName(e.target.value)}
-                type="text"
-                required
-                placeholder="es. I Gladiatori del Padel"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#A5D8FF] transition-all hover:bg-white/[0.08]"
-              />
-            </div> */}
-
             <div>
               <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Foto della coppia</label>
               <div className="flex gap-4 items-center">
@@ -607,7 +662,7 @@ const AdminDashboard = ({
           ) : (
             registrations.map(reg => (
               <div key={reg.id} className="p-6 bg-white/[0.03] border border-white/5 rounded-3xl flex flex-col md:flex-row justify-between gap-6 hover:bg-white/[0.05] transition-colors">
-                <div className="space-y-2">
+                <div className="space-y-2 text-left">
                   <div className="flex items-center gap-3">
                     {reg.image_url && (
                       <img src={reg.image_url} alt="Foto Coppia" className="w-12 h-12 rounded-xl object-cover border border-white/10 shadow-lg" />
@@ -663,6 +718,135 @@ const AdminDashboard = ({
           )}
         </div>
       )}
+
+      {viewMode === 'articoli' && (
+        <div className="space-y-6">
+          <div className="flex justify-between items-center pb-4 border-b border-white/5">
+            <h3 className="text-xl font-black italic uppercase text-[#A5D8FF]">
+              {editingArticle ? 'Modifica Articolo' : 'Nuovo Articolo'}
+            </h3>
+            <button
+              onClick={() => {
+                if (isWritingArticle) {
+                  setIsWritingArticle(false);
+                  setEditingArticle(null);
+                  resetArticleForm();
+                } else {
+                  setIsWritingArticle(true);
+                  setEditingArticle(null);
+                  resetArticleForm();
+                }
+              }}
+              className="px-6 py-2.5 bg-[#A5D8FF] text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-2xl active:scale-95 cursor-pointer"
+            >
+              {isWritingArticle ? 'Chiudi Form' : '+ Nuovo Articolo'}
+            </button>
+          </div>
+
+          {(isWritingArticle || editingArticle) && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/[0.02] border border-[#A5D8FF]/20 rounded-[32px] p-8 space-y-6"
+            >
+              <form onSubmit={handleArticleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Titolo Articolo</label>
+                    <input
+                      value={articleTitle}
+                      onChange={e => setArticleTitle(e.target.value)}
+                      type="text"
+                      required
+                      placeholder="es. Finale incredibile nella prima giornata"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#A5D8FF] transition-all hover:bg-white/[0.08]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Giornata / Categoria</label>
+                    <input
+                      value={articleGiornata}
+                      onChange={e => setArticleGiornata(e.target.value)}
+                      type="text"
+                      required
+                      placeholder="es. 1° Giornata"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#A5D8FF] transition-all hover:bg-white/[0.08]"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-white/30 ml-2 mb-2 tracking-[0.2em]">Contenuto Articolo</label>
+                  <textarea
+                    value={articleContent}
+                    onChange={e => setArticleContent(e.target.value)}
+                    required
+                    rows={8}
+                    placeholder="Scrivi qui il corpo dell'articolo..."
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#A5D8FF] transition-all hover:bg-white/[0.08] resize-y"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-[#A5D8FF] text-black font-black uppercase tracking-[0.3em] text-xs rounded-xl hover:bg-white transition-all transform active:scale-[0.98] shadow-2xl flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {editingArticle ? 'Salva Modifiche' : 'Pubblica Articolo'}
+                </button>
+              </form>
+            </motion.div>
+          )}
+
+          <div className="grid gap-4">
+            {articles.length === 0 ? (
+              <div className="py-20 text-center border border-white/5 bg-white/[0.02] rounded-3xl text-white/20 uppercase text-[10px] font-black tracking-widest">
+                Nessun articolo presente
+              </div>
+            ) : (
+              articles.map(art => (
+                <div key={art.id} className="p-6 bg-white/[0.03] border border-white/5 rounded-3xl flex flex-col md:flex-row justify-between gap-6 hover:bg-white/[0.05] transition-colors">
+                  <div className="space-y-2 text-left">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-black text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-2.5 py-1 rounded-full">
+                        {art.giornata}
+                      </span>
+                      <span className="font-black text-lg text-white italic uppercase">{art.title}</span>
+                    </div>
+                    <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold">
+                      Pubblicato il: {new Date(art.created_at).toLocaleDateString('it-IT')}
+                    </p>
+                    <p className="text-white/50 text-xs line-clamp-2 max-w-2xl whitespace-pre-line">{art.content}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        setEditingArticle(art);
+                        setArticleTitle(art.title);
+                        setArticleGiornata(art.giornata);
+                        setArticleContent(art.content);
+                        setIsWritingArticle(false);
+                      }}
+                      className="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all cursor-pointer"
+                      title="Modifica Articolo"
+                    >
+                      <Edit3 size={18} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm('Sei sicuro di voler eliminare questo articolo?')) {
+                          onDeleteArticle(art.id);
+                        }
+                      }}
+                      className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all cursor-pointer"
+                      title="Elimina Articolo"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -673,10 +857,12 @@ export default function App() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [tournamentState, setTournamentState] = useState<TournamentState>({ is_drawn: false, bracket: null });
+  const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     fetchRegistrations();
     fetchTournamentState();
+    fetchArticles();
   }, []);
 
   async function fetchRegistrations() {
@@ -791,6 +977,85 @@ export default function App() {
     }
   }
 
+  async function fetchArticles() {
+    try {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Errore Supabase nel recupero articoli:', error);
+        return;
+      }
+
+      if (data) {
+        setArticles(data);
+      }
+    } catch (err) {
+      console.error('Eccezione fetchArticles:', err);
+    }
+  }
+
+  async function handleAddArticle(newArt: Omit<Article, 'id' | 'created_at'>) {
+    try {
+      const { error } = await supabase
+        .from('articles')
+        .insert([newArt]);
+      if (error) {
+        console.error('Errore inserimento articolo:', error);
+        alert('Errore durante il salvataggio nel database: ' + error.message);
+        return false;
+      }
+      fetchArticles();
+      return true;
+    } catch (err: any) {
+      console.error(err);
+      alert('Errore imprevisto: ' + err.message);
+      return false;
+    }
+  }
+
+  async function handleUpdateArticle(id: string, updatedFields: Partial<Article>) {
+    try {
+      const { error } = await supabase
+        .from('articles')
+        .update(updatedFields)
+        .eq('id', id);
+      if (error) {
+        console.error('Errore aggiornamento articolo:', error);
+        alert('Errore durante il salvataggio nel database: ' + error.message);
+        return false;
+      }
+      fetchArticles();
+      return true;
+    } catch (err: any) {
+      console.error(err);
+      alert('Errore imprevisto: ' + err.message);
+      return false;
+    }
+  }
+
+  async function handleDeleteArticle(id: string) {
+    try {
+      const { error } = await supabase
+        .from('articles')
+        .delete()
+        .eq('id', id);
+      if (error) {
+        console.error('Errore eliminazione articolo:', error);
+        alert('Errore durante l\'eliminazione nel database: ' + error.message);
+        return false;
+      }
+      fetchArticles();
+      return true;
+    } catch (err: any) {
+      console.error(err);
+      alert('Errore imprevisto: ' + err.message);
+      return false;
+    }
+  }
+
   async function handleAddRegistration(newReg: Omit<Registration, 'id' | 'created_at'>) {
     try {
       const { error } = await supabase
@@ -875,7 +1140,7 @@ export default function App() {
                 <img
                   src="/logo.png"
                   alt="Armonia Logo"
-                  className="w-64 md:w-80 h-auto mb-10 drop-shadow-[0_0_30px_rgba(165,216,255,0.15)]"
+                  className="w-64 md:w-80 h-auto mb-10"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
                     (e.target as HTMLImageElement).className = "w-32 h-32 rounded-full object-cover border-4 border-[#A5D8FF] mb-12 grayscale shadow-2xl";
@@ -921,7 +1186,7 @@ export default function App() {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2 }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20"
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20 z-20"
               >
                 <ChevronDown size={32} />
               </motion.div>
@@ -996,7 +1261,7 @@ export default function App() {
                     <motion.div
                       key={i}
                       whileHover={{ y: -5 }}
-                      className={`p-8 rounded-[32px] border border-white/5 bg-white/[0.03] backdrop-blur-xl flex items-center gap-6 ${prize.colSpan}`}
+                      className={`p-8 rounded-[32px] border border-white/5 bg-white/[0.03] flex items-center gap-6 ${prize.colSpan}`}
                     >
                       <div
                         className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
@@ -1034,7 +1299,7 @@ export default function App() {
                       <motion.div
                         key={i}
                         whileHover={{ y: -3 }}
-                        className="p-6 rounded-[24px] border border-white/5 bg-white/[0.01] backdrop-blur-md flex flex-col justify-between hover:bg-white/[0.03] hover:border-white/10 transition-all duration-300"
+                        className="p-6 rounded-[24px] border border-white/5 bg-white/[0.01] flex flex-col justify-between hover:bg-white/[0.03] hover:border-white/10 transition-all duration-300"
                       >
                         <div>
                           <span className="text-[9px] font-bold text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-2.5 py-1 rounded-full mb-4 inline-block">
@@ -1076,7 +1341,7 @@ export default function App() {
                     <motion.div
                       key={i}
                       whileHover={{ y: -5 }}
-                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] backdrop-blur-xl flex flex-col justify-between h-full group hover:border-[#A5D8FF]/20 transition-all duration-300"
+                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] flex flex-col justify-between h-full group hover:border-[#A5D8FF]/20 transition-all duration-300"
                     >
                       <div>
                         <div className="flex items-center gap-4 mb-6">
@@ -1131,7 +1396,7 @@ export default function App() {
                 <img
                   src="/logo.png"
                   alt="Armonia Logo"
-                  className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(165,216,255,0.2)]"
+                  className="w-full h-full object-contain"
                   onError={(e) => (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
                 />
               </motion.div>
@@ -1195,7 +1460,7 @@ export default function App() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.05 }}
-                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.03] backdrop-blur-xl hover:bg-white/[0.05] hover:border-white/10 transition-all flex flex-col justify-between h-full"
+                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.03] hover:bg-white/[0.05] hover:border-white/10 transition-all flex flex-col justify-between h-full"
                     >
                       <div>
                         {reg.image_url ? (
@@ -1251,7 +1516,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="relative p-12 border border-white/5 rounded-[48px] bg-black/40 backdrop-blur-3xl overflow-x-auto touch-pan-x shadow-inner">
+              <div className="relative p-12 border border-white/5 rounded-[48px] bg-black/40 overflow-x-auto touch-pan-x shadow-inner">
                 <div className="min-w-[900px] flex gap-12 justify-between items-center">
                   <div className="flex flex-col justify-around gap-12">
                     {[0, 1, 2, 3].map(i => (
@@ -1304,6 +1569,56 @@ export default function App() {
                   </div>
                 )}
               </div>
+            </div>
+          </motion.section>
+        )}
+
+        {view === 'articoli' && (
+          <motion.section
+            key="articoli"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            className="pt-40 pb-24 px-6 bg-white/[0.01] min-h-screen"
+          >
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <span className="text-[10px] uppercase font-bold text-[#A5D8FF] tracking-[0.3em] mb-4 block">Giornale del Torneo</span>
+                <h2 className="text-5xl font-black tracking-tighter italic uppercase">ARTICOLI.</h2>
+              </div>
+
+              {articles.length === 0 ? (
+                <div className="py-20 text-center border border-white/5 bg-white/[0.02] rounded-3xl text-white/20 uppercase text-[10px] font-black tracking-widest">
+                  Nessun articolo pubblicato
+                </div>
+              ) : (
+                <div className="space-y-12">
+                  {articles.map((article, idx) => (
+                    <motion.article
+                      key={article.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      className="p-8 md:p-12 rounded-[32px] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all text-left"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                        <span className="text-[10px] font-black text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-3 py-1.5 rounded-full">
+                          {article.giornata}
+                        </span>
+                        <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">
+                          {new Date(article.created_at).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </span>
+                      </div>
+                      <h3 className="text-3xl font-black italic uppercase tracking-tight text-white mb-6">
+                        {article.title}
+                      </h3>
+                      <div className="text-white/60 text-sm leading-relaxed whitespace-pre-line uppercase tracking-wide">
+                        {article.content}
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
+              )}
             </div>
           </motion.section>
         )}
@@ -1516,7 +1831,7 @@ export default function App() {
             exit={{ opacity: 0, y: -20 }}
             className="pt-40 pb-24 px-6 max-w-4xl mx-auto min-h-screen"
           >
-            <div className="bg-zinc-900/40 p-12 rounded-[48px] border border-white/5 backdrop-blur-3xl">
+            <div className="bg-zinc-900/40 p-12 rounded-[48px] border border-white/5">
               <h2 className="text-5xl font-black mb-12 tracking-tighter uppercase italic">Privacy <span className="text-[#A5D8FF]">Policy.</span></h2>
               <div className="space-y-8 text-white/50 text-xs leading-loose uppercase tracking-widest font-medium">
                 <section>
@@ -1552,7 +1867,7 @@ export default function App() {
             exit={{ opacity: 0, y: -20 }}
             className="pt-40 pb-24 px-6 max-w-4xl mx-auto min-h-screen"
           >
-            <div className="bg-zinc-900/40 p-12 rounded-[48px] border border-white/5 backdrop-blur-3xl">
+            <div className="bg-zinc-900/40 p-12 rounded-[48px] border border-white/5">
               <h2 className="text-5xl font-black mb-12 tracking-tighter uppercase italic">Cookie <span className="text-[#A5D8FF]">Policy.</span></h2>
               <div className="space-y-8 text-white/50 text-xs leading-loose uppercase tracking-widest font-medium">
                 <section>
@@ -1595,6 +1910,10 @@ export default function App() {
                 tournamentState={tournamentState}
                 onAddRegistration={handleAddRegistration}
                 onUpdateRegistration={handleUpdateRegistration}
+                articles={articles}
+                onAddArticle={handleAddArticle}
+                onUpdateArticle={handleUpdateArticle}
+                onDeleteArticle={handleDeleteArticle}
               />
             ) : (
               <div className="max-w-md mx-auto bg-zinc-900 border border-white/10 p-12 rounded-[40px] text-center">
@@ -1632,7 +1951,7 @@ export default function App() {
                 <img
                   src="/logo.png"
                   alt="Logo"
-                  className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110 drop-shadow-[0_0_20px_rgba(165,216,255,0.3)]"
+                  className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110"
                   onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                 />
                 <div className="flex flex-col items-start translate-y-1">
@@ -1662,6 +1981,7 @@ export default function App() {
                 <li><button onClick={() => setView('regolamento')} className="hover:text-white transition-colors">Regolamento</button></li>
                 <li><button onClick={() => setView('partecipanti')} className="hover:text-white transition-colors">Partecipanti</button></li>
                 <li><button onClick={() => setView('tabellone')} className="hover:text-white transition-colors">Tabellone</button></li>
+                <li><button onClick={() => setView('articoli')} className="hover:text-white transition-colors">Articoli</button></li>
                 <li><button onClick={() => setView('iscriviti')} className="hover:text-[#A5D8FF] transition-colors">Iscriviti</button></li>
               </ul>
             </div>
