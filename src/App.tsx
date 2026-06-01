@@ -1183,7 +1183,7 @@ export default function App() {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2 }}
-                className="absolute bottom-20 left-1/2 -translate-x-1/2 text-white/20 z-20"
+                className="absolute bottom-40 left-1/2 -translate-x-1/2 text-white/20 z-20"
               >
                 <ChevronDown size={32} />
               </motion.div>
