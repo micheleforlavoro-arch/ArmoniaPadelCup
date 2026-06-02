@@ -2340,7 +2340,7 @@ export default function App() {
               </p>
               <div className="flex gap-4">
                 <a
-                  href="https://www.instagram.com/armoniacup_?igsh=M2Nud3Y2dXB3bWcx"
+                  href="https://www.instagram.com/armoniapadelcup?igsh=M2Nud3Y2dXB3bWcx"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors group"
