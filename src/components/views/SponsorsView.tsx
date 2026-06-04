@@ -43,7 +43,10 @@ const SponsorsView = () => {
                       </p>
                     </div>
                   </motion.div>
-                )
+                ))}
+              </div>
+            </div>
+          </motion.section>
     </>
   );
 };

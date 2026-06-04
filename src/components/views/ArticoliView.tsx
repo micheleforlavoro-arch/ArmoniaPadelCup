@@ -50,7 +50,9 @@ const ArticoliView = ({ articles }: { articles: Article[] }) => {
                     </motion.article>
                   ))}
                 </div>
-              
+              )}
+            </div>
+          </motion.section>
     </>
   );
 };

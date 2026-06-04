@@ -1,11 +1,12 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { ChevronDown, Trophy, Medal, Star, Calendar } from 'lucide-react';
 import { ACCENT_COLOR } from '../../lib/constants';
 
 const HomeView = () => {
   const setView = (window as any).setView;
-  return (        {view === 'home' && (
+  return (
+
           <motion.div
             key="home"
             initial={{ opacity: 0 }}
@@ -251,7 +252,6 @@ const HomeView = () => {
               </div>
             </section>
           </motion.div>
-        )}
   );
 };
 

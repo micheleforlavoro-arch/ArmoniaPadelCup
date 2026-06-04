@@ -162,7 +162,14 @@ const TabelloneView = ({ tournamentState }: { tournamentState: TournamentState }
                               🏆 {tournamentState.bracket.winner} 🏆
                             </span>
                           </motion.div>
-                        
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
     </>
   );
 };

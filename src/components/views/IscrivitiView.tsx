@@ -186,7 +186,10 @@ const IscrivitiView = () => {
                       </button>
                     </form>
                   </motion.div>
-                
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.section>
     </>
   );
 };

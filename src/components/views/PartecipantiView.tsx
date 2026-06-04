@@ -63,7 +63,9 @@ const PartecipantiView = ({ registrations }: { registrations: Registration[] }) 
                     </motion.div>
                   ))}
                 </div>
-              
+              )}
+            </div>
+          </motion.section>
     </>
   );
 };
