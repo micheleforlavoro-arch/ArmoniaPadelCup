@@ -29,7 +29,7 @@ export const SPONSORS = [
     "name": "Retr�scena Barber Shop",
     "type": "Barber Shop",
     "desc": "",
-    "img": "/retr�scena_logo_Tavola disegno 1.jpg"
+    "img": "/retroscena_logo.jpg"
   },
   {
     "name": "Dehor",
@@ -41,7 +41,7 @@ export const SPONSORS = [
     "name": "Masagi� SPA",
     "type": "Wellness",
     "desc": "",
-    "img": "/masagi� logo.jpg"
+    "img": "/masagiu_logo.jpg"
   },
   {
     "name": "Novum Store",

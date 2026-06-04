@@ -361,7 +361,7 @@ export default function App() {
           </div>
 
           <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-[0.2em] font-bold text-white/20">
-            <p>&copy; 2024-2026 Armonia Padel Cup. Smart Agency.</p>
+            <p>&copy; 2024-2026 Armonia Padel Cup. kelin.dev</p>
             <div className="flex gap-8">
               <button onClick={() => setView('admin')} className="hover:text-[#A5D8FF] transition-all flex items-center gap-2">
                 <ShieldCheck size={12} />
