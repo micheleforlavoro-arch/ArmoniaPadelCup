@@ -6,14 +6,15 @@ import { Registration, TournamentState, Article } from './lib/types';
 import { ACCENT_COLOR } from './lib/constants';
 import Navbar from './components/layout/Navbar';
 
-const HomeView = lazy(() => import('./components/views/HomeView'));
-const ChiSiamoView = lazy(() => import('./components/views/ChiSiamoView'));
-const SponsorsView = lazy(() => import('./components/views/SponsorsView'));
-const PartecipantiView = lazy(() => import('./components/views/PartecipantiView'));
+import HomeView from './components/views/HomeView';
+import ChiSiamoView from './components/views/ChiSiamoView';
+import SponsorsView from './components/views/SponsorsView';
+import PartecipantiView from './components/views/PartecipantiView';
+import ArticoliView from './components/views/ArticoliView';
+import PrivacyView from './components/views/PrivacyView';
+import CookiesView from './components/views/CookiesView';
+
 const TabelloneView = lazy(() => import('./components/views/TabelloneView'));
-const ArticoliView = lazy(() => import('./components/views/ArticoliView'));
-const PrivacyView = lazy(() => import('./components/views/PrivacyView'));
-const CookiesView = lazy(() => import('./components/views/CookiesView'));
 const IscrivitiView = lazy(() => import('./components/views/IscrivitiView'));
 const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
 
