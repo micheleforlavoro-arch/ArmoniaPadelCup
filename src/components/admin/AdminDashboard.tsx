@@ -1023,7 +1023,7 @@ export const AdminDashboard = ({
                       onChange={(e) => setArticleGiornata(e.target.value)}
                       type="text"
                       required
-                      placeholder="es. 1Â Giornata"
+                      placeholder="es. 1° Giornata"
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#A5D8FF] transition-all hover:bg-white/[0.08]"
                     />{" "}
                   </div>{" "}

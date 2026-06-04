@@ -25,7 +25,7 @@ const ChiSiamoView = () => {
                     Un'esperienza totalizzante per chi cerca la perfezione in ogni gesto, sul campo e oltre.
                   </p>
                   <p>
-                    Armonia Padel Cup nasce per celebrare la passione sportiva in un contesto di assoluto prestigio e convivialitÃ .
+                    Armonia Padel Cup nasce per celebrare la passione sportiva in un contesto di assoluto prestigio e convivialità.
                   </p>
                 </div>
               </motion.div>
