@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ChevronDown, Trophy, Medal, Star, Calendar } from 'lucide-react';
+import { Trophy, Medal, Star, Calendar } from 'lucide-react';
 import { ACCENT_COLOR } from '../../lib/constants';
 
 const HomeView = () => {
@@ -71,10 +71,7 @@ const HomeView = () => {
                 </button>
               </div>
 
-              {/* Scroll Indicator */}
-              <div className="absolute bottom-40 left-1/2 -translate-x-1/2 text-white/20 z-20 animate-bounce">
-                <ChevronDown size={32} />
-              </div>
+
             </section>
 
             {/* --- PREMI SECTION --- */}
