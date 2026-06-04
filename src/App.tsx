@@ -314,7 +314,9 @@ export default function App() {
                 <img
                   src="/logo.png"
                   alt="Logo"
-                  className="h-16 w-auto object-contain transition-all duration-500 group-hover:scale-110"
+                  width={64}
+                  height={64}
+                  className="w-16 h-16 object-contain transition-all duration-500 group-hover:scale-110"
                   onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                 />
                 <div className="flex flex-col items-start translate-y-1">

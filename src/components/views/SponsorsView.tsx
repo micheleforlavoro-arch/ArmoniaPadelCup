@@ -30,7 +30,14 @@ const SponsorsView = () => {
                   >
                     <div>
                       <div className="w-full h-48 rounded-2xl overflow-hidden mb-6 border border-white/10 shadow-lg bg-white/5 flex items-center justify-center p-4">
-                        <img src={sponsor.img} alt={sponsor.name} className="w-full h-full object-contain" />
+                        <img 
+                          src={sponsor.img} 
+                          alt={sponsor.name} 
+                          width={400}
+                          height={400}
+                          loading="lazy"
+                          className="w-full h-full object-contain" 
+                        />
                       </div>
                       <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mb-4">
                         {sponsor.name}

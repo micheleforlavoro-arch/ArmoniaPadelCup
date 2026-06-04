@@ -34,7 +34,9 @@ const HomeView = () => {
                 <img
                   src="/logo.png"
                   alt="Armonia Logo"
-                  className="w-64 md:w-80 h-auto mb-10"
+                  width={320}
+                  height={320}
+                  className="w-64 md:w-80 aspect-square object-contain mb-10 bg-white/5 rounded-full"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
                     (e.target as HTMLImageElement).className = "w-32 h-32 rounded-full object-cover border-4 border-[#A5D8FF] mb-12 grayscale shadow-2xl";
