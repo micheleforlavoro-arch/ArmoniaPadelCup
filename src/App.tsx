@@ -17,31 +17,24 @@ const CookiesView = lazy(() => import('./components/views/CookiesView'));
 const IscrivitiView = lazy(() => import('./components/views/IscrivitiView'));
 const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
 
-// Componente di caricamento con skeleton/spinner premium
-const LoadingFallback = () => (
-  <div className="min-h-[70vh] flex flex-col items-center justify-center w-full">
-    <div className="relative w-24 h-24 flex items-center justify-center mb-6">
-      <div className="absolute bottom-4 w-12 h-1 bg-white/10 rounded-full" />
-      <motion.div 
-        className="absolute w-5 h-5 rounded-full shadow-[0_0_15px_#A5D8FF] bg-[#A5D8FF]"
-        animate={{ 
-          y: [-30, 10, -30],
-          scaleY: [1.1, 0.8, 1.1],
-          scaleX: [0.9, 1.2, 0.9]
-        }}
-        transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div 
-        className="absolute bottom-3 w-8 h-2 rounded-full border border-[#A5D8FF]/30 pointer-events-none"
-        animate={{ scale: [0.2, 1.5, 0.2], opacity: [0.8, 0, 0.8] }}
-        transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-      />
-    </div>
-    <span className="text-[#A5D8FF] font-black text-[10px] tracking-[0.4em] uppercase opacity-80 animate-pulse">
-      Caricamento<span className="text-white">...</span>
-    </span>
-  </div>
-);
+import { 
+  HomeSkeleton, 
+  GenericPageSkeleton, 
+  CardGridSkeleton, 
+  ArticleListSkeleton, 
+  TabelloneSkeleton 
+} from './components/ui/Skeletons';
+
+const DynamicFallback = ({ view }: { view: string }) => {
+  switch (view) {
+    case 'home': return <HomeSkeleton />;
+    case 'sponsor': 
+    case 'partecipanti': return <CardGridSkeleton />;
+    case 'tabellone': return <TabelloneSkeleton />;
+    case 'articoli': return <ArticleListSkeleton />;
+    default: return <GenericPageSkeleton />;
+  }
+};
 
 export default function App() {
   const [view, setView] = useState('home');
@@ -234,7 +227,7 @@ export default function App() {
       <Navbar />
 
       <AnimatePresence mode="wait">
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={<DynamicFallback view={view} />}>
           {view === 'home' && <HomeView />}
           {view === 'chi-siamo' && <ChiSiamoView />}
           {view === 'sponsor' && <SponsorsView />}
