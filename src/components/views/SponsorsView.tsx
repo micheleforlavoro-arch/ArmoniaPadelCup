@@ -21,13 +21,7 @@ const SponsorsView = () => {
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {SPONSORS.map((sponsor, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.05 }}
-                    className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all flex flex-col justify-between h-full"
-                  >
+                  <div key={idx} className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all flex flex-col justify-between h-full hover:-translate-y-1">
                     <div>
                       <div className="w-full h-48 rounded-2xl overflow-hidden mb-6 border border-white/10 shadow-lg bg-white/5 flex items-center justify-center p-4">
                         <img 
@@ -44,7 +38,7 @@ const SponsorsView = () => {
                       </h3>
 
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>

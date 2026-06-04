@@ -21,12 +21,7 @@ const HomeView = () => {
                 style={{ backgroundColor: ACCENT_COLOR }}
               />
 
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="flex flex-col items-center text-center z-10 pb-20"
-              >
+              <div className="flex flex-col items-center text-center z-10 pb-20 animate-fade-in-up">
                 <div className="mb-8">
                   <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[10px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Edizione 2026</span>
                 </div>
@@ -67,29 +62,23 @@ const HomeView = () => {
                   ))}
                 </div>
 
-                <motion.button
+                <button
                   onClick={() => setView('iscriviti')}
-                  whileHover={{ scale: 1.05, backgroundColor: '#FFF' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group relative px-12 py-5 rounded-full font-black text-black overflow-hidden transition-all text-xs uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(165,216,255,0.4)]"
+                  className="group relative px-12 py-5 rounded-full font-black text-black overflow-hidden transition-all text-xs uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(165,216,255,0.4)] hover:scale-105 hover:bg-white active:scale-95"
                   style={{ backgroundColor: ACCENT_COLOR }}
                 >
                   Iscriviti Ora
-                </motion.button>
-              </motion.div>
+                </button>
+              </div>
 
               {/* Scroll Indicator */}
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-                className="absolute bottom-40 left-1/2 -translate-x-1/2 text-white/20 z-20"
-              >
+              <div className="absolute bottom-40 left-1/2 -translate-x-1/2 text-white/20 z-20 animate-bounce">
                 <ChevronDown size={32} />
-              </motion.div>
+              </div>
             </section>
 
             {/* --- PREMI SECTION --- */}
-            <section id="prizes" className="py-24 px-6 bg-[#0a0a0a] border-y border-white/5">
+            <section id="prizes" className="py-24 px-6 bg-[#0a0a0a] border-y border-white/5 min-h-[600px]">
               <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16 relative">
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-24 bg-[#A5D8FF]/5 blur-[60px] rounded-full pointer-events-none" />
@@ -154,10 +143,9 @@ const HomeView = () => {
                       colSpan: "md:col-span-2"
                     }
                   ].map((prize, i) => (
-                    <motion.div
+                    <div
                       key={i}
-                      whileHover={{ y: -5 }}
-                      className={`p-8 rounded-[32px] border border-white/5 bg-white/[0.03] flex items-center gap-6 ${prize.colSpan}`}
+                      className={`p-8 rounded-[32px] border border-white/5 bg-white/[0.03] flex items-center gap-6 ${prize.colSpan} hover:-translate-y-1 transition-transform duration-300`}
                     >
                       <div
                         className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
@@ -169,7 +157,7 @@ const HomeView = () => {
                         <h3 className="text-lg font-bold mb-1" style={{ color: prize.accent ? ACCENT_COLOR : '#FFF' }}>{prize.title}</h3>
                         <div className="text-white/40 text-xs leading-relaxed">{prize.desc}</div>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
 
@@ -192,10 +180,9 @@ const HomeView = () => {
                       { day: "6° Giornata", prize: "Borsone Head", desc: "Borsone tecnico ufficiale Head Padel." },
                       { day: "7° Giornata", prize: "SPA x2 presso \"Masagiù\" + Taglio \"Retròscena\"", desc: "Percorso benessere e trattamento barber shop." }
                     ].map((item, i) => (
-                      <motion.div
+                      <div
                         key={i}
-                        whileHover={{ y: -3 }}
-                        className="p-6 rounded-[24px] border border-white/5 bg-white/[0.01] flex flex-col justify-between hover:bg-white/[0.03] hover:border-white/10 transition-all duration-300"
+                        className="p-6 rounded-[24px] border border-white/5 bg-white/[0.01] flex flex-col justify-between hover:bg-white/[0.03] hover:border-white/10 hover:-translate-y-1 transition-all duration-300"
                       >
                         <div>
                           <span className="text-[9px] font-bold text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-2.5 py-1 rounded-full mb-4 inline-block">
@@ -203,7 +190,7 @@ const HomeView = () => {
                           </span>
                           <h4 className="text-sm font-bold text-white tracking-tight uppercase mb-2 leading-snug">{item.prize}</h4>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -211,7 +198,7 @@ const HomeView = () => {
             </section>
 
             {/* --- INCLUSO NELLA QUOTA SECTION --- */}
-            <section id="included" className="py-24 px-6 bg-[#070707] border-b border-white/5">
+            <section id="included" className="py-24 px-6 bg-[#070707] border-b border-white/5 min-h-[400px]">
               <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16 relative">
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-24 bg-[#A5D8FF]/5 blur-[60px] rounded-full pointer-events-none" />
@@ -233,10 +220,9 @@ const HomeView = () => {
                     { text: "10% di Sconto presso \"Novum Store\"", desc: "Sconto riservato su abbigliamento e attrezzature tecniche.", icon: Star },
                     { text: "25% di Sconto presso \"Doppio Malto\"", desc: "Per concludere i match in un clima di festa e condivisione.", icon: Star }
                   ].map((item, i) => (
-                    <motion.div
+                    <div
                       key={i}
-                      whileHover={{ y: -5 }}
-                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] flex flex-col justify-between h-full group hover:border-[#A5D8FF]/20 transition-all duration-300"
+                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] flex flex-col justify-between h-full group hover:border-[#A5D8FF]/20 hover:-translate-y-1 transition-all duration-300"
                     >
                       <div>
                         <div className="flex items-center gap-4 mb-6">
@@ -247,7 +233,7 @@ const HomeView = () => {
                         </div>
                         <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>

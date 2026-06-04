@@ -10,7 +10,7 @@ const skeletonAnimation = {
 };
 
 export const HomeSkeleton = () => (
-  <motion.div {...skeletonAnimation} className="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-screen">
+  <motion.div {...skeletonAnimation} className="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-screen bg-[#050505]">
     <div className="flex flex-col items-center mb-16 space-y-6">
       <div className="w-32 h-4 bg-white/5 rounded-full animate-pulse" />
       <div className="w-64 md:w-96 h-12 bg-white/10 rounded-2xl animate-pulse" />
@@ -25,7 +25,7 @@ export const HomeSkeleton = () => (
 );
 
 export const GenericPageSkeleton = () => (
-  <motion.div {...skeletonAnimation} className="pt-40 pb-24 px-6 max-w-4xl mx-auto min-h-screen">
+  <motion.div {...skeletonAnimation} className="pt-40 pb-24 px-6 max-w-4xl mx-auto min-h-screen bg-[#050505]">
     <div className="w-48 h-10 bg-white/10 rounded-xl animate-pulse mb-12" />
     <div className="space-y-6">
       <div className="w-full h-4 bg-white/5 rounded-full animate-pulse" />
@@ -39,7 +39,7 @@ export const GenericPageSkeleton = () => (
 );
 
 export const CardGridSkeleton = () => (
-  <motion.div {...skeletonAnimation} className="pt-40 pb-24 px-6 bg-white/[0.01] min-h-screen">
+  <motion.div {...skeletonAnimation} className="pt-40 pb-24 px-6 bg-[#050505] min-h-screen">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-20 flex flex-col items-center">
         <div className="w-24 h-3 bg-white/5 rounded-full animate-pulse mb-6" />
@@ -61,7 +61,7 @@ export const CardGridSkeleton = () => (
 );
 
 export const ArticleListSkeleton = () => (
-  <motion.div {...skeletonAnimation} className="pt-40 pb-24 px-6 bg-white/[0.01] min-h-screen">
+  <motion.div {...skeletonAnimation} className="pt-40 pb-24 px-6 bg-[#050505] min-h-screen">
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-16 flex flex-col items-center">
         <div className="w-32 h-3 bg-white/5 rounded-full animate-pulse mb-4" />
@@ -88,7 +88,7 @@ export const ArticleListSkeleton = () => (
 );
 
 export const TabelloneSkeleton = () => (
-  <motion.div {...skeletonAnimation} className="pt-40 pb-24 px-6 min-h-screen">
+  <motion.div {...skeletonAnimation} className="pt-40 pb-24 px-6 min-h-screen bg-[#050505]">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16 flex flex-col items-center">
         <div className="w-32 h-3 bg-white/5 rounded-full animate-pulse mb-4" />

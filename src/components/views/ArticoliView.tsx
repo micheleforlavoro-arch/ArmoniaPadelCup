@@ -26,12 +26,9 @@ const ArticoliView = ({ articles }: { articles: Article[] }) => {
               ) : (
                 <div className="space-y-12">
                   {articles.map((article, idx) => (
-                    <motion.article
+                    <article
                       key={article.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.05 }}
-                      className="p-8 md:p-12 rounded-[32px] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all text-left"
+                      className="p-8 md:p-12 rounded-[32px] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all text-left animate-fade-in-up hover:-translate-y-1"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                         <span className="text-[10px] font-black text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-3 py-1.5 rounded-full">
@@ -47,7 +44,7 @@ const ArticoliView = ({ articles }: { articles: Article[] }) => {
                       <div className="text-white/60 text-sm leading-relaxed whitespace-pre-line uppercase tracking-wide">
                         {article.content}
                       </div>
-                    </motion.article>
+                    </article>
                   ))}
                 </div>
               )}
