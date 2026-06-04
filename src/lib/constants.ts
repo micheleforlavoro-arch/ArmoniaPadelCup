@@ -1,19 +1,126 @@
 export const ACCENT_COLOR = "#A5D8FF"; // Ice Blue
 
 export const SPONSORS = [
-  { name: "Retròscena Barber Shop", type: "Barber Shop", desc: "Taglio capelli e cura barba professionale.", img: "/retròscena_logo_Tavola disegno 1.jpg" },
-  { name: "Wine Art", type: "Ristorazione", desc: "Cantina vinicola e piatti ricercati.", img: "/wine art logo.jpg" },
-  { name: "Boa Sorte", type: "Ristorazione", desc: "Sapori esotici e cucina fusion di alta classe.", img: "/boa sorte logo.png" },
-  { name: "Gelateria Armonia", type: "Main Sponsor", desc: "Gelato artigianale d'eccellenza e gusti esclusivi.", img: "/ARMONIA DEI GUSTI VETTORIALE.jpg" },
-  { name: "Molendini", type: "Ristorazione", desc: "Lounge bar e kit premium per serate indimenticabili.", img: "/molendini logo.png" },
-  { name: "Dehor", type: "Lounge & Aperitif", desc: "Aperitivi e cocktail d'autore in un'atmosfera unica.", img: "/dehor logo.png" },
-  { name: "Novum Store", type: "Abbigliamento", desc: "Abbigliamento tecnico sportivo e accessori.", img: "/novum store logo.png" },
-  { name: "Doppio Malto", type: "Birreria & Grill", desc: "Birra artigianale e griglia per concludere i match in festa.", img: "/doppio malto.png" },
-  { name: "Head Padel", type: "Technical Partner", desc: "Attrezzatura tecnica ufficiale per il torneo.", img: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=300&q=50" },
-  { name: "Masagiù SPA", type: "Wellness", desc: "Centro benessere e percorsi relax per atleti.", img: "/masagiù logo.jpg" },
-  { name: "Colosseo", type: "Sponsor Ufficiale", desc: "", img: "/Logo COLOSSEO .jpg" },
-  { name: "DO&BIZ", type: "Sponsor Ufficiale", desc: "", img: "/logo DO&BIZ.jpg" },
-  { name: "Chiappetta Sport Village", type: "Location Ufficiale", desc: "", img: "/logo chiappetta sport village.jpg" }
+  {
+    "name": "Armonia dei Gusti",
+    "type": "Main Sponsor",
+    "desc": "",
+    "img": "/ARMONIA DEI GUSTI VETTORIALE.jpg"
+  },
+  {
+    "name": "Chiappetta Sport Village",
+    "type": "Location Ufficiale",
+    "desc": "",
+    "img": "/logo chiappetta sport village.jpg"
+  },
+  {
+    "name": "Molto",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/logo molto.png"
+  },
+  {
+    "name": "Molendini",
+    "type": "Ristorazione",
+    "desc": "",
+    "img": "/molendini logo.png"
+  },
+  {
+    "name": "Retr�scena Barber Shop",
+    "type": "Barber Shop",
+    "desc": "",
+    "img": "/retr�scena_logo_Tavola disegno 1.jpg"
+  },
+  {
+    "name": "Dehor",
+    "type": "Lounge & Aperitif",
+    "desc": "",
+    "img": "/dehor logo.png"
+  },
+  {
+    "name": "Masagi� SPA",
+    "type": "Wellness",
+    "desc": "",
+    "img": "/masagi� logo.jpg"
+  },
+  {
+    "name": "Novum Store",
+    "type": "Abbigliamento",
+    "desc": "",
+    "img": "/novum store logo.png"
+  },
+  {
+    "name": "Wine Art",
+    "type": "Ristorazione",
+    "desc": "",
+    "img": "/wine art logo.jpg"
+  },
+  {
+    "name": "Boa Sorte",
+    "type": "Ristorazione",
+    "desc": "",
+    "img": "/boa sorte logo.png"
+  },
+  {
+    "name": "Doppio Malto",
+    "type": "Birreria & Grill",
+    "desc": "",
+    "img": "/doppio malto.png"
+  },
+  {
+    "name": "Head Padel",
+    "type": "Technical Partner",
+    "desc": "",
+    "img": "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=300&q=50"
+  },
+  {
+    "name": "Colosseo",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/Logo COLOSSEO .jpg"
+  },
+  {
+    "name": "DO&BIZ",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/logo DO&BIZ.jpg"
+  },
+  {
+    "name": "Call The Future",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/call the future logo.jpg"
+  },
+  {
+    "name": "Pasticceria Siciliana",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/PASTICCERIA SICILIANA logo.jpg"
+  },
+  {
+    "name": "Due Fratelli",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/due fratelli logo.png"
+  },
+  {
+    "name": "AM Sport",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/AM Group.jpg"
+  },
+  {
+    "name": "Pizza.com",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/pizza.com logo.jpeg"
+  },
+  {
+    "name": "Maxima",
+    "type": "Sponsor Ufficiale",
+    "desc": "",
+    "img": "/maxima logo.jpg"
+  }
 ];
 
 export const compressImage = (base64Str: string, maxWidth = 600, quality = 0.7): Promise<string> => {

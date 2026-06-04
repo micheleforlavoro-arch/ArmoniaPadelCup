@@ -33,7 +33,6 @@ const PrivacyView = () => {
           <li>Nome e Cognome dei giocatori</li>
           <li>Indirizzo Email</li>
           <li>Numero di Telefono</li>
-          <li>Livello di gioco dichiarato</li>
         </ul>
 
         <h3 className="text-xl font-bold text-white mt-8 mb-4 uppercase tracking-widest">3. Finalità del Trattamento</h3>
