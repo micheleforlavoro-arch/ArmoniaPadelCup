@@ -26,7 +26,7 @@ export const SPONSORS = [
     "img": "/molendini logo.png"
   },
   {
-    "name": "Retr�scena Barber Shop",
+    "name": "Retròscena Barber Shop",
     "type": "Barber Shop",
     "desc": "",
     "img": "/retroscena_logo.jpg"
@@ -38,7 +38,7 @@ export const SPONSORS = [
     "img": "/dehor logo.png"
   },
   {
-    "name": "Masagi� SPA",
+    "name": "Masagiù SPA",
     "type": "Wellness",
     "desc": "",
     "img": "/masagiu_logo.jpg"
