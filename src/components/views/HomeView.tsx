@@ -176,7 +176,7 @@ const HomeView = () => {
                   <div className="text-center mb-12">
                     <span className="px-4 py-1.5 border border-yellow-500/30 text-yellow-500 text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-yellow-500/5 mb-4 inline-block">Competizione Giornaliera</span>
                     <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-none">
-                      Premi di Giornata.
+                      Premi di Giornata
                     </h3>
                   </div>
 
