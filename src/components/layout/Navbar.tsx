@@ -43,7 +43,7 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          <div className="flex gap-6 text-[10px] uppercase tracking-[0.2em] font-bold text-white/60">
+          <div className="flex gap-3 xl:gap-6 text-[10px] uppercase tracking-[0.2em] font-bold text-white/60">
             {navLinks.map((link) => (
               <button
                 key={link.id}

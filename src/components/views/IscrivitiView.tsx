@@ -63,8 +63,7 @@ const IscrivitiView = () => {
                 ) : (
                   <motion.div key="form">
                     <div className="text-center mb-12">
-                      <h2 className="text-5xl font-black tracking-tighter mb-4 italic uppercase">ISCRIZIONE.</h2>
-                      <p className="text-white/40 italic uppercase text-[10px] tracking-[0.2em]">Assicura il tuo posto nell'elite del Padel.</p>
+                      <h2 className="text-5xl font-black tracking-tighter mb-4 italic uppercase">ISCRIZIONE</h2>
                     </div>
                     <form
                       onSubmit={async (e) => {

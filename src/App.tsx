@@ -241,7 +241,7 @@ export default function App() {
           {view === 'tabellone' && <TabelloneView tournamentState={tournamentState} />}
           {view === 'articoli' && <ArticoliView articles={articles} />}
           {view === 'iscriviti' && <IscrivitiView />}
-          {view === 'privacy' && <PrivacyView />}
+          {(view === 'privacy' || view === 'cookies') && <PrivacyView />}
           {view === 'admin' && (
             <motion.section
               key="admin"

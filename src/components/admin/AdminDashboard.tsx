@@ -65,12 +65,14 @@ export const AdminDashboard = ({
   >("iscrizioni");
   const [isAdding, setIsAdding] = useState(false);
   const [editingReg, setEditingReg] = useState<Registration | null>(null);
-  // Article management states   const [isWritingArticle, setIsWritingArticle] = useState(false);
+  // Article management states
+  const [isWritingArticle, setIsWritingArticle] = useState(false);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
   const [articleTitle, setArticleTitle] = useState("");
   const [articleGiornata, setArticleGiornata] = useState("");
   const [articleContent, setArticleContent] = useState("");
-  // Form states   const [teamName, setTeamName] = useState('');
+  // Form states
+  const [teamName, setTeamName] = useState('');
   const [p1Name, setP1Name] = useState("");
   const [p1Surname, setP1Surname] = useState("");
   const [p2Name, setP2Name] = useState("");

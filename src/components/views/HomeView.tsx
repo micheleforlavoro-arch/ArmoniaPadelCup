@@ -201,7 +201,6 @@ const HomeView = () => {
                           </span>
                           <h4 className="text-sm font-bold text-white tracking-tight uppercase mb-2 leading-snug">{item.prize}</h4>
                         </div>
-                        <p className="text-white/30 text-[10px] leading-relaxed mt-2">{item.desc}</p>
                       </motion.div>
                     ))}
                   </div>

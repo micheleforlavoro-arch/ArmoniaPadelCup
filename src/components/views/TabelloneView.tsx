@@ -5,6 +5,7 @@ import { TournamentState } from '../../lib/types';
 import { ACCENT_COLOR } from '../../lib/constants';
 
 const TabelloneView = ({ tournamentState }: { tournamentState: TournamentState }) => {
+  const [isBracketUnlocked, setIsBracketUnlocked] = useState(false);
   return (
     <>
         

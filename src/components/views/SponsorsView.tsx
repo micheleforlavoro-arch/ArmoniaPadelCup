@@ -38,9 +38,7 @@ const SponsorsView = () => {
                       <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mb-4">
                         {sponsor.name}
                       </h3>
-                      <p className="text-white/50 text-xs leading-relaxed uppercase tracking-wider mb-6">
-                        {sponsor.desc}
-                      </p>
+
                     </div>
                   </motion.div>
                 ))}
