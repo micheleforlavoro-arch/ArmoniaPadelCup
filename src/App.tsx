@@ -13,6 +13,7 @@ const PartecipantiView = lazy(() => import('./components/views/PartecipantiView'
 const TabelloneView = lazy(() => import('./components/views/TabelloneView'));
 const ArticoliView = lazy(() => import('./components/views/ArticoliView'));
 const PrivacyView = lazy(() => import('./components/views/PrivacyView'));
+const CookiesView = lazy(() => import('./components/views/CookiesView'));
 const IscrivitiView = lazy(() => import('./components/views/IscrivitiView'));
 const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
 
@@ -241,7 +242,8 @@ export default function App() {
           {view === 'tabellone' && <TabelloneView tournamentState={tournamentState} />}
           {view === 'articoli' && <ArticoliView articles={articles} />}
           {view === 'iscriviti' && <IscrivitiView />}
-          {(view === 'privacy' || view === 'cookies') && <PrivacyView />}
+          {view === 'privacy' && <PrivacyView />}
+          {view === 'cookies' && <CookiesView />}
           {view === 'admin' && (
             <motion.section
               key="admin"
