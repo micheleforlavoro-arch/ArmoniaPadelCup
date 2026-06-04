@@ -33,7 +33,7 @@ const IscrivitiView = () => {
                       <CheckCircle2 size={48} className="text-[#A5D8FF]" />
                     </div>
                     <h2 className="text-4xl font-black mb-4 uppercase tracking-[0.1em]">Iscrizione Effettuata!</h2>
-                    <p className="text-white/50 mb-12 max-w-sm mx-auto">La tua richiesta è stata inviata con successo. Gli organizzatori valuteranno la tua iscrizione e riceverai una conferma via email.</p>
+                    <p className="text-white/50 mb-12 max-w-sm mx-auto">La tua richiesta � stata inviata con successo. Gli organizzatori valuteranno la tua iscrizione e riceverai una conferma via email.</p>
                     <button
                       onClick={() => { setFormStatus('idle'); setView('home'); }}
                       className="px-8 py-3 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all"
@@ -51,7 +51,7 @@ const IscrivitiView = () => {
                     <div className="w-24 h-24 bg-red-500/20 rounded-full flex items-center justify-center mb-8">
                       <AlertCircle size={48} className="text-red-500" />
                     </div>
-                    <h2 className="text-4xl font-black mb-4 uppercase tracking-[0.1em]">C'è stato un problema</h2>
+                    <h2 className="text-4xl font-black mb-4 uppercase tracking-[0.1em]">C'� stato un problema</h2>
                     <p className="text-white/50 mb-12 max-w-sm mx-auto">Non siamo riusciti a inviare la tua iscrizione. Riprova tra qualche minuto o contattaci direttamente.</p>
                     <button
                       onClick={() => setFormStatus('idle')}
@@ -123,7 +123,7 @@ const IscrivitiView = () => {
                             const result = await res.json();
                             console.log("Risposta API Email:", result);
                             if (result.status === "skipped") {
-                              alert("ATTENZIONE: L'iscrizione è andata a buon fine nel database, ma l'email NON è partita perché le variabili SMTP mancano o non sono state caricate su Vercel. Fai un REDEPLOY su Vercel!");
+                              alert("ATTENZIONE: L'iscrizione � andata a buon fine nel database, ma l'email NON � partita perch� le variabili SMTP mancano o non sono state caricate su Vercel. Fai un REDEPLOY su Vercel!");
                             } else if (result.status === "error") {
                               alert("ATTENZIONE: Errore del server SMTP nell'invio della mail. Controlla i log su Vercel.");
                             }

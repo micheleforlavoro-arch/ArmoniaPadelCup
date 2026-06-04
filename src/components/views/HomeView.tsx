@@ -103,7 +103,7 @@ const HomeView = () => {
                 <div className="grid md:grid-cols-6 gap-8">
                   {[
                     { 
-                      title: "1Â° Posto", 
+                      title: "1Â Posto", 
                       desc: (
                         <span>
                           <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] via-[#a5d8ff] to-[#38bdf8] animate-pulse drop-shadow-[0_0_12px_rgba(165,216,255,0.8)] mr-1">
@@ -117,7 +117,7 @@ const HomeView = () => {
                       colSpan: "md:col-span-3"
                     },
                     { 
-                      title: "2Â° Posto", 
+                      title: "2Â Posto", 
                       desc: (
                         <span>
                           <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] via-[#a5d8ff] to-[#38bdf8] animate-pulse drop-shadow-[0_0_8px_rgba(165,216,255,0.6)] mr-1">
@@ -131,14 +131,14 @@ const HomeView = () => {
                       colSpan: "md:col-span-3"
                     },
                     { 
-                      title: "3Â° Posto", 
+                      title: "3Â Posto", 
                       desc: "100â‚¬ buono sconto presso \"Armonia dei Gusti\" + Tavolo al \"Molendini\" 2 Kit", 
                       icon: Medal, 
                       accent: false,
                       colSpan: "md:col-span-2"
                     },
                     { 
-                      title: "4Â° Posto", 
+                      title: "4Â Posto", 
                       desc: "Tavolo al \"Molendini\" 2 Kit", 
                       icon: Medal, 
                       accent: false,
@@ -182,13 +182,13 @@ const HomeView = () => {
 
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {[
-                      { day: "1Â° Giornata", prize: "Taglio presso \"RetrÃ²scena\"", desc: "Offerto da RetrÃ²scena Barber Shop." },
-                      { day: "2Â° Giornata", prize: "Taglio presso \"RetrÃ²scena\"", desc: "Offerto da RetrÃ²scena Barber Shop." },
-                      { day: "3Â° Giornata", prize: "Taglio presso \"RetrÃ²scena\"", desc: "Offerto da RetrÃ²scena Barber Shop." },
-                      { day: "4Â° Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
-                      { day: "5Â° Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
-                      { day: "6Â° Giornata", prize: "Borsone Head", desc: "Borsone tecnico ufficiale Head Padel." },
-                      { day: "7Â° Giornata", prize: "SPA x2 presso \"MasagiÃ¹\" + Taglio \"RetrÃ²scena\"", desc: "Percorso benessere e trattamento barber shop." }
+                      { day: "1Â Giornata", prize: "Taglio presso \"RetrÃ²scena\"", desc: "Offerto da RetrÃ²scena Barber Shop." },
+                      { day: "2Â Giornata", prize: "Taglio presso \"RetrÃ²scena\"", desc: "Offerto da RetrÃ²scena Barber Shop." },
+                      { day: "3Â Giornata", prize: "Taglio presso \"RetrÃ²scena\"", desc: "Offerto da RetrÃ²scena Barber Shop." },
+                      { day: "4Â Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
+                      { day: "5Â Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
+                      { day: "6Â Giornata", prize: "Borsone Head", desc: "Borsone tecnico ufficiale Head Padel." },
+                      { day: "7Â Giornata", prize: "SPA x2 presso \"MasagiÃ¹\" + Taglio \"RetrÃ²scena\"", desc: "Percorso benessere e trattamento barber shop." }
                     ].map((item, i) => (
                       <motion.div
                         key={i}
