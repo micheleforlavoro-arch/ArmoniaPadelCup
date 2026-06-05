@@ -161,8 +161,8 @@ const HomeView = () => {
                 </div>
 
                 {/* --- PREMI DI GIORNATA SUBSECTION --- */}
-                <div className="mt-24 pt-20 border-t border-white/5">
-                  <div className="text-center mb-12">
+                <div className={`border-t border-white/5 transition-all duration-300 ${showDailyPrizes ? 'mt-24 pt-20' : 'mt-12 pt-12'}`}>
+                  <div className={`text-center transition-all duration-300 ${showDailyPrizes ? 'mb-12' : 'mb-0'}`}>
                     <span className="px-4 py-1.5 border border-yellow-500/30 text-yellow-500 text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-yellow-500/5 mb-4 inline-block">Competizione Giornaliera</span>
                     <button 
                       onClick={() => setShowDailyPrizes(!showDailyPrizes)}
@@ -216,9 +216,9 @@ const HomeView = () => {
             </section>
 
             {/* --- INCLUSO NELLA QUOTA SECTION --- */}
-            <section id="included" className="py-24 px-6 bg-[#070707] border-b border-white/5 min-h-[400px]">
+            <section id="included" className={`px-6 bg-[#070707] border-b border-white/5 transition-all duration-300 ${showIncluded ? 'py-24 min-h-[400px]' : 'py-12 min-h-0'}`}>
               <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16 relative">
+                <div className={`text-center relative transition-all duration-300 ${showIncluded ? 'mb-16' : 'mb-0'}`}>
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-24 bg-[#A5D8FF]/5 blur-[60px] rounded-full pointer-events-none" />
                   <div className="mb-4">
                     <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Player Pack</span>
