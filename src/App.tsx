@@ -202,18 +202,56 @@ export default function App() {
             className="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center overflow-hidden"
           >
             <div className="relative flex flex-col items-center z-10">
-              <div className="relative w-24 h-24 flex items-center justify-center mb-6">
-                <div className="absolute bottom-4 w-12 h-1 bg-white/10 rounded-full" />
+              <div className="relative w-36 h-36 flex items-center justify-center mb-8">
+                {/* Orbit path (faint circle) */}
+                <div className="absolute inset-0 rounded-full border border-white/5" />
+                
+                {/* Spinner (Ball + Trail) */}
                 <motion.div 
-                  className="absolute w-5 h-5 rounded-full shadow-[0_0_15px_#A5D8FF] bg-[#A5D8FF]"
-                  animate={{ y: [-30, 10, -30], scaleY: [1.1, 0.8, 1.1], scaleX: [0.9, 1.2, 0.9] }}
-                  transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div 
-                  className="absolute bottom-3 w-8 h-2 rounded-full border border-[#A5D8FF]/30 pointer-events-none"
-                  animate={{ scale: [0.2, 1.5, 0.2], opacity: [0.8, 0, 0.8] }}
-                  transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-                />
+                  className="absolute inset-0"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+                >
+                  {/* The Ball */}
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#ccff00] rounded-full shadow-[0_0_15px_#ccff00,0_0_30px_#ccff00]" />
+                  
+                  {/* Trail 1 */}
+                  <div className="absolute inset-0" style={{ transform: 'rotate(-10deg)' }}>
+                    <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#ccff00]/60 rounded-full blur-[1px]" />
+                  </div>
+                  {/* Trail 2 */}
+                  <div className="absolute inset-0" style={{ transform: 'rotate(-20deg)' }}>
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#ccff00]/40 rounded-full blur-[1px]" />
+                  </div>
+                  {/* Trail 3 */}
+                  <div className="absolute inset-0" style={{ transform: 'rotate(-30deg)' }}>
+                    <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#ccff00]/20 rounded-full blur-[1px]" />
+                  </div>
+                </motion.div>
+
+                {/* Padel Racket SVG */}
+                <svg width="64" height="100" viewBox="0 0 64 100" className="relative z-10 drop-shadow-[0_0_15px_rgba(165,216,255,0.4)]">
+                  {/* Racket Head */}
+                  <path d="M 32 4 C 12 4 10 24 10 35 C 10 50 22 62 32 62 C 42 62 54 50 54 35 C 54 24 52 4 32 4 Z" fill="none" stroke="#A5D8FF" strokeWidth="4"/>
+                  {/* Heart / Bridge Outer */}
+                  <path d="M 22 55 L 26 70 L 38 70 L 42 55" fill="none" stroke="#A5D8FF" strokeWidth="4" strokeLinejoin="round"/>
+                  {/* Heart Hole inner */}
+                  <path d="M 26 58 L 38 58 L 32 66 Z" fill="none" stroke="#A5D8FF" strokeWidth="2" strokeLinejoin="round"/>
+                  {/* Handle */}
+                  <rect x="28" y="70" width="8" height="26" rx="2" fill="none" stroke="#A5D8FF" strokeWidth="4"/>
+                  
+                  {/* Holes pattern (3 rows) */}
+                  <circle cx="24" cy="20" r="2" fill="#A5D8FF" />
+                  <circle cx="32" cy="20" r="2" fill="#A5D8FF" />
+                  <circle cx="40" cy="20" r="2" fill="#A5D8FF" />
+                  <circle cx="20" cy="30" r="2" fill="#A5D8FF" />
+                  <circle cx="28" cy="30" r="2" fill="#A5D8FF" />
+                  <circle cx="36" cy="30" r="2" fill="#A5D8FF" />
+                  <circle cx="44" cy="30" r="2" fill="#A5D8FF" />
+                  <circle cx="24" cy="40" r="2" fill="#A5D8FF" />
+                  <circle cx="32" cy="40" r="2" fill="#A5D8FF" />
+                  <circle cx="40" cy="40" r="2" fill="#A5D8FF" />
+                </svg>
               </div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
                 <span className="text-white font-black text-[10px] tracking-[0.4em] uppercase opacity-80 animate-pulse">
