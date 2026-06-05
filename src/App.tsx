@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, ShieldCheck, Instagram } from 'lucide-react';
 import { supabase } from './lib/supabase';
@@ -44,6 +44,29 @@ export default function App() {
   const [tournamentState, setTournamentState] = useState<TournamentState>({ is_drawn: false, bracket: null });
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loaderBg, setLoaderBg] = useState<string>('#000000');
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleVideoLoad = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 16;
+      canvas.height = 16;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, 16, 16);
+        const pixel = ctx.getImageData(1, 1, 1, 1).data;
+        if (pixel[3] > 0) {
+          const hex = `#${((1 << 24) + (pixel[0] << 16) + (pixel[1] << 8) + pixel[2]).toString(16).slice(1)}`;
+          setLoaderBg(hex);
+        }
+      }
+    } catch (e) {
+      console.warn("Impossibile estrarre il colore di sfondo", e);
+    }
+  };
 
   useEffect(() => {
     Promise.all([
@@ -199,16 +222,22 @@ export default function App() {
             key="page-loader"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, y: -20, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }}
-            className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden"
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden transition-colors duration-300"
+            style={{ backgroundColor: loaderBg }}
           >
             <div className="relative flex flex-col items-center z-10">
               <div className="relative flex items-center justify-center mb-8">
                 <video 
+                  ref={videoRef}
                   src="/loader%20animato.MP4"
                   autoPlay
                   playsInline
                   loop
                   muted
+                  onLoadedData={handleVideoLoad}
+                  onTimeUpdate={() => {
+                    if (loaderBg === '#000000') handleVideoLoad();
+                  }}
                   className="w-72 md:w-80 h-auto object-contain"
                 />
               </div>
