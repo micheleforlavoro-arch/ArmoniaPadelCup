@@ -203,13 +203,12 @@ export default function App() {
           >
             <div className="relative flex flex-col items-center z-10">
               <div className="relative flex items-center justify-center mb-8">
-                <video 
-                  src="/loader%20animato.MP4"
-                  autoPlay
-                  playsInline
-                  loop
-                  muted
+                <img 
+                  src="/loader%20trasparente.gif"
+                  alt="Loader Animato"
                   className="w-72 md:w-80 h-auto object-contain"
+                  loading="eager"
+                  fetchPriority="high"
                 />
               </div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
