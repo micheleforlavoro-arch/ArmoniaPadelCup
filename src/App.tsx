@@ -195,33 +195,19 @@ export default function App() {
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-accent selection:text-black" style={{ '--accent': ACCENT_COLOR } as any}>
       <AnimatePresence>
         {isLoading && (
-          <motion.div
-            key="page-loader"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -20, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }}
-            className="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center overflow-hidden"
-          >
+          <div className="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center">
             <div className="relative flex flex-col items-center z-10">
               <div className="relative w-24 h-24 flex items-center justify-center mb-6">
                 <div className="absolute bottom-4 w-12 h-1 bg-white/10 rounded-full" />
-                <motion.div 
-                  className="absolute w-5 h-5 rounded-full shadow-[0_0_15px_#A5D8FF] bg-[#A5D8FF]"
-                  animate={{ y: [-30, 10, -30], scaleY: [1.1, 0.8, 1.1], scaleX: [0.9, 1.2, 0.9] }}
-                  transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div 
-                  className="absolute bottom-3 w-8 h-2 rounded-full border border-[#A5D8FF]/30 pointer-events-none"
-                  animate={{ scale: [0.2, 1.5, 0.2], opacity: [0.8, 0, 0.8] }}
-                  transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-                />
+                <div className="absolute w-5 h-5 rounded-full shadow-[0_0_15px_#A5D8FF] bg-[#A5D8FF] animate-bounce" />
               </div>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
-                <span className="text-white font-black text-[10px] tracking-[0.4em] uppercase opacity-80 animate-pulse">
+              <div className="flex flex-col items-center animate-pulse">
+                <span className="text-white font-black text-[10px] tracking-[0.4em] uppercase opacity-80">
                   Caricamento in corso<span className="text-[#A5D8FF]">...</span>
                 </span>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 

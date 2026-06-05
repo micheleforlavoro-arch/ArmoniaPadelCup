@@ -5,14 +5,7 @@ import { Menu, X } from 'lucide-react';
 const ACCENT_COLOR = "#A5D8FF";
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navLinks = [
     { name: 'Chi Siamo', id: 'chi-siamo' },
@@ -23,10 +16,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'h-20 bg-black border-b border-white/5 shadow-2xl' : 'h-28 bg-transparent'
-        }`}
-    >
+    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 bg-black/90 backdrop-blur-md border-b border-white/5 shadow-2xl">
       <div className="max-w-7xl mx-auto h-full px-8 flex justify-between items-center">
         <button onClick={() => { window.scrollTo(0, 0); (window as any).setView('home'); }} className="flex items-center gap-4 group">
           <img

@@ -14,6 +14,12 @@ export const SPONSORS = [
     "img": "/logo chiappetta sport village.jpg"
   },
   {
+    "name": "Kelin.dev",
+    "type": "Digital Partner",
+    "desc": "",
+    "img": "/kelin.dev.jpg"
+  },
+  {
     "name": "Molto",
     "type": "Sponsor Ufficiale",
     "desc": "",
