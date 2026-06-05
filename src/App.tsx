@@ -53,12 +53,12 @@ export default function App() {
     ]).finally(() => {
       setTimeout(() => {
         setIsLoading(false);
-      }, 1800);
+      }, 2500);
     });
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -208,7 +208,8 @@ export default function App() {
                   autoPlay
                   playsInline
                   loop
-                  className="w-72 md:w-80 h-auto object-contain mix-blend-screen"
+                  muted
+                  className="w-72 md:w-80 h-auto object-contain"
                 />
               </div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">

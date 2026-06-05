@@ -227,7 +227,7 @@ const HomeView = () => {
                     onClick={() => setShowIncluded(!showIncluded)}
                     className="flex items-center justify-center gap-4 mx-auto group"
                   >
-                    <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none group-hover:text-[#A5D8FF] transition-colors">
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-none group-hover:text-[#A5D8FF] transition-colors">
                       Incluso nella quota
                     </h2>
                     <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#A5D8FF]/10 transition-colors">
