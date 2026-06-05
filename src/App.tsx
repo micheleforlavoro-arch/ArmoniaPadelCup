@@ -229,29 +229,14 @@ export default function App() {
                   </div>
                 </motion.div>
 
-                {/* Padel Racket SVG */}
-                <svg width="64" height="100" viewBox="0 0 64 100" className="relative z-10 drop-shadow-[0_0_15px_rgba(165,216,255,0.4)]">
-                  {/* Racket Head */}
-                  <path d="M 32 4 C 12 4 10 24 10 35 C 10 50 22 62 32 62 C 42 62 54 50 54 35 C 54 24 52 4 32 4 Z" fill="none" stroke="#A5D8FF" strokeWidth="4"/>
-                  {/* Heart / Bridge Outer */}
-                  <path d="M 22 55 L 26 70 L 38 70 L 42 55" fill="none" stroke="#A5D8FF" strokeWidth="4" strokeLinejoin="round"/>
-                  {/* Heart Hole inner */}
-                  <path d="M 26 58 L 38 58 L 32 66 Z" fill="none" stroke="#A5D8FF" strokeWidth="2" strokeLinejoin="round"/>
-                  {/* Handle */}
-                  <rect x="28" y="70" width="8" height="26" rx="2" fill="none" stroke="#A5D8FF" strokeWidth="4"/>
-                  
-                  {/* Holes pattern (3 rows) */}
-                  <circle cx="24" cy="20" r="2" fill="#A5D8FF" />
-                  <circle cx="32" cy="20" r="2" fill="#A5D8FF" />
-                  <circle cx="40" cy="20" r="2" fill="#A5D8FF" />
-                  <circle cx="20" cy="30" r="2" fill="#A5D8FF" />
-                  <circle cx="28" cy="30" r="2" fill="#A5D8FF" />
-                  <circle cx="36" cy="30" r="2" fill="#A5D8FF" />
-                  <circle cx="44" cy="30" r="2" fill="#A5D8FF" />
-                  <circle cx="24" cy="40" r="2" fill="#A5D8FF" />
-                  <circle cx="32" cy="40" r="2" fill="#A5D8FF" />
-                  <circle cx="40" cy="40" r="2" fill="#A5D8FF" />
-                </svg>
+                {/* Padel Racket Image */}
+                <img 
+                  src="/loader.png" 
+                  alt="Loader Racchetta" 
+                  className="relative z-10 w-24 object-contain drop-shadow-[0_0_15px_rgba(165,216,255,0.4)]"
+                  loading="eager"
+                  fetchPriority="high"
+                />
               </div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
                 <span className="text-white font-black text-[10px] tracking-[0.4em] uppercase opacity-80 animate-pulse">
