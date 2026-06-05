@@ -68,12 +68,6 @@ export const SPONSORS = [
     "img": "/doppio malto.png"
   },
   {
-    "name": "Head Padel",
-    "type": "Technical Partner",
-    "desc": "",
-    "img": "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=300&q=50"
-  },
-  {
     "name": "Colosseo",
     "type": "Sponsor Ufficiale",
     "desc": "",

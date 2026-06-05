@@ -1,10 +1,12 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { Trophy, Medal, Star, Calendar } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Trophy, Medal, Star, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { ACCENT_COLOR } from '../../lib/constants';
 
 const HomeView = () => {
   const setView = (window as any).setView;
+  const [showDailyPrizes, setShowDailyPrizes] = useState(false);
+  const [showIncluded, setShowIncluded] = useState(false);
   return (
 
           <motion.div
@@ -162,34 +164,53 @@ const HomeView = () => {
                 <div className="mt-24 pt-20 border-t border-white/5">
                   <div className="text-center mb-12">
                     <span className="px-4 py-1.5 border border-yellow-500/30 text-yellow-500 text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-yellow-500/5 mb-4 inline-block">Competizione Giornaliera</span>
-                    <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-none">
-                      Premi di Giornata
-                    </h3>
+                    <button 
+                      onClick={() => setShowDailyPrizes(!showDailyPrizes)}
+                      className="flex items-center justify-center gap-4 mx-auto group"
+                    >
+                      <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-none group-hover:text-[#A5D8FF] transition-colors">
+                        Premi di Giornata
+                      </h3>
+                      <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#A5D8FF]/10 transition-colors">
+                        {showDailyPrizes ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                      </div>
+                    </button>
                   </div>
 
-                  <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {[
-                      { day: "1° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
-                      { day: "2° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
-                      { day: "3° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
-                      { day: "4° Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
-                      { day: "5° Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
-                      { day: "6° Giornata", prize: "Borsone Head", desc: "Borsone tecnico ufficiale Head Padel." },
-                      { day: "7° Giornata", prize: "SPA x2 presso \"Masagiù\" + Taglio \"Retròscena\"", desc: "Percorso benessere e trattamento barber shop." }
-                    ].map((item, i) => (
-                      <div
-                        key={i}
-                        className="p-6 rounded-[24px] border border-white/5 bg-white/[0.01] flex flex-col justify-between hover:bg-white/[0.03] hover:border-white/10 hover:-translate-y-1 transition-all duration-300"
+                  <AnimatePresence>
+                    {showDailyPrizes && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
                       >
-                        <div>
-                          <span className="text-[9px] font-bold text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-2.5 py-1 rounded-full mb-4 inline-block">
-                            {item.day}
-                          </span>
-                          <h4 className="text-sm font-bold text-white tracking-tight uppercase mb-2 leading-snug">{item.prize}</h4>
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4">
+                          {[
+                            { day: "1° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
+                            { day: "2° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
+                            { day: "3° Giornata", prize: "Taglio presso \"Retròscena\"", desc: "Offerto da Retròscena Barber Shop." },
+                            { day: "4° Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
+                            { day: "5° Giornata", prize: "Aperitivo x2 presso \"Dehor\"", desc: "Esperienza esclusiva per due persone." },
+                            { day: "6° Giornata", prize: "Borsone Head", desc: "Borsone tecnico ufficiale Head Padel." },
+                            { day: "7° Giornata", prize: "SPA x2 presso \"Masagiù\" + Taglio \"Retròscena\"", desc: "Percorso benessere e trattamento barber shop." }
+                          ].map((item, i) => (
+                            <div
+                              key={i}
+                              className="p-6 rounded-[24px] border border-white/5 bg-white/[0.01] flex flex-col justify-between hover:bg-white/[0.03] hover:border-white/10 hover:-translate-y-1 transition-all duration-300"
+                            >
+                              <div>
+                                <span className="text-[9px] font-bold text-[#A5D8FF] uppercase tracking-widest bg-[#A5D8FF]/10 px-2.5 py-1 rounded-full mb-4 inline-block">
+                                  {item.day}
+                                </span>
+                                <h4 className="text-sm font-bold text-white tracking-tight uppercase mb-2 leading-snug">{item.prize}</h4>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </section>
@@ -202,37 +223,56 @@ const HomeView = () => {
                   <div className="mb-4">
                     <span className="px-4 py-1.5 border border-[#A5D8FF]/30 text-[#A5D8FF] text-[9px] font-bold uppercase tracking-[0.2em] rounded-full bg-[#A5D8FF]/5">Player Pack</span>
                   </div>
-                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none">
-                    Incluso nella quota.
-                  </h2>
+                  <button 
+                    onClick={() => setShowIncluded(!showIncluded)}
+                    className="flex items-center justify-center gap-4 mx-auto group"
+                  >
+                    <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none group-hover:text-[#A5D8FF] transition-colors">
+                      Incluso nella quota
+                    </h2>
+                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#A5D8FF]/10 transition-colors">
+                      {showIncluded ? <ChevronUp size={32} /> : <ChevronDown size={32} />}
+                    </div>
+                  </button>
                   <p className="text-white/40 italic font-light tracking-widest text-xs mt-4 uppercase">Tutto il valore della tua partecipazione.</p>
                 </div>
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {[
-                    { text: "3 Partite Garantite", desc: "Fase a gironi assicurata con un minimo di tre partite giocate.", icon: Calendar },
-                    { text: "25% di Sconto presso \"Armonia dei Gusti\"", desc: "Per assaporare il meglio della nostra produzione artigianale.", icon: Star },
-                    { text: "Maglia personalizzata", desc: "T-shirt tecnica ufficiale Armonia Cup con personalizzazione.", icon: Trophy },
-                    { text: "Sacca del Torneo", desc: "Sacca sportiva portaoggetti in edizione speciale.", icon: Medal },
-                    { text: "10% di Sconto presso \"Novum Store\"", desc: "Sconto riservato su abbigliamento e attrezzature tecniche.", icon: Star },
-                    { text: "25% di Sconto presso \"Doppio Malto\"", desc: "Per concludere i match in un clima di festa e condivisione.", icon: Star }
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] flex flex-col justify-between h-full group hover:border-[#A5D8FF]/20 hover:-translate-y-1 transition-all duration-300"
+                <AnimatePresence>
+                  {showIncluded && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
                     >
-                      <div>
-                        <div className="flex items-center gap-4 mb-6">
-                          <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-[#A5D8FF] group-hover:bg-[#A5D8FF]/10 group-hover:scale-110 transition-all duration-300">
-                            <item.icon size={22} />
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-4">
+                        {[
+                          { text: "3 Partite Garantite", desc: "Fase a gironi assicurata con un minimo di tre partite giocate.", icon: Calendar },
+                          { text: "25% di Sconto presso \"Armonia dei Gusti\"", desc: "Per assaporare il meglio della nostra produzione artigianale.", icon: Star },
+                          { text: "Maglia personalizzata", desc: "T-shirt tecnica ufficiale Armonia Cup con personalizzazione.", icon: Trophy },
+                          { text: "Sacca del Torneo", desc: "Sacca sportiva portaoggetti in edizione speciale.", icon: Medal },
+                          { text: "10% di Sconto presso \"Novum Store\"", desc: "Sconto riservato su abbigliamento e attrezzature tecniche.", icon: Star },
+                          { text: "25% di Sconto presso \"Doppio Malto\"", desc: "Per concludere i match in un clima di festa e condivisione.", icon: Star }
+                        ].map((item, i) => (
+                          <div
+                            key={i}
+                            className="p-8 rounded-[32px] border border-white/5 bg-white/[0.02] flex flex-col justify-between h-full group hover:border-[#A5D8FF]/20 hover:-translate-y-1 transition-all duration-300"
+                          >
+                            <div>
+                              <div className="flex items-center gap-4 mb-6">
+                                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-[#A5D8FF] group-hover:bg-[#A5D8FF]/10 group-hover:scale-110 transition-all duration-300">
+                                  <item.icon size={22} />
+                                </div>
+                                <h3 className="text-lg font-black italic uppercase tracking-tight text-white group-hover:text-[#A5D8FF] transition-colors">{item.text}</h3>
+                              </div>
+                              <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
+                            </div>
                           </div>
-                          <h3 className="text-lg font-black italic uppercase tracking-tight text-white group-hover:text-[#A5D8FF] transition-colors">{item.text}</h3>
-                        </div>
-                        <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
+                        ))}
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </section>
           </motion.div>
