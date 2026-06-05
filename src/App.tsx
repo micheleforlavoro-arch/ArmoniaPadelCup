@@ -202,40 +202,13 @@ export default function App() {
             className="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center overflow-hidden"
           >
             <div className="relative flex flex-col items-center z-10">
-              <div className="relative w-36 h-36 flex items-center justify-center mb-8">
-                {/* Orbit path (faint circle) */}
-                <div className="absolute inset-0 rounded-full border border-white/5" />
-                
-                {/* Spinner (Ball + Trail) */}
-                <motion.div 
-                  className="absolute inset-0"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-                >
-                  {/* The Ball */}
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#ccff00] rounded-full shadow-[0_0_15px_#ccff00,0_0_30px_#ccff00]" />
-                  
-                  {/* Trail 1 */}
-                  <div className="absolute inset-0" style={{ transform: 'rotate(-10deg)' }}>
-                    <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#ccff00]/60 rounded-full blur-[1px]" />
-                  </div>
-                  {/* Trail 2 */}
-                  <div className="absolute inset-0" style={{ transform: 'rotate(-20deg)' }}>
-                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#ccff00]/40 rounded-full blur-[1px]" />
-                  </div>
-                  {/* Trail 3 */}
-                  <div className="absolute inset-0" style={{ transform: 'rotate(-30deg)' }}>
-                    <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#ccff00]/20 rounded-full blur-[1px]" />
-                  </div>
-                </motion.div>
-
-                {/* Padel Racket Image */}
-                <img 
-                  src="/loader.png" 
-                  alt="Loader Racchetta" 
-                  className="relative z-10 w-24 object-contain drop-shadow-[0_0_15px_rgba(165,216,255,0.4)]"
-                  loading="eager"
-                  fetchPriority="high"
+              <div className="relative flex items-center justify-center mb-8">
+                <video 
+                  src="/loader%20animato.MP4"
+                  autoPlay
+                  playsInline
+                  loop
+                  className="w-72 md:w-80 h-auto object-contain mix-blend-screen"
                 />
               </div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
