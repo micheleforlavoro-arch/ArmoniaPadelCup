@@ -44,10 +44,12 @@ export default function App() {
   const [tournamentState, setTournamentState] = useState<TournamentState>({ is_drawn: false, bracket: null });
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [loaderBg, setLoaderBg] = useState<string>('#000000');
+  const [loaderBg, setLoaderBg] = useState<string>('#050505');
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleVideoLoad = () => {
+    if (videoLoaded) return;
     const video = videoRef.current;
     if (!video) return;
     try {
@@ -61,10 +63,12 @@ export default function App() {
         if (pixel[3] > 0) {
           const hex = `#${((1 << 24) + (pixel[0] << 16) + (pixel[1] << 8) + pixel[2]).toString(16).slice(1)}`;
           setLoaderBg(hex);
+          setVideoLoaded(true);
         }
       }
     } catch (e) {
       console.warn("Impossibile estrarre il colore di sfondo", e);
+      setVideoLoaded(true);
     }
   };
 
@@ -236,9 +240,9 @@ export default function App() {
                   muted
                   onLoadedData={handleVideoLoad}
                   onTimeUpdate={() => {
-                    if (loaderBg === '#000000') handleVideoLoad();
+                    if (!videoLoaded) handleVideoLoad();
                   }}
-                  className="w-72 md:w-80 h-auto object-contain"
+                  className={`w-72 md:w-80 h-auto object-contain transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
                 />
               </div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
