@@ -107,7 +107,7 @@ const TabelloneTvView = () => {
             <h3 className="text-center text-white/40 text-xl font-bold uppercase tracking-widest mb-2">Ottavi</h3>
             {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
               <div key={`ottavi-${i}`} className="flex-1 min-h-0 flex flex-col justify-center my-1">
-                <div className="px-3 py-1 rounded-xl border border-white/10 bg-white/5 flex flex-col justify-center h-full max-h-[8vh]">
+                <div className="px-3 py-1 rounded-xl border border-white/20 bg-black/80 backdrop-blur-sm flex flex-col justify-center h-full max-h-[8vh]">
                   <div className="h-1/2 flex items-center px-1 text-[1.4vh] font-bold uppercase truncate border-b border-white/10 text-white">
                     {renderTeam(tournamentState.bracket?.ottavi?.[i * 2])}
                   </div>
@@ -126,7 +126,7 @@ const TabelloneTvView = () => {
               <div key={`quarti-${i}`} className="flex-1 min-h-0 flex flex-col justify-center my-2 relative">
                 {/* Connettori */}
                 <div className="absolute -left-3 top-1/2 w-3 border-t-2 border-white/10" />
-                <div className="px-4 py-2 rounded-xl border-l-4 border-white/20 bg-white/5 flex flex-col justify-center h-full max-h-[12vh]">
+                <div className="px-4 py-2 rounded-xl border-l-4 border-white/30 bg-black/80 backdrop-blur-sm flex flex-col justify-center h-full max-h-[12vh]">
                   <div className="h-1/2 flex items-center px-2 text-[1.8vh] font-black uppercase truncate border-b border-white/10 text-white">
                     {renderTeam(tournamentState.bracket?.quarterFinals?.[i * 2])}
                   </div>
@@ -144,7 +144,7 @@ const TabelloneTvView = () => {
             {[0, 1].map(i => (
               <div key={`semi-${i}`} className="flex-1 min-h-0 flex flex-col justify-center my-6 relative">
                 <div className="absolute -left-3 top-1/2 w-3 border-t-2 border-white/20" />
-                <div className="p-4 rounded-2xl border-l-4 border-[#A5D8FF] bg-[#A5D8FF]/5 flex flex-col justify-center h-full max-h-[16vh] shadow-[0_0_30px_rgba(165,216,255,0.05)]">
+                <div className="p-4 rounded-2xl border-l-4 border-[#A5D8FF] bg-black/80 backdrop-blur-sm flex flex-col justify-center h-full max-h-[16vh] shadow-[0_0_30px_rgba(165,216,255,0.1)]">
                   <div className="h-1/2 flex items-center px-3 text-[2.2vh] font-black uppercase truncate border-b border-white/10 text-white">
                     {renderTeam(tournamentState.bracket?.semiFinals?.[i * 2])}
                   </div>
@@ -161,7 +161,7 @@ const TabelloneTvView = () => {
             <h3 className="text-center text-[#A5D8FF] text-2xl font-black uppercase tracking-widest mb-2">Finale</h3>
             <div className="flex-1 min-h-0 flex flex-col justify-center my-6 relative">
               <div className="absolute -left-3 top-1/2 w-3 border-t-2 border-white/20" />
-              <div className="p-4 rounded-2xl border-l-4 border-[#A5D8FF]/60 bg-[#A5D8FF]/5 flex flex-col justify-center h-full max-h-[16vh] shadow-[0_0_30px_rgba(165,216,255,0.05)]">
+              <div className="p-4 rounded-2xl border-l-4 border-[#A5D8FF]/60 bg-black/80 backdrop-blur-sm flex flex-col justify-center h-full max-h-[16vh] shadow-[0_0_30px_rgba(165,216,255,0.1)]">
                 <div className="h-1/2 flex items-center px-3 text-[2.2vh] font-black uppercase truncate border-b border-white/10 text-white">
                   {renderTeam(tournamentState.bracket?.final?.[0])}
                 </div>
@@ -175,7 +175,7 @@ const TabelloneTvView = () => {
           {/* Finalissima */}
           <div className="flex flex-col justify-center flex-[1.5] h-full">
              <h3 className="text-center text-yellow-500 text-3xl font-black uppercase tracking-[0.3em] mb-4">Finalissima</h3>
-             <div className="relative p-8 rounded-[32px] border-4 border-yellow-500/40 bg-gradient-to-b from-yellow-500/10 to-transparent shadow-[0_0_80px_rgba(250,176,5,0.15)] overflow-hidden">
+             <div className="relative p-8 rounded-[32px] border-4 border-yellow-500/40 bg-black/80 backdrop-blur-sm bg-gradient-to-b from-yellow-500/20 to-transparent shadow-[0_0_80px_rgba(250,176,5,0.15)] overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 blur-[40px] rounded-full" />
                 <div className="absolute -left-3 top-1/2 w-3 border-t-2 border-yellow-500/40" />
                 
