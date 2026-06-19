@@ -69,7 +69,7 @@ const TabelloneTvView = () => {
   return (
     <div 
       className="w-screen h-screen bg-black overflow-hidden flex flex-col items-center justify-center relative select-none"
-      style={{ backgroundImage: 'url("/background torneo.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+      style={{ backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/background torneo.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
     >
       
       {/* Sfondo Astratto */}
