@@ -83,8 +83,9 @@ const TabelloneTvView = () => {
 
     if (!dateTime && !court) return null;
     return (
-      <div className="text-[0.9vh] uppercase font-bold text-white/30 tracking-wider pt-0.5 mt-0.5 border-t border-white/5 flex flex-wrap gap-1 justify-between w-full min-w-0">
+      <div className="text-[0.85vh] uppercase font-bold text-white/50 tracking-wider pb-0.5 mb-0.5 border-b border-white/5 flex flex-wrap gap-1 justify-center w-full min-w-0 leading-none">
         {dateTime && <span className="truncate">{dateTime}</span>}
+        {dateTime && court && <span className="text-white/20">•</span>}
         {court && <span className="text-[#A5D8FF]/70 truncate">{court}</span>}
       </div>
     );
@@ -159,13 +160,13 @@ const TabelloneTvView = () => {
           {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
             <div key={`ottavi-${i}`} className="flex-1 min-h-0 flex flex-col justify-center my-0.5">
               <div className="px-3 py-1 rounded-xl border border-white/15 bg-black/75 backdrop-blur-sm flex flex-col justify-center h-full max-h-[8vh] shadow-lg">
+                {renderKoMatchInfo(tournamentState.bracket?.ottavi?.[i * 2], tournamentState.bracket?.ottavi?.[i * 2 + 1])}
                 <div className="h-1/2 flex items-center px-1 text-[1.25vh] font-bold uppercase truncate border-b border-white/10 text-white">
                   {renderTeam(tournamentState.bracket?.ottavi?.[i * 2])}
                 </div>
                 <div className="h-1/2 flex items-center px-1 text-[1.25vh] font-bold uppercase truncate text-white">
                   {renderTeam(tournamentState.bracket?.ottavi?.[i * 2 + 1])}
                 </div>
-                {renderKoMatchInfo(tournamentState.bracket?.ottavi?.[i * 2], tournamentState.bracket?.ottavi?.[i * 2 + 1])}
               </div>
             </div>
           ))}
@@ -179,13 +180,13 @@ const TabelloneTvView = () => {
               {/* Connettori */}
               <div className="absolute -left-2 top-1/2 w-2 border-t border-white/15" />
               <div className="px-3 py-1.5 rounded-xl border-l-4 border-white/30 bg-black/75 backdrop-blur-sm flex flex-col justify-center h-full max-h-[12vh] shadow-lg">
+                {renderKoMatchInfo(tournamentState.bracket?.quarterFinals?.[i * 2], tournamentState.bracket?.quarterFinals?.[i * 2 + 1])}
                 <div className="h-1/2 flex items-center px-1.5 text-[1.4vh] font-black uppercase truncate border-b border-white/10 text-white">
                   {renderTeam(tournamentState.bracket?.quarterFinals?.[i * 2])}
                 </div>
                 <div className="h-1/2 flex items-center px-1.5 text-[1.4vh] font-black uppercase truncate text-white">
                   {renderTeam(tournamentState.bracket?.quarterFinals?.[i * 2 + 1])}
                 </div>
-                {renderKoMatchInfo(tournamentState.bracket?.quarterFinals?.[i * 2], tournamentState.bracket?.quarterFinals?.[i * 2 + 1])}
               </div>
             </div>
           ))}
@@ -198,13 +199,13 @@ const TabelloneTvView = () => {
             <div key={`semi-${i}`} className="flex-1 min-h-0 flex flex-col justify-center my-2 relative">
               <div className="absolute -left-2 top-1/2 w-2 border-t border-white/20" />
               <div className="p-3 rounded-2xl border-l-4 border-[#A5D8FF] bg-black/75 backdrop-blur-sm flex flex-col justify-center h-full max-h-[16vh] shadow-[0_0_20px_rgba(165,216,255,0.15)]">
+                {renderKoMatchInfo(tournamentState.bracket?.semiFinals?.[i * 2], tournamentState.bracket?.semiFinals?.[i * 2 + 1])}
                 <div className="h-1/2 flex items-center px-2 text-[1.6vh] font-black uppercase truncate border-b border-white/10 text-white">
                   {renderTeam(tournamentState.bracket?.semiFinals?.[i * 2])}
                 </div>
                 <div className="h-1/2 flex items-center px-2 text-[1.6vh] font-black uppercase truncate text-white">
                   {renderTeam(tournamentState.bracket?.semiFinals?.[i * 2 + 1])}
                 </div>
-                {renderKoMatchInfo(tournamentState.bracket?.semiFinals?.[i * 2], tournamentState.bracket?.semiFinals?.[i * 2 + 1])}
               </div>
             </div>
           ))}
@@ -216,13 +217,13 @@ const TabelloneTvView = () => {
           <div className="flex-1 min-h-0 flex flex-col justify-center my-4 relative">
             <div className="absolute -left-2 top-1/2 w-2 border-t border-white/20" />
             <div className="p-3 rounded-2xl border-l-4 border-[#A5D8FF]/60 bg-black/75 backdrop-blur-sm flex flex-col justify-center h-full max-h-[16vh] shadow-[0_0_20px_rgba(165,216,255,0.15)]">
+              {renderKoMatchInfo(tournamentState.bracket?.final?.[0], tournamentState.bracket?.final?.[1])}
               <div className="h-1/2 flex items-center px-2 text-[1.6vh] font-black uppercase truncate border-b border-white/10 text-white">
                 {renderTeam(tournamentState.bracket?.final?.[0])}
               </div>
               <div className="h-1/2 flex items-center px-2 text-[1.6vh] font-black uppercase truncate text-white">
                 {renderTeam(tournamentState.bracket?.final?.[1])}
               </div>
-              {renderKoMatchInfo(tournamentState.bracket?.final?.[0], tournamentState.bracket?.final?.[1])}
             </div>
           </div>
         </div>
@@ -241,13 +242,13 @@ const TabelloneTvView = () => {
               </div>
 
               <div className="flex flex-col h-[16vh] justify-center">
+                {renderKoMatchInfo(tournamentState.bracket?.finalissima?.[0], tournamentState.bracket?.finalissima?.[1])}
                 <div className={`h-1/2 flex items-center justify-center px-2 text-[2.2vh] font-black tracking-tight uppercase italic truncate border-b border-white/10 ${tournamentState.bracket?.finalissima?.[0] ? 'text-yellow-500' : 'text-white/20'}`}>
                   {renderTeam(tournamentState.bracket?.finalissima?.[0], true)}
                 </div>
                 <div className={`h-1/2 flex items-center justify-center px-2 text-[2.2vh] font-black tracking-tight uppercase italic truncate ${tournamentState.bracket?.finalissima?.[1] ? 'text-yellow-500' : 'text-white/20'}`}>
                   {renderTeam(tournamentState.bracket?.finalissima?.[1], true)}
                 </div>
-                {renderKoMatchInfo(tournamentState.bracket?.finalissima?.[0], tournamentState.bracket?.finalissima?.[1])}
               </div>
 
               {tournamentState.bracket?.winner && (

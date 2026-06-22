@@ -578,10 +578,12 @@ export const AdminDashboard = ({
                     {[4, 5, 6, 7, 8, 9].map((idx) => {
                       const val = editingBracket.gironi?.[gName]?.[idx] || "";
                       const valStr = val || "";
-                      const parts = valStr.includes('|') ? valStr.split('|') : [valStr, "", ""];
+                      const parts = valStr.includes('|') ? valStr.split('|') : [valStr, "", "", ""];
                       const updatePart = (partIdx: number, text: string) => {
                         const newParts = [...parts];
                         newParts[partIdx] = text;
+                        // Ensure parts array has at least 4 elements
+                        while (newParts.length < 4) newParts.push("");
                         const newBracket = { ...editingBracket };
                         if (!newBracket.gironi) newBracket.gironi = {};
                         if (!newBracket.gironi[gName] || newBracket.gironi[gName].length < 10)
@@ -590,11 +592,14 @@ export const AdminDashboard = ({
                         setEditingBracket(newBracket);
                       };
                       return (
-                        <div key={`match-${idx}`} className="flex gap-1 items-center">
-                          <input type="text" value={parts[0]} onChange={(e) => updatePart(0, e.target.value)} placeholder="Sq. 1" className="w-[38%] bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded-lg px-2 py-1.5 text-[10px] focus:outline-none focus:border-[#A5D8FF] text-[#A5D8FF]" />
-                          <span className="text-[#A5D8FF]/30 text-[10px] font-black italic">vs</span>
-                          <input type="text" value={parts[1]} onChange={(e) => updatePart(1, e.target.value)} placeholder="Sq. 2" className="w-[38%] bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded-lg px-2 py-1.5 text-[10px] focus:outline-none focus:border-[#A5D8FF] text-[#A5D8FF]" />
-                          <input type="text" value={parts[2]} onChange={(e) => updatePart(2, e.target.value)} placeholder="Pt." className="w-[24%] bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] focus:outline-none focus:border-white text-white font-bold" />
+                        <div key={`match-${idx}`} className="flex flex-col gap-1 mb-2">
+                          <input type="text" value={parts[3] || ""} onChange={(e) => updatePart(3, e.target.value)} placeholder="Data e Orario (es. 20 Mag 15:00)" className="w-full bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] focus:outline-none focus:border-white text-white/70" />
+                          <div className="flex gap-1 items-center">
+                            <input type="text" value={parts[0] || ""} onChange={(e) => updatePart(0, e.target.value)} placeholder="Sq. 1" className="flex-1 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded-lg px-2 py-1.5 text-[10px] focus:outline-none focus:border-[#A5D8FF] text-[#A5D8FF]" />
+                            <span className="text-[#A5D8FF]/30 text-[10px] font-black italic">vs</span>
+                            <input type="text" value={parts[1] || ""} onChange={(e) => updatePart(1, e.target.value)} placeholder="Sq. 2" className="flex-1 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded-lg px-2 py-1.5 text-[10px] focus:outline-none focus:border-[#A5D8FF] text-[#A5D8FF]" />
+                            <input type="text" value={parts[2] || ""} onChange={(e) => updatePart(2, e.target.value)} placeholder="Pt." className="w-[40px] bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] focus:outline-none focus:border-white text-white font-bold text-center" />
+                          </div>
                         </div>
                       );
                     })}
