@@ -169,26 +169,25 @@ const GironiTvView = () => {
                       return (
                         <div key={`tv-match-${idx}`} className="flex flex-col justify-center py-0.5 border-b border-white/5 last:border-0 min-h-0">
                           {hasContent ? (
-                              <div className="flex items-center justify-between w-full min-h-0 gap-2">
-                                {/* Info (Data e Campo) e Nomi Squadre */}
-                                <div className="flex flex-col min-w-0 justify-center">
-                                  {(dateTime || court) && (
-                                    <div className="flex items-center gap-1.5 text-[0.85vh] font-bold uppercase tracking-wider text-white/50 mb-0.5 leading-none">
-                                      {dateTime && <span>{dateTime}</span>}
-                                      {dateTime && court && <span className="text-white/20">•</span>}
-                                      {court && <span className="text-[#A5D8FF]/60">{court}</span>}
-                                    </div>
-                                  )}
-                                  <div className="flex items-center gap-1 min-w-0 leading-none">
-                                    <span className="text-[#A5D8FF]/30 font-black text-[1.1vh] leading-none">{idx + 1}.</span>
-                                    <span className="font-black text-[1.2vh] uppercase tracking-wide truncate text-[#A5D8FF] leading-none">
-                                      {home || '-'} <span className="text-white/30 text-[0.8vh] font-normal mx-0.5">vs</span> {away || '-'}
-                                    </span>
-                                  </div>
+                              <div className="flex items-center w-full min-h-0 gap-2">
+                                {/* Nomi Squadre */}
+                                <div className="flex items-center gap-1 min-w-0 flex-1">
+                                  <span className="text-[#A5D8FF]/30 font-black text-[1.1vh] leading-none">{idx + 1}.</span>
+                                  <span className="font-black text-[1.2vh] uppercase tracking-wide truncate text-[#A5D8FF] leading-none">
+                                    {home || '-'} <span className="text-white/30 text-[0.8vh] font-normal mx-0.5">vs</span> {away || '-'}
+                                  </span>
                                 </div>
+                                {/* Data e Campo */}
+                                {(dateTime || court) && (
+                                  <div className="flex-shrink-0 flex items-center gap-1.5 text-[0.85vh] font-bold uppercase tracking-wider text-white/50 leading-none">
+                                    {dateTime && <span>{dateTime}</span>}
+                                    {dateTime && court && <span className="text-white/20">•</span>}
+                                    {court && <span className="text-[#A5D8FF]/60">{court}</span>}
+                                  </div>
+                                )}
                                 {/* Punteggio */}
                                 {score && (
-                                  <div className="flex-shrink-0 flex items-center justify-center">
+                                  <div className="flex-shrink-0 flex items-center justify-center ml-1">
                                     <span className="bg-[#A5D8FF] text-black font-black text-[1.1vh] px-2 py-0.5 rounded shadow-lg min-w-[2.5ch] text-center leading-none">
                                       {score}
                                     </span>

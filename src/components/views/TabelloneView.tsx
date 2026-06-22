@@ -57,22 +57,7 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
                 </div>
                 <div className="flex flex-col gap-4 items-center md:items-end mx-auto md:mx-0">
                     <div className="flex gap-3">
-                      <button 
-                        onClick={() => (window as any).setView('gironi-tv')}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-[#A5D8FF]/20 border border-white/10 text-[#A5D8FF] text-[10px] font-black tracking-widest uppercase transition-all active:scale-95 group"
-                        title="Apri vista Gironi per schermi TV"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:animate-pulse"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
-                        TV Gironi
-                      </button>
-                      <button 
-                        onClick={() => (window as any).setView('tabellone-tv')}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-yellow-500/20 border border-white/10 text-yellow-500 text-[10px] font-black tracking-widest uppercase transition-all active:scale-95 group"
-                        title="Apri vista Fase Finale per schermi TV"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:animate-pulse"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
-                        TV Fasi Finali
-                      </button>
+                      {/* I pulsanti TV sono stati spostati nell'area Admin per renderli privati */}
                     </div>
                   <div className="flex gap-3">
                     <span className={`px-5 py-1.5 rounded-full border border-white/10 text-[10px] font-bold tracking-widest uppercase transition-all ${!tournamentState.is_drawn ? 'bg-[#A5D8FF] text-black shadow-[0_0_15px_rgba(165,216,255,0.2)]' : 'text-white/40'}`}>Gironi</span>
