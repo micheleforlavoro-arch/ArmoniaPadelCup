@@ -10,6 +10,7 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
   const renderTeam = (teamRaw: string | undefined, isYellow = false) => {
     const team = teamRaw || 'TBD';
     if (team === 'TBD') return <span className="truncate">TBD</span>;
+    // Format: "Name | Score | DateTime | Court" or just "Name | Score"
     const parts = team.split('|');
     const name = parts[0] || 'TBD';
     const score = parts[1] || '';
@@ -18,6 +19,22 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
       <div className={`flex justify-between w-full items-center ${isYellow ? 'text-yellow-500/90' : ''}`}>
         <span className="truncate">{name}</span>
         {score && <span className={`font-black ml-2 ${isYellow ? 'text-yellow-400' : 'text-[#A5D8FF]'}`}>{score}</span>}
+      </div>
+    );
+  };
+
+  const renderKoMatchInfo = (team1Raw: string | undefined, team2Raw: string | undefined) => {
+    // Check if either team has metadata in index 2 (dateTime) or 3 (court)
+    const t1Parts = (team1Raw || "").split('|');
+    const t2Parts = (team2Raw || "").split('|');
+    const dateTime = t1Parts[2] || t2Parts[2] || "";
+    const court = t1Parts[3] || t2Parts[3] || "";
+
+    if (!dateTime && !court) return null;
+    return (
+      <div className="text-[7.5px] uppercase font-bold text-white/30 tracking-widest pt-1 mt-1 border-t border-white/5 flex flex-wrap gap-2 justify-between">
+        {dateTime && <span>{dateTime}</span>}
+        {court && <span className="text-[#A5D8FF]/70">{court}</span>}
       </div>
     );
   };
@@ -91,19 +108,40 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
                             <span className="text-[9px] uppercase tracking-widest text-[#A5D8FF]/70 font-bold block mb-2">Partite & Punteggi</span>
                             {groupTeams.slice(4, 10).map((match: string, idx: number) => {
                               const matchStr = match || "";
-                              const parts = matchStr.includes('|') ? matchStr.split('|') : [matchStr, "", ""];
-                              const hasContent = parts[0] || parts[1] || parts[2];
+                              // Format: "Sq1 | Sq2 | Pt | Data/Ora | Campo"
+                              const parts = matchStr.includes('|') ? matchStr.split('|') : [matchStr, "", "", "", ""];
+                              const hasContent = parts[0] || parts[1] || parts[2] || parts[3] || parts[4];
                               return (
-                                <div key={`match-${idx}`} className="flex items-center gap-3 text-xs">
-                                  <span className="text-[#A5D8FF]/30 font-bold w-4 text-right">{idx + 1}.</span>
-                                  <span className={`font-semibold uppercase tracking-wide truncate ${hasContent ? 'text-[#A5D8FF]' : 'text-white/20 italic'}`}>
-                                    {hasContent ? (
-                                      <>
-                                        {parts[0] || '-'} <span className="text-[#A5D8FF]/40 text-[10px] mx-1">vs</span> {parts[1] || '-'} 
-                                        {parts[2] && <span className="text-white ml-2">{parts[2]}</span>}
-                                      </>
-                                    ) : '-'}
-                                  </span>
+                                <div key={`match-${idx}`} className="flex flex-col gap-0.5 py-1 border-b border-white/5 last:border-0 text-xs">
+                                  {hasContent ? (
+                                    <>
+                                      <div className="flex justify-between items-center">
+                                        <div className="flex items-center gap-1.5 min-w-0">
+                                          <span className="text-[#A5D8FF]/30 font-bold w-4 text-right">{idx + 1}.</span>
+                                          <span className="font-semibold uppercase tracking-wide truncate text-[#A5D8FF]">
+                                            {parts[0] || '-'} <span className="text-[#A5D8FF]/40 text-[10px] mx-0.5">vs</span> {parts[1] || '-'}
+                                          </span>
+                                        </div>
+                                        {parts[2] && (
+                                          <span className="text-white font-black ml-2 bg-[#A5D8FF]/15 px-1.5 py-0.5 rounded text-[10px]">
+                                            {parts[2]}
+                                          </span>
+                                        )}
+                                      </div>
+                                      {(parts[3] || parts[4]) && (
+                                        <div className="flex gap-2 text-[9px] font-bold text-white/30 uppercase tracking-widest ml-6">
+                                          {parts[3] && <span>{parts[3]}</span>}
+                                          {parts[3] && parts[4] && <span>•</span>}
+                                          {parts[4] && <span className="text-[#A5D8FF]/70">{parts[4]}</span>}
+                                        </div>
+                                      )}
+                                    </>
+                                  ) : (
+                                    <div className="flex items-center gap-1.5 text-white/20 italic">
+                                      <span className="font-bold w-4 text-right">{idx + 1}.</span>
+                                      <span>Partita da disputare</span>
+                                    </div>
+                                  )}
                                 </div>
                               );
                             })}
@@ -155,6 +193,7 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
                           <div className="h-8 flex items-center px-1 text-xs font-semibold uppercase italic">
                             {renderTeam(tournamentState.bracket?.ottavi?.[i * 2 + 1])}
                           </div>
+                          {renderKoMatchInfo(tournamentState.bracket?.ottavi?.[i * 2], tournamentState.bracket?.ottavi?.[i * 2 + 1])}
                         </div>
                       ))}
                     </div>
@@ -170,6 +209,7 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
                           <div className="h-8 flex items-center px-1 text-xs font-semibold uppercase italic">
                             {renderTeam(tournamentState.bracket?.quarterFinals?.[i * 2 + 1])}
                           </div>
+                          {renderKoMatchInfo(tournamentState.bracket?.quarterFinals?.[i * 2], tournamentState.bracket?.quarterFinals?.[i * 2 + 1])}
                         </div>
                       ))}
                     </div>
@@ -185,6 +225,7 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
                           <div className="h-8 flex items-center px-1 text-xs font-semibold uppercase italic">
                             {renderTeam(tournamentState.bracket?.semiFinals?.[i * 2 + 1])}
                           </div>
+                          {renderKoMatchInfo(tournamentState.bracket?.semiFinals?.[i * 2], tournamentState.bracket?.semiFinals?.[i * 2 + 1])}
                         </div>
                       ))}
                     </div>
@@ -199,6 +240,7 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
                         <div className="h-8 flex items-center px-1 text-xs font-semibold uppercase italic">
                           {renderTeam(tournamentState.bracket?.final?.[1])}
                         </div>
+                        {renderKoMatchInfo(tournamentState.bracket?.final?.[0], tournamentState.bracket?.final?.[1])}
                       </div>
                     </div>
 
@@ -219,6 +261,7 @@ const TabelloneView = ({ tournamentState, isAdminLoggedIn }: { tournamentState: 
                           <div className={`h-12 flex items-center justify-center px-2 text-lg font-black tracking-tight uppercase italic ${tournamentState.bracket?.finalissima?.[1] ? 'text-yellow-500/90' : 'opacity-20'}`}>
                             {renderTeam(tournamentState.bracket?.finalissima?.[1], true)}
                           </div>
+                          {renderKoMatchInfo(tournamentState.bracket?.finalissima?.[0], tournamentState.bracket?.finalissima?.[1])}
                         </div>
                         
                         {/* Vincitore (Campione) */}

@@ -621,43 +621,77 @@ export const AdminDashboard = ({
                     </div>{" "}
                     {[0, 1].map((j) => {
                       const team = editingBracket.ottavi?.[i * 2 + j] || "";
+                      const parts = team.split('|');
+                      const teamName = parts[0] || "";
+                      const score = parts[1] || "";
+                      const dateTime = parts[2] || "";
+                      const court = parts[3] || "";
+
+                      const updateVal = (idx: number, newVal: string) => {
+                        const newBracket = { ...editingBracket };
+                        if (!newBracket.ottavi) newBracket.ottavi = Array(16).fill("");
+                        const currentParts = [teamName, score, dateTime, court];
+                        currentParts[idx] = newVal;
+                        newBracket.ottavi[i * 2 + j] = currentParts.join('|');
+                        setEditingBracket(newBracket);
+                      };
+
                       return (
-                        <div key={j} className="flex gap-2 items-center">
-                          {" "}
-                          <input
-                            type="text"
-                            value={team.split('|')[0] || ""}
-                            onChange={(e) => {
-                              const newBracket = { ...editingBracket };
-                              if (!newBracket.ottavi) newBracket.ottavi = Array(16).fill("");
-                              newBracket.ottavi[i * 2 + j] = e.target.value + (team.includes('|') ? '|' + team.split('|')[1] : '');
-                              setEditingBracket(newBracket);
-                            }}
-                            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#A5D8FF]"
-                            placeholder="Squadra"
-                          />{" "}
-                          <input
-                            type="text"
-                            value={team.split('|')[1] || ""}
-                            onChange={(e) => {
-                              const newBracket = { ...editingBracket };
-                              if (!newBracket.ottavi) newBracket.ottavi = Array(16).fill("");
-                              newBracket.ottavi[i * 2 + j] = (team.split('|')[0] || "") + '|' + e.target.value;
-                              setEditingBracket(newBracket);
-                            }}
-                            className="w-16 bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-xs text-center focus:outline-none focus:border-[#A5D8FF]"
-                            placeholder="Pt."
-                          />{" "}
-                          <button
-                            type="button"
-                            onClick={() => advanceTeam(team.split('|')[0] || "", "ottavi", i)}
-                            disabled={!(team.split('|')[0])}
-                            className="px-3 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
-                            title="Avanza ai Quarti"
-                          >
-                            {" "}
-                            <ArrowRight size={14} />{" "}
-                          </button>{" "}
+                        <div key={j} className="space-y-1.5 p-2 bg-white/5 rounded-lg border border-white/5">
+                          <div className="flex gap-2 items-center">
+                            <input
+                              type="text"
+                              value={teamName}
+                              onChange={(e) => updateVal(0, e.target.value)}
+                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-xs focus:outline-none focus:border-[#A5D8FF]"
+                              placeholder="Squadra"
+                            />
+                            <input
+                              type="text"
+                              value={score}
+                              onChange={(e) => updateVal(1, e.target.value)}
+                              className="w-12 bg-white/5 border border-white/10 rounded-lg px-1 py-1 text-xs text-center focus:outline-none focus:border-[#A5D8FF]"
+                              placeholder="Pt."
+                            />
+                            {j === 0 && (
+                              <button
+                                type="button"
+                                onClick={() => advanceTeam(teamName, "ottavi", i)}
+                                disabled={!teamName}
+                                className="px-2 py-1 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
+                                title="Avanza ai Quarti (Sq 1)"
+                              >
+                                <ArrowRight size={12} />
+                              </button>
+                            )}
+                            {j === 1 && (
+                              <button
+                                type="button"
+                                onClick={() => advanceTeam(teamName, "ottavi", i)}
+                                disabled={!teamName}
+                                className="px-2 py-1 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
+                                title="Avanza ai Quarti (Sq 2)"
+                              >
+                                <ArrowRight size={12} />
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={dateTime}
+                              onChange={(e) => updateVal(2, e.target.value)}
+                              className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-2 py-0.5 text-[10px] focus:outline-none focus:border-[#A5D8FF] text-[#A5D8FF]"
+                              placeholder="Data/Ora"
+                            />
+                            <input
+                              type="text"
+                              value={court}
+                              onChange={(e) => updateVal(3, e.target.value)}
+                              className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-2 py-0.5 text-[10px] focus:outline-none focus:border-[#A5D8FF] text-[#A5D8FF]"
+                              placeholder="Campo"
+                            />
+                          </div>
                         </div>
                       );
                     })}
@@ -684,45 +718,65 @@ export const AdminDashboard = ({
                       Match #{i + 1}
                     </div>{" "}
                     {[0, 1].map((j) => {
-                      const team =
-                        editingBracket.quarterFinals?.[i * 2 + j] || "";
+                      const team = editingBracket.quarterFinals?.[i * 2 + j] || "";
+                      const parts = team.split('|');
+                      const teamName = parts[0] || "";
+                      const score = parts[1] || "";
+                      const dateTime = parts[2] || "";
+                      const court = parts[3] || "";
+
+                      const updateVal = (idx: number, newVal: string) => {
+                        const newBracket = { ...editingBracket };
+                        if (!newBracket.quarterFinals) newBracket.quarterFinals = Array(8).fill("");
+                        const currentParts = [teamName, score, dateTime, court];
+                        currentParts[idx] = newVal;
+                        newBracket.quarterFinals[i * 2 + j] = currentParts.join('|');
+                        setEditingBracket(newBracket);
+                      };
+
                       return (
-                        <div key={j} className="flex gap-2">
-                          {" "}
-                          <input
-                            type="text"
-                            value={team.split('|')[0] || ""}
-                            onChange={(e) => {
-                              const newBracket = { ...editingBracket };
-                              if (!newBracket.quarterFinals) newBracket.quarterFinals = Array(8).fill("");
-                              newBracket.quarterFinals[i * 2 + j] = e.target.value + (team.includes('|') ? '|' + team.split('|')[1] : '');
-                              setEditingBracket(newBracket);
-                            }}
-                            className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent"
-                            placeholder="TBD"
-                          />{" "}
-                          <input
-                            type="text"
-                            value={team.split('|')[1] || ""}
-                            onChange={(e) => {
-                              const newBracket = { ...editingBracket };
-                              if (!newBracket.quarterFinals) newBracket.quarterFinals = Array(8).fill("");
-                              newBracket.quarterFinals[i * 2 + j] = (team.split('|')[0] || "") + '|' + e.target.value;
-                              setEditingBracket(newBracket);
-                            }}
-                            className="w-12 bg-white/5 px-2 py-1.5 rounded text-xs text-center focus:outline-none focus:border-[#A5D8FF] border border-transparent"
-                            placeholder="Pt."
-                          />{" "}
-                          <button
-                            type="button"
-                            onClick={() => advanceTeam(team.split('|')[0] || "", "quarterFinals", i)}
-                            disabled={!(team.split('|')[0])}
-                            className="px-2 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
-                            title="Avanza alle Semifinali"
-                          >
-                            {" "}
-                            <ArrowRight size={14} />{" "}
-                          </button>{" "}
+                        <div key={j} className="space-y-1.5 p-2 bg-white/5 rounded-lg border border-white/5">
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={teamName}
+                              onChange={(e) => updateVal(0, e.target.value)}
+                              className="w-full bg-white/5 px-2 py-1 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent"
+                              placeholder="TBD"
+                            />
+                            <input
+                              type="text"
+                              value={score}
+                              onChange={(e) => updateVal(1, e.target.value)}
+                              className="w-10 bg-white/5 px-1 py-1 rounded text-xs text-center focus:outline-none focus:border-[#A5D8FF] border border-transparent"
+                              placeholder="Pt."
+                            />
+                            <button
+                              type="button"
+                              onClick={() => advanceTeam(teamName, "quarterFinals", i)}
+                              disabled={!teamName}
+                              className="px-1.5 py-1 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
+                              title="Avanza alle Semifinali"
+                            >
+                              <ArrowRight size={11} />
+                            </button>
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={dateTime}
+                              onChange={(e) => updateVal(2, e.target.value)}
+                              className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-1.5 py-0.5 text-[9px] focus:outline-none"
+                              placeholder="Data/Ora"
+                            />
+                            <input
+                              type="text"
+                              value={court}
+                              onChange={(e) => updateVal(3, e.target.value)}
+                              className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-1.5 py-0.5 text-[9px] focus:outline-none"
+                              placeholder="Campo"
+                            />
+                          </div>
                         </div>
                       );
                     })}
@@ -746,43 +800,64 @@ export const AdminDashboard = ({
                     </div>{" "}
                     {[0, 1].map((j) => {
                       const team = editingBracket.semiFinals?.[i * 2 + j] || "";
+                      const parts = team.split('|');
+                      const teamName = parts[0] || "";
+                      const score = parts[1] || "";
+                      const dateTime = parts[2] || "";
+                      const court = parts[3] || "";
+
+                      const updateVal = (idx: number, newVal: string) => {
+                        const newBracket = { ...editingBracket };
+                        if (!newBracket.semiFinals) newBracket.semiFinals = Array(4).fill("");
+                        const currentParts = [teamName, score, dateTime, court];
+                        currentParts[idx] = newVal;
+                        newBracket.semiFinals[i * 2 + j] = currentParts.join('|');
+                        setEditingBracket(newBracket);
+                      };
+
                       return (
-                        <div key={j} className="flex gap-2">
-                          {" "}
-                          <input
-                            type="text"
-                            value={team.split('|')[0] || ""}
-                            onChange={(e) => {
-                              const newBracket = { ...editingBracket };
-                              if (!newBracket.semiFinals) newBracket.semiFinals = Array(4).fill("");
-                              newBracket.semiFinals[i * 2 + j] = e.target.value + (team.includes('|') ? '|' + team.split('|')[1] : '');
-                              setEditingBracket(newBracket);
-                            }}
-                            className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent"
-                            placeholder="TBD"
-                          />{" "}
-                          <input
-                            type="text"
-                            value={team.split('|')[1] || ""}
-                            onChange={(e) => {
-                              const newBracket = { ...editingBracket };
-                              if (!newBracket.semiFinals) newBracket.semiFinals = Array(4).fill("");
-                              newBracket.semiFinals[i * 2 + j] = (team.split('|')[0] || "") + '|' + e.target.value;
-                              setEditingBracket(newBracket);
-                            }}
-                            className="w-12 bg-white/5 px-2 py-1.5 rounded text-xs text-center focus:outline-none focus:border-[#A5D8FF] border border-transparent"
-                            placeholder="Pt."
-                          />{" "}
-                          <button
-                            type="button"
-                            onClick={() => advanceTeam(team.split('|')[0] || "", "semiFinals", i)}
-                            disabled={!(team.split('|')[0])}
-                            className="px-2 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
-                            title="Avanza alla Finale"
-                          >
-                            {" "}
-                            <ArrowRight size={14} />{" "}
-                          </button>{" "}
+                        <div key={j} className="space-y-1.5 p-2 bg-white/5 rounded-lg border border-white/5">
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={teamName}
+                              onChange={(e) => updateVal(0, e.target.value)}
+                              className="w-full bg-white/5 px-2 py-1 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent"
+                              placeholder="TBD"
+                            />
+                            <input
+                              type="text"
+                              value={score}
+                              onChange={(e) => updateVal(1, e.target.value)}
+                              className="w-10 bg-white/5 px-1 py-1 rounded text-xs text-center focus:outline-none focus:border-[#A5D8FF] border border-transparent"
+                              placeholder="Pt."
+                            />
+                            <button
+                              type="button"
+                              onClick={() => advanceTeam(teamName, "semiFinals", i)}
+                              disabled={!teamName}
+                              className="px-1.5 py-1 bg-green-500/20 text-green-400 rounded hover:bg-green-500 hover:text-white disabled:opacity-30 transition-colors"
+                              title="Avanza alla Finale"
+                            >
+                              <ArrowRight size={11} />
+                            </button>
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={dateTime}
+                              onChange={(e) => updateVal(2, e.target.value)}
+                              className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-1.5 py-0.5 text-[9px] focus:outline-none"
+                              placeholder="Data/Ora"
+                            />
+                            <input
+                              type="text"
+                              value={court}
+                              onChange={(e) => updateVal(3, e.target.value)}
+                              className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-1.5 py-0.5 text-[9px] focus:outline-none"
+                              placeholder="Campo"
+                            />
+                          </div>
                         </div>
                       );
                     })}
@@ -802,43 +877,64 @@ export const AdminDashboard = ({
                   </div>{" "}
                   {[0, 1].map((j) => {
                     const team = editingBracket.final?.[j] || "";
+                    const parts = team.split('|');
+                    const teamName = parts[0] || "";
+                    const score = parts[1] || "";
+                    const dateTime = parts[2] || "";
+                    const court = parts[3] || "";
+
+                    const updateVal = (idx: number, newVal: string) => {
+                      const newBracket = { ...editingBracket };
+                      if (!newBracket.final) newBracket.final = Array(2).fill("");
+                      const currentParts = [teamName, score, dateTime, court];
+                      currentParts[idx] = newVal;
+                      newBracket.final[j] = currentParts.join('|');
+                      setEditingBracket(newBracket);
+                    };
+
                     return (
-                      <div key={j} className="flex gap-2">
-                        {" "}
-                        <input
-                          type="text"
-                          value={team.split('|')[0] || ""}
-                          onChange={(e) => {
-                            const newBracket = { ...editingBracket };
-                            if (!newBracket.final) newBracket.final = Array(2).fill("");
-                            newBracket.final[j] = e.target.value + (team.includes('|') ? '|' + team.split('|')[1] : '');
-                            setEditingBracket(newBracket);
-                          }}
-                          className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
-                          placeholder="TBD"
-                        />{" "}
-                        <input
-                          type="text"
-                          value={team.split('|')[1] || ""}
-                          onChange={(e) => {
-                            const newBracket = { ...editingBracket };
-                            if (!newBracket.final) newBracket.final = Array(2).fill("");
-                            newBracket.final[j] = (team.split('|')[0] || "") + '|' + e.target.value;
-                            setEditingBracket(newBracket);
-                          }}
-                          className="w-12 bg-white/5 px-2 py-1.5 rounded text-xs text-center focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
-                          placeholder="Pt."
-                        />{" "}
-                        <button
-                          type="button"
-                          onClick={() => advanceTeam(team.split('|')[0] || "", "final", 0)}
-                          disabled={!(team.split('|')[0])}
-                          className="px-2 bg-yellow-500/20 text-yellow-500 rounded hover:bg-yellow-500 hover:text-black disabled:opacity-30 transition-colors"
-                          title="Campione!"
-                        >
-                          {" "}
-                          <Trophy size={14} />{" "}
-                        </button>{" "}
+                      <div key={j} className="space-y-1.5 p-2 bg-white/5 rounded-lg border border-white/5 mb-2">
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={teamName}
+                            onChange={(e) => updateVal(0, e.target.value)}
+                            className="w-full bg-white/5 px-2 py-1 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
+                            placeholder="TBD"
+                          />
+                          <input
+                            type="text"
+                            value={score}
+                            onChange={(e) => updateVal(1, e.target.value)}
+                            className="w-10 bg-white/5 px-1 py-1 rounded text-xs text-center focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
+                            placeholder="Pt."
+                          />
+                          <button
+                            type="button"
+                            onClick={() => advanceTeam(teamName, "final", 0)}
+                            disabled={!teamName}
+                            className="px-1.5 py-1 bg-yellow-500/20 text-yellow-500 rounded hover:bg-yellow-500 hover:text-black disabled:opacity-30 transition-colors"
+                            title="Campione!"
+                          >
+                            <Trophy size={11} />
+                          </button>
+                        </div>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={dateTime}
+                            onChange={(e) => updateVal(2, e.target.value)}
+                            className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-1.5 py-0.5 text-[9px] focus:outline-none text-yellow-500/60"
+                            placeholder="Data/Ora"
+                          />
+                          <input
+                            type="text"
+                            value={court}
+                            onChange={(e) => updateVal(3, e.target.value)}
+                            className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-1.5 py-0.5 text-[9px] focus:outline-none text-yellow-500/60"
+                            placeholder="Campo"
+                          />
+                        </div>
                       </div>
                     );
                   })}
@@ -851,43 +947,64 @@ export const AdminDashboard = ({
                   </div>{" "}
                   {[0, 1].map((j) => {
                     const team = editingBracket.finalissima?.[j] || "";
+                    const parts = team.split('|');
+                    const teamName = parts[0] || "";
+                    const score = parts[1] || "";
+                    const dateTime = parts[2] || "";
+                    const court = parts[3] || "";
+
+                    const updateVal = (idx: number, newVal: string) => {
+                      const newBracket = { ...editingBracket };
+                      if (!newBracket.finalissima) newBracket.finalissima = Array(2).fill("");
+                      const currentParts = [teamName, score, dateTime, court];
+                      currentParts[idx] = newVal;
+                      newBracket.finalissima[j] = currentParts.join('|');
+                      setEditingBracket(newBracket);
+                    };
+
                     return (
-                      <div key={`finalissima-${j}`} className="flex gap-2">
-                        {" "}
-                        <input
-                          type="text"
-                          value={team.split('|')[0] || ""}
-                          onChange={(e) => {
-                            const newBracket = { ...editingBracket };
-                            if (!newBracket.finalissima) newBracket.finalissima = Array(2).fill("");
-                            newBracket.finalissima[j] = e.target.value + (team.includes('|') ? '|' + team.split('|')[1] : '');
-                            setEditingBracket(newBracket);
-                          }}
-                          className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
-                          placeholder="TBD"
-                        />{" "}
-                        <input
-                          type="text"
-                          value={team.split('|')[1] || ""}
-                          onChange={(e) => {
-                            const newBracket = { ...editingBracket };
-                            if (!newBracket.finalissima) newBracket.finalissima = Array(2).fill("");
-                            newBracket.finalissima[j] = (team.split('|')[0] || "") + '|' + e.target.value;
-                            setEditingBracket(newBracket);
-                          }}
-                          className="w-12 bg-white/5 px-2 py-1.5 rounded text-xs text-center focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
-                          placeholder="Pt."
-                        />{" "}
-                        <button
-                          type="button"
-                          onClick={() => advanceTeam(team.split('|')[0] || "", "finalissima", 0)}
-                          disabled={!(team.split('|')[0])}
-                          className="px-2 bg-yellow-500/20 text-yellow-500 rounded hover:bg-yellow-500 hover:text-black disabled:opacity-30 transition-colors"
-                          title="Campione!"
-                        >
-                          {" "}
-                          <Trophy size={14} />{" "}
-                        </button>{" "}
+                      <div key={`finalissima-${j}`} className="space-y-1.5 p-2 bg-white/5 rounded-lg border border-white/5 mb-2">
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={teamName}
+                            onChange={(e) => updateVal(0, e.target.value)}
+                            className="w-full bg-white/5 px-3 py-1.5 rounded text-xs focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
+                            placeholder="TBD"
+                          />
+                          <input
+                            type="text"
+                            value={score}
+                            onChange={(e) => updateVal(1, e.target.value)}
+                            className="w-10 bg-white/5 px-2 py-1.5 rounded text-xs text-center focus:outline-none focus:border-[#A5D8FF] border border-transparent text-yellow-500/80 font-bold"
+                            placeholder="Pt."
+                          />
+                          <button
+                            type="button"
+                            onClick={() => advanceTeam(teamName, "finalissima", 0)}
+                            disabled={!teamName}
+                            className="px-1.5 py-1 bg-yellow-500/20 text-yellow-500 rounded hover:bg-yellow-500 hover:text-black disabled:opacity-30 transition-colors"
+                            title="Campione!"
+                          >
+                            <Trophy size={11} />
+                          </button>
+                        </div>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={dateTime}
+                            onChange={(e) => updateVal(2, e.target.value)}
+                            className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-1.5 py-0.5 text-[9px] focus:outline-none text-yellow-500/60"
+                            placeholder="Data/Ora"
+                          />
+                          <input
+                            type="text"
+                            value={court}
+                            onChange={(e) => updateVal(3, e.target.value)}
+                            className="w-1/2 bg-[#A5D8FF]/5 border border-[#A5D8FF]/20 rounded px-1.5 py-0.5 text-[9px] focus:outline-none text-yellow-500/60"
+                            placeholder="Campo"
+                          />
+                        </div>
                       </div>
                     );
                   })}
