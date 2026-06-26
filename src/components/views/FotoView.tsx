@@ -13,7 +13,7 @@ const FotoView = () => {
     >
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{ backgroundImage: 'url("/Sfondo Foto.jpeg")' }}
+        style={{ backgroundImage: 'url("/Sfondo%20Foto.jpeg")' }}
       />
       <div className="absolute inset-0 z-0 bg-black/60 backdrop-blur-md" />
       

@@ -8,12 +8,12 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Foto', id: 'foto' },
     { name: 'Chi Siamo', id: 'chi-siamo' },
     { name: 'Partecipanti', id: 'partecipanti' },
     { name: 'Tabellone', id: 'tabellone' },
     { name: 'Sponsor', id: 'sponsor' },
     { name: 'Articoli', id: 'articoli' },
+    { name: 'Foto', id: 'foto' },
   ];
 
   return (
