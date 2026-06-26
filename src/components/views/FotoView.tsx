@@ -9,13 +9,13 @@ const FotoView = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="relative min-h-[80vh] flex flex-col items-center justify-center text-center overflow-hidden pt-32 pb-24 px-6"
+      className="relative min-h-[100vh] flex flex-col items-center justify-center text-center overflow-hidden pt-32 pb-24 px-6"
     >
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{ backgroundImage: 'url("/Sfondo%20Foto.jpeg")' }}
       />
-      <div className="absolute inset-0 z-0 bg-black/60 backdrop-blur-md" />
+      <div className="absolute inset-0 z-0 bg-black/40 backdrop-blur-sm" />
       
       <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center">
         <div className="w-24 h-24 bg-black/50 backdrop-blur-lg rounded-full flex items-center justify-center mb-8 border border-white/20 shadow-[0_0_30px_rgba(165,216,255,0.2)]">
