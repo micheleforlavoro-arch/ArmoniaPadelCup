@@ -13,6 +13,7 @@ import PartecipantiView from './components/views/PartecipantiView';
 import ArticoliView from './components/views/ArticoliView';
 import PrivacyView from './components/views/PrivacyView';
 import CookiesView from './components/views/CookiesView';
+import FotoView from './components/views/FotoView';
 
 const TabelloneView = lazy(() => import('./components/views/TabelloneView'));
 const IscrivitiView = lazy(() => import('./components/views/IscrivitiView'));
@@ -217,6 +218,7 @@ export default function App() {
           {view === 'iscriviti' && <IscrivitiView />}
           {view === 'privacy' && <PrivacyView />}
           {view === 'cookies' && <CookiesView />}
+          {view === 'foto' && <FotoView />}
           {view === 'admin' && (
             <motion.section
               key="admin"
@@ -316,6 +318,7 @@ export default function App() {
               <h4 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20 mb-8">Navigazione</h4>
               <ul className="space-y-4 text-white/40 text-[10px] uppercase font-bold tracking-[0.2em]">
                 <li><button onClick={() => setView('home')} className="hover:text-white transition-colors">Home</button></li>
+                <li><button onClick={() => setView('foto')} className="hover:text-white transition-colors">Foto</button></li>
                 <li><button onClick={() => setView('partecipanti')} className="hover:text-white transition-colors">Partecipanti</button></li>
                 <li><button onClick={() => setView('tabellone')} className="hover:text-white transition-colors">Tabellone</button></li>
                 <li><button onClick={() => setView('sponsor')} className="hover:text-white transition-colors">Sponsor</button></li>
