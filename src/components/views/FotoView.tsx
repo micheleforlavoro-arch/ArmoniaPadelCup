@@ -31,7 +31,7 @@ const FotoView = () => {
       </p>
 
       <a 
-        href="https://drive.google.com/drive/folders/1kME3EJ6SeoZXKIzpLQqGhqzMG7R3IJ92?usp=share_link"
+        href="https://drive.google.com/drive/folders/1v_NkIl9Ev-3o4ZPmvbN6amEWfLaBh-Tz"
         target="_blank"
         rel="noopener noreferrer"
         className="group relative inline-flex items-center gap-4 px-8 py-5 bg-[#A5D8FF] text-black rounded-full font-black uppercase tracking-widest text-sm hover:bg-white transition-all shadow-[0_0_30px_rgba(165,216,255,0.3)] hover:shadow-[0_0_50px_rgba(255,255,255,0.5)] active:scale-95"
