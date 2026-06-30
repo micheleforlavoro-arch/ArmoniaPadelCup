@@ -46,10 +46,10 @@ const Navbar = () => {
             ))}
           </div>
           <button
-            onClick={() => (window as any).setView('iscriviti')}
-            className="px-6 py-2.5 bg-[#A5D8FF] text-black text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white transition-all shadow-[0_0_15px_rgba(165,216,255,0.3)] active:scale-95"
+            disabled
+            className="px-6 py-2.5 bg-gray-500 text-black text-[10px] font-black uppercase tracking-widest rounded-full cursor-not-allowed opacity-50"
           >
-            Iscriviti Ora
+            Iscrizioni Chiuse
           </button>
         </div>
 
@@ -82,11 +82,10 @@ const Navbar = () => {
                 </button>
               ))}
               <button
-                onClick={() => { (window as any).setView('iscriviti'); setIsMobileMenuOpen(false); }}
-                className="mt-4 px-6 py-3 rounded-full text-center text-black font-bold"
-                style={{ backgroundColor: ACCENT_COLOR }}
+                disabled
+                className="mt-4 px-6 py-3 rounded-full text-center text-black font-bold bg-gray-500 cursor-not-allowed opacity-50"
               >
-                Iscriviti Ora
+                Iscrizioni Chiuse
               </button>
             </div>
           </motion.div>

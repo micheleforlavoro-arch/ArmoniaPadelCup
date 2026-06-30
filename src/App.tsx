@@ -323,7 +323,7 @@ export default function App() {
                 <li><button onClick={() => setView('tabellone')} className="hover:text-white transition-colors">Tabellone</button></li>
                 <li><button onClick={() => setView('sponsor')} className="hover:text-white transition-colors">Sponsor</button></li>
                 <li><button onClick={() => setView('articoli')} className="hover:text-white transition-colors">Articoli</button></li>
-                <li><button onClick={() => setView('iscriviti')} className="hover:text-[#A5D8FF] transition-colors">Iscriviti</button></li>
+                <li><button disabled className="text-white/20 cursor-not-allowed transition-colors">Iscrizioni Chiuse</button></li>
               </ul>
             </div>
 

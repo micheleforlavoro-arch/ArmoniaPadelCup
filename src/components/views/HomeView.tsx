@@ -65,11 +65,10 @@ const HomeView = () => {
                 </div>
 
                 <button
-                  onClick={() => setView('iscriviti')}
-                  className="group relative px-12 py-5 rounded-full font-black text-black overflow-hidden transition-all text-xs uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(165,216,255,0.4)] hover:scale-105 hover:bg-white active:scale-95"
-                  style={{ backgroundColor: ACCENT_COLOR }}
+                  disabled
+                  className="group relative px-12 py-5 rounded-full font-black text-black overflow-hidden transition-all text-xs uppercase tracking-[0.2em] cursor-not-allowed bg-gray-500 opacity-50"
                 >
-                  Iscriviti Ora
+                  Iscrizioni Chiuse
                 </button>
               </div>
 
