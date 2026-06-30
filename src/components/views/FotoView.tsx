@@ -37,7 +37,7 @@ const FotoView = () => {
         className="group relative inline-flex items-center gap-4 px-8 py-5 bg-[#A5D8FF] text-black rounded-full font-black uppercase tracking-widest text-sm hover:bg-white transition-all shadow-[0_0_30px_rgba(165,216,255,0.3)] hover:shadow-[0_0_50px_rgba(255,255,255,0.5)] active:scale-95"
       >
         <span className="relative z-10 flex items-center gap-3">
-          Foto Ottavi <ExternalLink size={18} />
+          Foto Torneo <ExternalLink size={18} />
         </span>
       </a>
       
